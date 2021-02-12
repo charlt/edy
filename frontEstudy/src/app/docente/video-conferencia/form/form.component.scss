@@ -1,0 +1,36 @@
+@import "../../../shared/styles/forms.component.scss";
+
+._tooltip {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black;
+  }
+  
+  ._tooltip .tooltiptext {
+    visibility: hidden;
+    width: 260px;
+    background-color: #17a2b8;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 2px 0;
+  
+    /* Position the tooltip */
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -50px;
+  }
+  
+  ._tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  li{
+    cursor: pointer;
+  }
+
+  .seleccionado {
+    background-color: #d1ecf1;
+    border-color: #bee5eb !important;
+  }

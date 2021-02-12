@@ -1,0 +1,92 @@
+<div *ngIf="!cargando && alert" class="alert alert-danger text-center" role="alert">
+  Aún no cuentas con una materia asignada.
+</div>
+<div *ngIf="cargando && !alert">
+  <div><i class="fa fa-spin fa-spinner" style="margin-left: 45%; margin-top: 20%;"></i><h5 style="margin-left: 28%;">{{'TiempoEspera' | translate}}</h5></div>
+</div>
+
+<table *ngIf="!cargando && !alert" class="table table-bordered" >
+  <thead>
+    <tr>
+      <th colspan="9">
+        <button type="button" class="btn float-right" 
+        [routerLink]="['/docente/bandeja-mensajes']"
+        ><i class="fa fa-envelope-o" aria-hidden="true"></i> Bandeja de mensajes</button>
+        <button type="button" class="btn float-right" 
+        [routerLink]="['/docente/bandeja-retro']"
+        ><i class="fa fa-envelope-o" aria-hidden="true"></i> Bandeja de Retroalimentaciones</button>
+      </th>
+    </tr>
+    <tr>
+      <th scope="col">Grado</th>
+      <th scope="col">Asignatura</th>
+      <th scope="col">Clave grupo</th>
+      <th scope="col">Nombre del grupo</th>
+      <th scope="col">Act. pendientes</th>
+      <th scope="col">Mensajes</th>
+      <th scope="col">Retroalimentaciones</th>
+      <th scope="col">Estado de la materia</th>
+      <th scope="col">Actividad más antigua</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let _asignaturaGrupo of asignaturaGrupo">
+    <tr>
+      <td>{{_asignaturaGrupo.orden_jerarquico_descripcion}}</td>
+      <td><a [routerLink]="['/docente/grupo/'+_asignaturaGrupo.asignatura_grupo_id+'/4']" (click)="seleccionaGrupo(_asignaturaGrupo)">{{_asignaturaGrupo.asignatura}}</a></td>
+      <td>{{_asignaturaGrupo.grupo}}</td>
+      <td>{{_asignaturaGrupo.nombre_grupo}}</td>
+      <td>
+        <button type="button" class="btn "
+          [ngClass]="{'btn-danger' : _asignaturaGrupo.actividades_pendientes > 10, 'btn-warning' : _asignaturaGrupo.actividades_pendientes > 5 ,'btn-primary' : _asignaturaGrupo.actividades_pendientes <= 5}" 
+          [routerLink]="['/docente/grupo/'+_asignaturaGrupo.asignatura_grupo_id+'/1']" (click)="seleccionaGrupo(_asignaturaGrupo)">
+          <i class="fa fa-pencil-square" aria-hidden="true"></i> {{_asignaturaGrupo.actividades_pendientes}}</button>
+      </td>
+      <td>
+        <button type="button" class="btn " 
+        [routerLink]="['/docente/grupo/'+_asignaturaGrupo.asignatura_grupo_id+'/2']" (click)="seleccionaGrupo(_asignaturaGrupo)"
+        [ngClass]="{'btn-danger' : _asignaturaGrupo.mensaje > 10, 'btn-warning' : _asignaturaGrupo.mensaje > 5 ,'btn-primary' : _asignaturaGrupo.mensaje <= 5}"
+        ><i class="fa fa-envelope-o" aria-hidden="true"></i> {{_asignaturaGrupo.mensaje}}</button></td>
+      <td>
+        <button type="button" class="btn btn-primary" 
+        [routerLink]="['/docente/grupo/'+_asignaturaGrupo.asignatura_grupo_id+'/3']" (click)="seleccionaGrupo(_asignaturaGrupo)"
+        [ngClass]="{'btn-danger' : _asignaturaGrupo.retroalimentacion > 10, 'btn-warning' : _asignaturaGrupo.retroalimentacion > 5 ,'btn-primary' : _asignaturaGrupo.retroalimentacion <= 5}"
+        ><i class="fa fa-comments"></i>  {{_asignaturaGrupo.retroalimentacion}}</button></td>
+      <td [ngClass]="{'alert-danger' : _asignaturaGrupo.situacion_asignatura_grupo_id == 4, 'alert-warning' : _asignaturaGrupo.situacion_asignatura_grupo_id == 3 || _asignaturaGrupo.situacion_asignatura_grupo_id == 2,'alert-success' : _asignaturaGrupo.situacion_asignatura_grupo_id == 1}">
+        <b>{{_asignaturaGrupo.situacion_asignatura_grupo_descripcion}}</b><br>
+        <small  *ngIf="_asignaturaGrupo.activa == 1">
+          <span *ngIf="_asignaturaGrupo.estado == 1" > Cierra el  {{_asignaturaGrupo.fecha_fin | date: "dd/MM/yyyy"}} </span>   
+          <span *ngIf="_asignaturaGrupo.estado == 0" > Sin fecha de cierre </span>
+        </small>
+        <small *ngIf="_asignaturaGrupo.activa == 0">
+          <span  *ngIf="_asignaturaGrupo.estado == 2"> Abre el  {{_asignaturaGrupo.fecha_inicio | date: "dd/MM/yyyy"}} </span>   
+          <span *ngIf="_asignaturaGrupo.estado == 3" > Cerró el  {{_asignaturaGrupo.fecha_fin | date: "dd/MM/yyyy"}} </span>
+        </small>   
+      </td>
+      <td>
+        <span *ngIf="_asignaturaGrupo.actividad_antigua" >
+        <a [routerLink]="['/docente/actividad/'+_asignaturaGrupo.actividad_antigua.actividad_id+'/'+_asignaturaGrupo.actividad_antigua.materia_id]" >{{_asignaturaGrupo.actividad_antigua.fecha_actividad | date: 'dd/MM/yyyy'}} </a>
+        </span>
+        <span *ngIf="!_asignaturaGrupo.actividad_antigua" >
+          Sin pendientes
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #modalEncuesta let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Encuesta</h4>
+    <button *ngIf="Encuestas[0].obligatorio == '0'" type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body my-3 mx-2 text-center">
+      <p>Antes de continuar, ayúdanos a contestar el siguiente cuestionario</p>
+      <a class="btn btn-lg btn-primary mb-3" [routerLink]="['encuesta/' + idEncuesta + '/' + idSwitchEncuesta]">Ir al cuestionario</a>
+      <router-outlet></router-outlet> 
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="Encuestas[0].obligatorio == '0'" type="button" class="btn btn-light" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

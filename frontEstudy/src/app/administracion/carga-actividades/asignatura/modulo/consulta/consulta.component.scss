@@ -1,0 +1,17 @@
+@import "src/app/app.component.scss";
+@import "src/app/shared/styles/forms.component.scss";
+
+.btn-accion{
+    float:right;
+    top:10px;
+    text-align:right;
+}
+.container-modulo{
+    padding: 20px;
+}
+
+.alert-modulo:hover{
+    -webkit-box-shadow: 1.25px 1.23px 2.5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1.25px 1.23px 2.5px 0px rgba(0,0,0,0.75);
+    box-shadow: 1.25px 1.23px 2.5px 0px rgba(0,0,0,0.75);
+}

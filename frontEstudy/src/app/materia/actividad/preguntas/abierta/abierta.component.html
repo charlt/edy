@@ -1,0 +1,19 @@
+
+<ckeditor 
+    *ngIf="edicion && pregunta.importancia_actividad_id != 2"
+    [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}"   
+    [(ngModel)]="model"
+    (blur)="guardarBorrador($event)" 
+    (ready)="editorCargado($event)"></ckeditor>
+<textarea (blur)="guardarBorrador($event)"  *ngIf="edicion && pregunta.importancia_actividad_id == 2"
+    [(ngModel)]="model" class="form-control" name="" id="" rows="8"></textarea>
+<div *ngIf="!edicion && respuesta" class="row">
+    <div class="col alert alert-info">
+        <b>Respuesta:</b>
+        <p  [innerHtml]="model"></p>
+    </div>
+</div>
+<div class="container" *ngIf="edicion == 0 && !respuesta">
+    <div class="alert alert-secondary mt-3">No se puede responder la pregunta.</div>
+  </div>
+

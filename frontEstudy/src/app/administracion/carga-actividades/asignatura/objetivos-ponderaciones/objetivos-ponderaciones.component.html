@@ -1,0 +1,44 @@
+ 
+<div *ngIf="identificador == 1">
+  <div class="row">
+    <div class="col col-md-12">
+      <table class="table table-bordered">
+        <tr>
+          <th>{{'nmbActividad' | translate}}</th>
+          <th>{{'ponderacion' | translate}}</th>
+          <th>Objetivos de alumno</th>
+          <th>Objetivos de docente</th>
+          <th [hidden]="tipoAdmin == 0">{{'guardarCambios' | translate}}</th>
+        </tr>
+        <tr [ngClass]="objetivos.grupo_id ? 'alert-warning':''" *ngFor="let objetivos of objetivo">
+          <td>{{objetivos.actividad_nombre}}</td>
+          <td>
+            <div class="form-group">                               
+              <input disabled="disabled" name="ponderacion" [(ngModel)]="objetivos.ponderacion" class="form-control" id="ponderacion_{{objetivos.actividad_id}}" type="number">
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <textarea name="objetivoAlumno" [(ngModel)]="objetivos.objetivo_alumno" rows="3" cols="27" maxlength="255"></textarea>
+            </div>
+          </td>
+          <td>
+            <div class="formGroup">
+                <textarea name="objetivoDocente" [(ngModel)]="objetivos.objetivo_docente" rows="3" cols="27" maxlength="255"></textarea>
+            </div>
+          </td>
+          <td [hidden]="tipoAdmin == 0" class="text-center"><button class="btn btn-success" (click)="guardarDatos(objetivos, objetivos.actividad_id, objetivos.objetivos_actividad_id)"><i class="fa fa-save"></i></button></td>
+        </tr>
+      </table>  
+    </div>
+  </div> 
+</div>
+<div *ngIf="identificador == 0">
+  <div class="alert alert-danger">
+    <p class="text-center">{{'MsgAsignaturaVacia' | translate}}
+      <br>
+      <a [routerLink]="['/admin/carga/asignatura/'+idAsignatura+'/modulos']" class="btn btn-danger">Crear actividades</a>
+    </p>
+    
+  </div>
+</div>

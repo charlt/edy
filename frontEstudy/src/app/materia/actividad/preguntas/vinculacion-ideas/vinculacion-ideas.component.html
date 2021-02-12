@@ -1,0 +1,81 @@
+<stepper *ngIf="show" [datos]="step" [selectedIndex]="step.pestania">
+  <cdk-step> 
+<div class="row">  
+    <div class="col col-xl-12 col-lg-12">
+      <div class="container" *ngIf="edicion == 1">  
+      <br>
+      <form [formGroup]="vinculacionForm" (ngSubmit)="enviarRespuestas()" class="col-12">      
+      <div class="form-group">
+        <label class="control-label">¿Cuál es el título del {{titulo | lowercase}}?</label>
+        <input class="form-control" formControlName="titulo" type="text">          
+      </div> 
+      <br>
+      <div class="row col">
+        <div class="form-group">
+          <label class="control-label mt-2">{{comparacion}}</label>
+        </div> 
+        <div class="ml-3" *ngIf="tipo == 1">
+          <select class="form-control" name="elementos" id="elementos" (change)="numElementos($event, 0, 'itemsElemento')">
+            <option *ngFor="let elemento of elementos" [value]="elemento">{{elemento}}</option>
+          </select>
+        </div>
+      </div> 
+      <div formArrayName="itemsElemento" class="mt-2"
+        *ngFor="let item of vinculacionForm.get('itemsElemento')['controls']; let i = index;">
+        <div [formGroupName]="i">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Elemento {{i+1}}</span>
+            </div>
+            <input formControlName="elemento" type="text" class="form-control">
+          </div>
+        </div>
+      </div>  
+      <div class="row col">
+        <div class="form-group">
+          <label class="control-label mt-2">¿Cuántas categorías utilizarás para comparar?</label>
+        </div> 
+        <div class="ml-3">
+          <select class="form-control" name="categorias" id="categorias" (change)="numElementos($event, 1, 'itemsCategoria')">
+            <option *ngFor="let categoria of categorias" [value]="categoria">{{categoria}}</option>
+          </select>
+        </div>
+      </div> 
+      <div formArrayName="itemsCategoria" class="mt-2"
+        *ngFor="let item of vinculacionForm.get('itemsCategoria')['controls']; let i = index;">
+        <div [formGroupName]="i">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Categoría {{i+1}}</span>
+            </div>
+            <input formControlName="categoria" type="text" class="form-control">
+          </div>
+        </div>
+      </div>  
+      <div class="alert alert-success" *ngIf="vinculacionForm.value.itemsElemento.length == 2">
+        Estas creando un {{titulo | lowercase}} <span *ngIf="iEf.valid"> entre <b>{{vinculacionForm.value.itemsElemento[0].elemento}}</b>
+        y <b>{{vinculacionForm.value.itemsElemento[1].elemento}}</b></span>
+        utilizando <b>{{vinculacionForm.value.itemsCategoria.length}} categorías.</b>
+      </div>      
+      <div class="alert alert-success" *ngIf="vinculacionForm.value.itemsElemento.length == 3">
+        Estas creando un {{titulo | lowercase}} <span *ngIf="iEf.valid"> entre <b>{{vinculacionForm.value.itemsElemento[0].elemento}}</b>
+        y <b>{{vinculacionForm.value.itemsElemento[1].elemento}} </b> 
+        y <b>{{vinculacionForm.value.itemsElemento[2].elemento}}</b></span>
+        utilizando <b>{{vinculacionForm.value.itemsCategoria.length}} categorías.</b>
+      </div>           
+      <button [disabled]="vinculacionForm.invalid" type="submit" class="btn btn-success pull-right mb-4">Generar {{tipo == 1? 'cuadro': 'mapa'}}</button>
+    </form>
+  </div>
+  <div class="container" *ngIf="edicion == 0">
+    <div class="alert mt-3">No se puede responder la pregunta.</div>
+  </div>
+</div> 
+</div> 
+  </cdk-step>
+  <cdk-step >
+        <tabla *ngIf="respuesta && tipo == 1" [respuesta]="respuesta" [idMateriaFechaActividad]="idMateriaFechaActividad" [edicion]="edicion" (stepCC)="showStep($event)"></tabla>
+        <diagrama *ngIf="respuesta && tipo == 2" [respuesta]="respuesta" [idMateriaFechaActividad]="idMateriaFechaActividad" [edicion]="edicion" (stepMC)="showStep($event)"></diagrama>
+        <!--button class="btn btn-danger">Borrar todo </button-->
+  </cdk-step>
+</stepper>
+

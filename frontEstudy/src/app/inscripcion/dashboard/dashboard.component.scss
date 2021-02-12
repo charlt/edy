@@ -1,0 +1,83 @@
+@import "../../login/login.component.scss";
+
+.cursor{
+	cursor: pointer;
+}
+
+.modal-xl .modal-lg {
+    max-width: 90%;
+  }
+
+.arrow-container{
+    padding: 0px;
+}
+
+.arrow-4 {
+    position: absolute;
+    margin-top: 40px;
+	height: 30px; width: 30px;
+    border: 8px solid;
+    
+	border-color: 
+        #3333ff
+		#3333ff
+		transparent
+		transparent;
+	transform: rotate(45deg); 
+}
+.grafica{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.arrow-4:before, .arrow-4:after {
+	content: '';
+	display: block;
+	position: absolute;
+	height: 0; width: 0;
+	border: 5px solid;	
+}
+
+.arrow-4:before {
+	border-color:
+        #3333ff
+		transparent
+		transparent
+		#3333ff;
+	display: block;
+	top: -1px; right: 0px;
+	transform-origin: top right;
+	transform: rotate(45deg); 
+}
+
+.arrow-4:after {
+	border-color:
+		transparent
+		#3333ff
+		#3333ff
+		transparent;
+	top: 0px; right: -1px;
+	transform-origin: top right;
+	transform: rotate(-45deg);
+}
+
+.pasos{
+ 
+    position: absolute;    
+    z-index: 2;
+    
+    padding-top:40px;
+    text-align:center;
+}
+
+.modal_tit{
+	background-color: #002144;
+	color: white;
+}
+.icon_dash{
+	text-align: center; font-size: 50px; color: royalblue; margin-top: -10px;
+}
+.text_dash{
+	text-align: center; font-size: 17px;  color: royalblue;
+}

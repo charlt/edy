@@ -1,0 +1,282 @@
+<div *ngIf="bandera">
+<div class="row">
+  <div class="col-md-12">
+      <h2>{{actividad.actividad_nombre}} | {{actividad.tipo_actividad_nombre}}</h2>
+      <p *ngIf="fechaActividad && fechaActividad.estatus_actividad_id != 1"> Actividad enviada el  <b>{{fechaActividad.fecha_actividad | date: 'dd/MM/yy (hh:mm:ss)'}}</b></p>
+  </div>
+</div>
+
+<div class="row" *ngIf="pendientes.length > 0">
+  <div class="col-6">
+    <button class="btn btn-info" (click)="cambiaActividad(0)"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i> Anterior pendiente</button>
+  </div>
+  <div class="col-6">
+    <button class="btn btn-info pull-right" (click)="cambiaActividad(1)">Siguiente pendiente <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i></button>
+  </div>
+</div>
+
+<div class="row my-3">
+  <div class="col-md-6">
+      <app-encabezado-persona *ngIf="idAlumno !== undefined" [idPersona]="idAlumno" [idRol]="2"></app-encabezado-persona>
+  </div>
+  <div class="col-md-6">
+    
+      <div *ngIf="this.actividad.tipo_actividad_id != '5'" class="btn-group btn-group-sm pull-right" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-secondary"  (click)="openModalCalculadora(contentModalCP)">
+              <h4><i class=" fa fa-calculator"></i></h4>
+              <p><small>{{'_calculadoraPromedios' | translate}}</small></p>
+            </button>
+          <button type="button" class="btn btn-secondary" *ngIf="actividad.metodo_resolver_id == 2" (click)="openModalRetro(contentModalEquipo)">
+            <h4><i class="fa fa-users"></i></h4>
+            <p><small>{{'_equipo' | translate}}</small></p>
+          </button>
+          <div *ngIf="!retroalimentacion">
+          <button style="border-right-color:rgb(177, 176, 176);" type="button" class="btn btn-secondary"  *ngIf="fechaActividad" (click)="openModalRetro(contentModalRetro); retroPendiente()">
+            <h4><i class=" fa fa-exchange"></i></h4>
+            <p><small>{{'_mensajesRetro' | translate}}</small></p>
+          </button>
+          </div>
+          <div *ngIf="retroalimentacion >= 1">
+            <button style="border-right-color:	#5cb85c;" type="button" class="btn btn-success" *ngIf="fechaActividad" (click)="openModalRetro(contentModalRetro)">
+              <h4><i class=" fa fa-exchange"></i></h4>
+              <p><small>{{'_mensajesRetro' | translate}}</small></p>
+            </button>
+          </div>
+          <a style="border-left-color: rgb(177, 176, 176);" class="btn btn-secondary" [routerLink]="['/docente/notas/'+idMateria+'/'+idActividad]">
+            <h4><i class=" fa fa-sticky-note-o" ></i></h4>
+            <p ><small>{{'_nota' | translate}}</small></p>
+          </a>
+    
+        </div>
+  </div>
+</div>
+<div class="row justify-content-md-center">
+  <div  class="col-4 sticky"  cdkDrag *ngIf="fechaActividad">
+      <h4 style="cursor: move"></h4>
+    <div class="col-12" *ngIf="actividad.tipo_actividad_id != 3">
+
+
+
+
+
+      <h5 class="text-center p-3" *ngIf="fechaActividad.estatus_actividad_id==1 && !calificacionBorrador">Esta actividad permanece en borrador</h5>
+      <h5 class="text-center p-3" *ngIf="fechaActividad.estatus_actividad_id==5 && !calificacionBorrador">Esta Actividad esta en corrección</h5>
+      <h4 class="text-center p-3" *ngIf="(fechaActividad.estatus_actividad_id==1 || fechaActividad.estatus_actividad_id==5) && calificacionBorrador">{{calificacionBorrador}}</h4>
+      <h5 class="text-center p-3" *ngIf="fechaActividad.estatus_actividad_id==6">Esta Actividad es inválida</h5>
+      <div *ngIf="fechaActividad.estatus_actividad_id == 1 || fechaActividad.estatus_actividad_id == 5" class="col-md-10">
+        <button  class="btn btn-success btn-sm pull-right" type="button" id="button-addon2" (click)="guardarCalificacion()">{{'_guardarCalificacion'| translate }}</button>
+      </div>
+      <div *ngIf="fechaActividad.estatus_actividad_id==1" class="col-md-8">
+        <button class="btn btn-warning btn-sm pull-right" (click)="openModalCorreccion(contentModalC)">{{'pedirCorreccion' | translate}}</button> 
+      </div>
+
+      <div class="col-md-12 text-center" *ngIf="fechaActividad.estatus_actividad_id == 2 || fechaActividad.estatus_actividad_id == 4  ||  fechaActividad.estatus_actividad_id == 9 || fechaActividad.estatus_actividad_id == 10">
+          <label><b>{{'calificacionActividad' | translate}}</b></label>
+          <h4 *ngIf="fechaActividad.calificacion">{{fechaActividad.calificacion}}</h4>
+          <button class="btn btn-primary mb-2" *ngIf="(fechaActividad.estatus_actividad_id == 4 ||  fechaActividad.estatus_actividad_id == 9 || fechaActividad.estatus_actividad_id == 10)
+            && idSituacionAsignaturaGrupo != 4" (click)="reevaluarCalificacion()">{{ '_reevaluarCalificacion' | translate}}</button>
+      </div>
+
+
+
+
+
+
+      <div class="col-md-12 text-center" *ngIf="fechaActividad.estatus_actividad_id == 3">
+            <h4 *ngIf="fechaActividad.calificacion">{{fechaActividad.calificacion}}</h4>
+            <h4 *ngIf="!fechaActividad.calificacion && calificacionBorrador">{{calificacionBorrador}}</h4>
+
+
+
+
+
+            <p *ngIf="!fechaActividad.calificacion && !calificacionBorrador && pasoPortafolio != 1">{{'_sinCalificar' | translate}}</p>
+
+            <button *ngIf="fechaActividad.estatus_actividad_id != 2 && idSituacionAsignaturaGrupo != 4" 
+              class="btn btn-success btn-lg my-3 btn-block" type="button" id="button-addon2" (click)="guardarCalificacion()">
+              <span *ngIf="actividad.tipo_calificacion == 2">{{'_calificarRubrica'| translate }}</span>
+              <span *ngIf="actividad.tipo_calificacion != 2">{{'_guardarCalificacion'| translate }}</span>
+            </button>
+
+
+
+
+
+            <button *ngIf="fechaActividad.estatus_actividad_id != 2 && fechaActividad.estatus_actividad_id != 4 
+              && idSituacionAsignaturaGrupo != 4" class="btn btn-warning btn-sm" (click)="openModalCorreccion(contentModalC)">{{'pedirCorreccion' | translate}}</button> 
+            <button *ngIf="fechaActividad.estatus_actividad_id != 2 && fechaActividad.estatus_actividad_id != 4 && actividad.tipo_actividad_id != 3
+              && idSituacionAsignaturaGrupo != 4" class="btn btn-danger btn-sm" (click)="openModalInvalido(contentModalI)">{{'invalidarActividad' | translate}}</button>
+      </div> 
+
+    </div>
+    <div class="col-12" *ngIf="actividad.tipo_actividad_id == 3">
+      <h5 class="text-center p-3" *ngIf="fechaActividad.estatus_actividad_id==1">Esta actividad permanece en borrador</h5>
+      <h5 class="text-center p-3" *ngIf="fechaActividad.estatus_actividad_id==7">Este portafolio fue aprobado correctamente</h5>
+      <div class="row justify-content-center">
+        <div class=" text-center">          
+          <label *ngIf="fechaActividad.estatus_actividad_id == 4 || (fechaActividad.estatus_actividad_id == 3 && pasoPortafolio == 3)"><b>{{'calificacionPortafolio' | translate}}</b></label>
+          <select *ngIf="fechaActividad.estatus_actividad_id == 3 && pasoPortafolio == 3" class="form-control"  [(ngModel)]="calificacionPortafolioBorrador" >
+            <option value="" >Selecciona</option>
+            <option *ngFor="let metrica of metricaCalif; let i = index" value="{{metrica.valor}}">{{metrica.texto}}</option>
+            <!-- <option value="0.00">0.0</option>
+            <option value="0.50">5.0</option>
+            <option value="0.60">6.0</option>
+            <option value="0.65">6.5</option>
+            <option value="0.70">7.0</option>
+            <option value="0.75">7.5</option>
+            <option value="0.80">8.0</option>
+            <option value="0.85">8.5</option>
+            <option value="0.9">9.0</option>
+            <option value="0.95">9.5</option>
+            <option value="1.00">10.0</option> -->
+          </select>
+          <h4 *ngIf="fechaActividad.estatus_actividad_id == 4">{{fechaActividad.calificacion}}</h4>
+          <button *ngIf="fechaActividad.estatus_actividad_id == 3 && pasoPortafolio == 1" class="btn btn-success btn-lg my-3" type="button" id="button-addon2" (click)="aprobarPortafolio()">{{'_aprobarPortafolio'| translate }}</button><br>
+          <button *ngIf="fechaActividad.estatus_actividad_id == 3 && pasoPortafolio == 3" class="btn btn-success btn-lg my-3" type="button" id="button-addon2" (click)="guardarCalificacionPortafolio()">{{'_guardarCalificacion'| translate }}</button><br>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+
+
+<div  class="row justify-content-md-center" *ngIf="!fechaActividad">
+    <div  class="col-12 text-center">
+        <h4>El alumno aún no ha comenzado la actividad</h4>
+          <button class="btn btn-warning" (click)="openModalCorreccion(contentModalC)">{{'pedirCorreccion' | translate}}</button> 
+    </div>
+</div>
+
+
+
+  <!-- <div class="row justify-content-md-center" [hidden]="fechaActividad.estatus_actividad_id==5">
+    <div class="col-md-4">
+             <div class="row text-center">
+          <div *ngIf="fechaActividad && fechaActividad.estatus_actividad_id != 1 " class="col ">
+            <label><b>{{'calificacionActividad' | translate}}</b></label>
+            <h4 *ngIf=" fechaActividad.calificacion">{{fechaActividad.calificacion}}</h4>
+            <p *ngIf="!fechaActividad.calificacion">{{'_sinCalificar' | translate}}</p>
+            <button *ngIf="fechaActividad.estatus_actividad_id != 2" class="btn btn-success btn-lg my-3" type="button" id="button-addon2">{{'_guardarCalificacion'| translate }}</button><br>
+            <button *ngIf="fechaActividad.estatus_actividad_id != 2" class="btn btn-outline-danger btn-sm">{{'pedirCorreccion' | translate}}</button>
+          </div>
+          
+  
+        </div>
+    </div>      
+  </div> -->
+  <div class="row">
+      <div *ngIf="fechaActividad" class="col-12">
+        <div class="container">
+          <div class="form-check form-check-inline mb-3">
+            <input (change)="mostrar($event)" class="form-check-input" type="checkbox" id="mostrar_instrucciones" value="">
+            <label class="form-check-label" for="mostrar_instrucciones">Mostrar instrucciones</label>
+          </div>
+
+          <app-contenido *ngIf="mostrarInstruccion" [actividad]="actividad"></app-contenido>
+
+          <app-actividad 
+            *ngIf="finalizaCarga && actividad.tipo_actividad_id == 2 || finalizaCarga && actividad.tipo_actividad_id == 4" 
+            (actividadEnviada)="refrescaHeader($event)"
+            [actividad]="actividad" [fechaActividad]="fechaActividad" [edicion]="0" [idAlumno]="idAlumno"></app-actividad>
+
+          <portafolio-evidencias *ngIf="finalizaCarga && actividad.tipo_actividad_id == 3"  
+            [idActividad]="actividad.actividad_id" 
+            [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id" 
+            [edicion]="0" [fechaActividad]="fechaActividad"
+            (RespuestasAlumno)="getRespuestasAlumno($event)"></portafolio-evidencias>          
+        </div>
+      </div>
+
+  <ng-template #contentModalRetro let-c="close" let-d="dismiss">
+      <div class="modal-body">
+          <div class="row">
+              <div class="col">
+                  <retroalimentacion *ngIf="verRetro"  [idActividad]="actividad.actividad_id" [idMateria]="idMateria" [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id"></retroalimentacion>
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+      </div>
+  </ng-template>
+
+  
+
+<ng-template #contentModalC let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4>Solicitud de corrección</h4>
+  </div>
+  <div class="modal-body">
+      <div class="row">
+          <div class="col">
+              <app-correccion [tipo]="5" [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id" (correccionSuccess)="correccionCorrecta($event);c('Close click')"></app-correccion>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+  </div>
+</ng-template>
+
+<ng-template #contentModalI let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4>Solicitud de Invalidacion</h4>
+  </div>
+  <div class="modal-body">
+      <div class="row">
+          <div class="col">
+              <app-correccion [tipo]="6" [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id" (invalidacionSuccess)="invalidacionCorrecta($event);c('Close click')"></app-correccion>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+  </div>
+</ng-template>
+
+<ng-template #contentModalCP let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4>Calculadora de Promedios</h4>
+    </div>
+    <div class="modal-body">
+        <app-calculadora-promedios *ngIf="verCalculadora" [idMateria]="idMateria"></app-calculadora-promedios>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+    </div>
+</ng-template>
+<ng-template #contentModalEquipo let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4>Equipos</h4>
+  </div>
+  <div class="modal-body">
+    <app-equipo></app-equipo>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+  </div>
+</ng-template>
+<ng-template #contentModalRubrica let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4>Calificar por rúbrica</h4>
+  </div>
+  <div class="modal-body">
+    <app-rubrica [idRubrica]="actividad.rubrica_id" [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id"  (setTotal)="porcentajeRubrica($event)"></app-rubrica>  
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+  </div>
+</ng-template>
+</div>
+<!--Scroll to top-->
+<button [ngClass]="{'show-scroll': showScroll}" (click)="scrollToTop()" class="buttons scroll-to-top">
+    <i class="fa fa-chevron-up" aria-hidden="true"></i>
+</button>
+
+</div>
+
+     
+
+
+
+     

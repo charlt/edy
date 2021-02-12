@@ -1,0 +1,219 @@
+
+<div class="container" *ngIf="pasoActual <= 1 && idRol != 1">
+  <div class="alert alert-danger text-center" role="alert">
+    Para continuar, debes terminar el bloque anterior.
+  </div>
+</div>
+<div class="container" *ngIf="pasoActual > 1 || idRol == 1">
+  <div class="row">
+    <div class="col">
+      <h4>{{title}}</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+        <div class="alert alert-warning">
+            <strong>¡Importante!</strong>
+          </div>
+          <p>
+            Deberás escanear cada uno de los documentos solicitados
+          </p>
+          <ul>
+            <li type="disc">En caso de que el documento contenga dos o más caras, se deberán unir en <b>un sólo archivo</b> <a href="javascript:void(0)" (click)="open(content)" style="color: royalblue;">[ver tutorial]</a>.</li>
+            <li type="disc">En caso de que los documentos requeridos se encuentren en trámite, deberas presentar la constancia del trámite y  <b>una carta compromiso</b>, cuyo formato podrá ser descargado en el siguiente icono</li>
+          </ul>
+          <div class="row  text-center mb-3">
+            <!--div class="col-md-6">
+              <a href="assets/layout/inscripcion/cartacompromiso.pdf" download="Carta compromiso" target="_blank">                
+                <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i><br>
+                Formato de carta compromiso
+              </a>
+                
+            </div-->
+            <div class="col-md-6">
+              <a href="javascript:void(0)" (click)="open(content)">                
+                <i class="fa fa-lightbulb-o fa-2x" aria-hidden="true"></i><br> Ver tutorial para unir archivos
+              </a>
+            </div>
+          </div>
+
+        
+    </div>
+    <div class="col-md-4">
+      <div class="col-md-12">
+          <div class="alert alert-danger">
+              <strong>Cuida que tus escaneos No contengan estos errores!</strong> 
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+            <a href="assets/images/inscripcion/TITULO.jpg" target="_blank">  
+            <img src="assets/images/inscripcion/TITULO.jpg" width="140px" height="50%"></a>
+            <a href="assets/images/inscripcion/ACTA_DE_NACIMIENTO.jpg" target="_blank">  
+              <img src="assets/images/inscripcion/ACTA_DE_NACIMIENTO.jpg" width="140px" height="50%"></a>
+        </div>
+          <div class="col-md-6">
+              <a href="assets/images/inscripcion/ACTA_DE_NACIMIENTO2.png" target="_blank">  
+                <img src="assets/images/inscripcion/ACTA_DE_NACIMIENTO2.png" width="140px" height="50%"></a>
+                <a href="assets/images/inscripcion/CERTIFICADO.jpg" target="_blank">  
+                  <img src="assets/images/inscripcion/CERTIFICADO.jpg" width="140px" height="50%"></a>
+          </div>
+        </div>
+        
+    </div>
+  </div>
+  <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header" style="background-color: #002144;color: white;">
+          <h4 class="modal-title">Cómo unir imágenes en un solo archivo          </h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+
+          <div class="col-12">
+            <p>Selecciona cualquiera de las siguientes opciones:</p>
+          </div>
+          <div class="col-6 text-center">
+            <button class="btn btn-info" (click)="tipoTutorial=1">Unir imágenes con Office Word 2010</button>
+          </div>
+          <div class="col-6 text-center">
+            <button class="btn btn-info" (click)="tipoTutorial=2">Unir imágenes con  Adobe PDF</button>            
+          </div>
+        </div>
+        <div *ngIf="tipoTutorial == 1" class="row mt-3">
+          <div class="col">
+            <h4>Unir imágenes con Office Word 2010</h4>
+          <ngb-carousel >
+            <ng-template ngbSlide *ngFor="let imagen of [].constructor(15); let i = index;">
+              <div class="picsum-img-wrapper">
+                <img src="assets/images/inscripcion/tutorial/Paso {{i+1}}_Inscripcion.jpg" style="width: 100%;" alt="Random first slide">
+              </div>
+            </ng-template>
+          </ngb-carousel>
+          </div>
+        </div>
+        <div *ngIf="tipoTutorial == 2" class="row mt-3">
+          <div class="col">
+            <h4>Unir imágenes con  Adobe PDF</h4>
+          <ngb-carousel >
+            <ng-template ngbSlide *ngFor="let imagen of [].constructor(4); let i = index">
+              <div class="picsum-img-wrapper">
+                <img src="assets/images/inscripcion/tutorial/Paso {{i+1}}_Inscripcion_2opcion.jpg" style="width: 100%;" alt="Random first slide">
+              </div>
+            </ng-template>
+          </ngb-carousel>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+      </div>
+  </ng-template>
+
+<div class="row" *ngIf="bandera">
+  <div class="col-12 mt-2" >
+    <div class="row" *ngIf="idRol == 1">
+      <div class="col-6">
+        <button class="btn btn-primary" [routerLink]="[urlRedirect + aspiranteId]">
+          <i class="fa fa-ticket" aria-hidden="true"></i> Enviar notificación</button>
+      </div>
+      <div class="col-6">
+        <button *ngIf="idRolUsuario == 4" class="btn btn-success pull-right" (click)="enviaCorreo()" [disabled]="btnCorreo">
+          <span *ngIf="!btnCorreo"><i class="fa fa-check" aria-hidden="true"></i> Enviar correo</span>
+          <span *ngIf="btnCorreo"><i class="fa fa-spinner fa-pulse"></i> Enviando correo</span>
+        </button>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <span (click)="setEtiqueta(0, undefined)" class="badge mr-1 p-2" 
+          [ngClass]="filtroEtiqueta == 0? 'badge-success': 'badge-secondary'" style="cursor: pointer;">Todos</span>
+        <span placement="top" ngbTooltip="{{etiqueta.descripcion}}" (click)="setEtiqueta(etiqueta.id_etiqueta, i)" *ngFor="let etiqueta of Etiquetas; let i = index" class="badge mr-1 p-2" 
+          [ngClass]="etiqueta.activa? 'badge-success': 'badge-secondary'" style="cursor: pointer;">{{etiqueta.nombre}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 mt-3">
+    <div class="table-responsive">
+      <form [formGroup]="archivoForm" *ngIf="archivoForm">
+        <table class="table border border-right-0 border-left-0">
+          <thead class="bg-light">
+            <tr>
+              <th style="width:30%">Documento</th>
+              <th>Estado</th>
+              <th>Subir archivo</th>
+            </tr>
+          </thead>
+          <div formArrayName="archivos" style="display: table-row-group;">
+            <div [formGroupName]="i" *ngFor="let archivo of archivoForm.get('archivos').controls; let i = index" 
+               [ngClass]="[Documentos[i].estado_documento_id == '2'? 'enviado' : '',
+               Documentos[i].estado_documento_id == '3'? 'verificado' : '', Documentos[i].estado_documento_id == '6'? 'correccion' : '' ]" 
+               style="display: table-row;">
+                <td  style="width:30%">
+                  <b><span *ngIf="Documentos[i].obligatorio == '1'"> * </span>{{Documentos[i].nombre_documento}}</b><br>
+                  <small>{{Documentos[i].documento_desc}}</small>
+                  <br>
+                  <span class="badge badge-success mt-2 mr-1 p-2" *ngIf="idEtiqueta != undefined">{{Etiquetas[idEtiqueta].nombre}}</span>
+                </td>
+
+                <td class="align-middle">
+                  <select name="select_estado" formControlName="estado" class="form-control">
+                    <option value="" selected disabled hidden>Selecciona una opción</option>
+                    <option [value]="estado.estado_documento_id" *ngFor="let estado of estadoDocumento; let j = index;">
+                      {{estado.nombre_documento}}
+                    </option>
+                  </select>
+                  <textarea formControlName="correccion" *ngIf="Documentos[i].estado_documento_id == '6' 
+                    && archivo.controls.correccion" class="form-control mt-1"></textarea>
+                  <button (click)="guardarCorreccion(i)" type="button" *ngIf="Documentos[i].estado_documento_id == '6' && idRol == 1" class="btn btn-success pull-right btn-sm mt-2"
+                    [disabled]="(archivo.controls.correccion && archivo.controls.correccion.invalid) || disabledBtn1[i]">Guardar</button>
+                </td>
+                
+                <td class="align-middle">
+                  <div *ngIf="(Documentos[i].estado_documento_id == null || Documentos[i].estado_documento_id == '6' ||
+                    (Documentos[i].estado_documento_id == '4' && idRol != 1))">
+                    <app-file-upload (change)="verificarDocumento(i)" formControlName="file"></app-file-upload>
+                    <small *ngIf="archivo.controls.file.invalid && archivo.controls.touched.value == true" class="text-danger">Tipo de documento inválido</small>
+                    <button [disabled]="archivo.controls.file.invalid || disabledBtn[i]" (click)="guardarArchivo(i)" type="button" class="btn btn-success btn-sm pull-right mt-2"><i *ngIf="disabledBtn[i]" class="fa fa-spin fa-spinner"></i> Guardar</button>
+                  </div>
+                  <div *ngIf="(Documentos[i].estado_documento_id != null && Documentos[i].estado_documento_id != '6' && Documentos[i].estado_documento_id != '4') || 
+                    (Documentos[i].estado_documento_id == '4' && idRol == 1)" class="form-control pt-0 pb-0 px-2">
+                    <div class="form-row p-0 mt-3">
+                      <div [ngClass]="idRol == 1? 'col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12' : 'col-12'">
+                        <app-archivo *ngIf="Documentos[i].url" [urlBase]="Documentos[i].url"></app-archivo>
+                      </div>
+                      <div *ngIf="idRol == 1" class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 text-center mb-2">
+                        <button (click)="eliminaDocumento(i)" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+            </div>
+          </div>
+          <tr *ngIf="Documentos.length == 0">
+            <td class="text-center" colspan="12">No se encontró información</td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<ng-template #contentDocumentos let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title ml-2"><b>Documentación enviada exitosamente</b></h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body ml-3 mr-3">
+    <p>Se hará la validación de los documentos enviados, una vez completado te enviaremos un  correo indicando el siguiente proceso.</p>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

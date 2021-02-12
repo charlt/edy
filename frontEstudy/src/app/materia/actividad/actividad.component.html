@@ -1,0 +1,59 @@
+
+
+<div class="row" *ngIf="cargando">
+  <div class="col text-center mt-5 p-5">
+    <i class="fa fa-spinner fa-pulse fa-2x fa-fw mb-3"></i>
+    <h5>{{'TiempoEspera' | translate}}</h5>
+  </div>
+</div>
+
+<div class="row" [hidden]="cargando" [appBlockCopyPaste]="{apply: aplicar, id_mfa: fechaActividad['materia_fecha_actividad_id']}">
+    <div class="col-md-12" *ngIf="actividad.preguntas && actividad.preguntas.length && verPregunta">        
+      <div class="row" *ngFor="let pregunta of actividad.preguntas;let i = index">
+        <div class="col mt-3">
+          <app-pregunta *ngIf="actividad.importancia_actividad_id != 2 || (actividad.importancia_actividad_id == 2 && !sinFecha)" id ="{{pregunta.datos_pregunta_id}}"
+          (success)="setSemaforo($event, 1)"
+          [pregunta]="pregunta" 
+          [formatoNumero]="actividad.numero_mostrado"
+          [tipoCalificacion]="actividad.tipo_calificacion"
+          [edicion]="edicion"
+          [fechaActividad]="fechaActividad"
+          [indice]="i"
+          [numeroPreguntas]="preguntasActividad.length"
+          [intentosRestantes]="intentosRestantes"
+          [idAlumno]="idAlumno"
+          ></app-pregunta>
+
+          <div [hidden]="actividad.importancia_actividad_id == 2 && sinFecha">
+            <ng-container [successCharge]="successCharge" (actividadCargada)="cargarActividad($event)"
+              (cargandoArchivo)="cambiarBotonEnviar($event)" 
+              [data]="{ 
+                pregunta: pregunta,
+                idMateriaFechaActividad: fechaActividad.materia_fecha_actividad_id,
+                idEstatusActividad: fechaActividad.estatus_actividad_id,
+              edicion: edicion, intentosRestantes: intentosRestantes, idAlumno: idAlumno }" [appModuleLoad]="pregunta.module_load"></ng-container>
+          </div>
+          <div *ngIf="actividad.importancia_actividad_id == 2 && sinFecha" class="alert alert-secondary text-center">
+            Esta actividad aún no está disponible  (Pendiente de asignar Fecha)
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2" *ngIf="actividad.importancia_actividad_id == 2">
+        <div class="row semaforo">
+          <div class="col-md-4">
+            <div class="circulo" [ngClass]="(semaforo >= 0 && semaforo < 4)? 'green': 'off'"></div>
+            <div class="circulo" [ngClass]="(semaforo >= 4 && semaforo < 8)? 'yellow': 'off'"></div>
+            <div class="circulo" [ngClass]="(semaforo >= 8)? 'red': 'off'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row" [hidden]="cargando">
+  <div class="col-md-12 text-center mt-3">
+    <div class="alert alert-secondary" *ngIf="!preguntasActividad">No se encontró información de la pregunta</div>
+    <button [disabled]="botonTerminar" *ngIf="edicion == 1" class="btn btn-success btn-lg" (click)="finalizarActividad(actividad.tipo_actividad_id)">
+      <i class="fa fa-save"></i> Terminar y enviar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,227 @@
+/* You can add global styles to this file, and also import other style files */
+.form-group{
+    margin-bottom: 0px;
+   }
+.invalidText{
+    color: #dc3545;
+    text-align: left !important;
+}
+.ng-invalid.ng-touched{
+    border-color:  #dc3545; 
+}
+.ng-valid.ng-touched{
+    border-color: green; 
+}
+label{
+    margin-top: 4px;
+    font-weight: 700;
+}
+
+
+
+.credit-card-box {
+    z-index: 1;
+    perspective: 1000;
+    width: 400px;
+    height: 250px;
+    position: relative;
+    top: 10%;
+    // top: -112px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &:hover .flip,
+    &.hover .flip {
+        transform: rotateY(180deg);
+    }
+
+    .front {
+        background: url('src/assets/images/tarjeta_fondo.png');
+        background-size: cover;
+    }
+    .back{
+        background: linear-gradient(135deg, #679dbd, #13528d);
+    }
+    .front,
+    .back {
+        width: 400px;
+        height: 250px;
+        border-radius: 15px;
+        backface-visibility: hidden;
+        background-size: cover;
+        position: absolute;
+        color: #fff;
+        font-family: Inconsolata;
+        top: 0;
+        left: 0;
+        text-shadow: 0 1px 1px hsla(0, 0, 0, 0.3);
+        box-shadow: 0 1px 6px hsla(0, 0, 0, 0.3);
+
+        &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        // background: url('http://cdn.flaticon.com/svg/44/44386.svg') no-repeat center;
+        background-size: cover;
+        opacity: .05;
+        }
+    }
+
+    .flip {
+        transition: 0.6s;
+        transform-style: preserve-3d;
+        position: relative;
+    }
+
+    .logo {
+        position: absolute;
+        top: -8px;
+        right: -5px;
+        width: 50px;
+
+        svg {
+            width: 100%;
+            height: auto;
+            fill: #fff;
+        }
+    }
+
+    .logo_institucion {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .front {
+        z-index: 2;
+        transform: rotateY(0deg);
+    }
+
+    .back {
+        transform: rotateY(180deg);
+
+        .logo {
+            right: 18px;
+            top: 186px;
+        }
+
+    }
+
+    .chip {
+        position: absolute;
+        width: 60px;
+        height: 45px;
+        top: 20px;
+        left: 20px;
+        background: linear-gradient(135deg, hsl(269,54%,87%) 0%,hsl(200,64%,89%) 44%,hsl(18,55%,94%) 100%);;
+        border-radius: 8px;
+
+        &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        border: 4px solid hsla(0, 0, 50, .1);
+        width: 80%;
+        height: 70%;
+        border-radius: 5px;
+        }
+    }
+
+    .strip {
+        background: linear-gradient(135deg, hsl(0, 0, 25%), hsl(0, 0, 10%));
+        position: absolute;
+        width: 100%;
+        height: 50px;
+        top: 30px;
+        left: 0;
+    }
+
+    .number {
+        padding: 0px 0px;
+        width: 100%;
+        height: 40px;
+        font-size: 35px;
+    }
+
+    label {
+        font-size: 10px;
+        letter-spacing: 1px;
+        text-shadow: none;
+        text-transform: uppercase;
+        font-weight: normal;
+        opacity: 0.5;
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    .card-holder,
+    .card-expiration-date {
+        padding: 0px 0px;
+        width: 100%;
+        // top: 180px;
+        // left: 19px;
+        height: 30px;
+        text-transform: capitalize;
+    }
+
+    .card-holder {
+        font-size: 20px;
+    }
+
+    .card-expiration-date {
+        padding-top: 6px;
+        text-align: center;
+        left: auto;
+        right: 16px;
+        font-size: 18px;
+    }
+
+    .ccv {
+        height: 36px;
+        background: #fff;
+        width: 91%;
+        border-radius: 5px;
+        top: 110px;
+        left: 0;
+        right: 0;
+        position: absolute;
+        margin: 0 auto;
+        color: #000;
+        text-align: right;
+        padding: 10px;
+
+        label {
+            margin: -25px 0 14px;
+            color: #fff;
+        }
+    }
+    .data{
+        position: relative;
+        left: 40px;
+        width: 88%;
+        top: 125px;
+    }
+
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    // height: 100px;
+}
+::-webkit-scrollbar-track {
+    background: #f8f9fa; 
+    // border-radius: 7px black;
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(201, 201, 201);  border-radius: 7px; border: 0px solid #f8f9fa; 
+}
+::-webkit-scrollbar-thumb:hover{
+    background: #b8b8b8; 
+}

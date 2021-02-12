@@ -1,0 +1,62 @@
+.centrado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* form starting stylings ------------------------------- */
+.group {
+position: relative;
+margin-bottom: 15px;
+}
+
+.text_1 {
+font-size: 12px;
+padding: 17px 10px 10px 5px;
+display: block;
+width: 100%;
+border: none;
+border-bottom: 1px solid #000;
+background: transparent;
+}
+
+.text_1:focus {
+outline: none;
+}
+
+/* LABEL ======================================= */
+._label {
+    // color: #000;
+    // font-size: 18px;
+    // font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+.text_1 ~ label, .text_1:valid ~ label {
+// .text_1:focus ~ label, .text_1:valid ~ label {
+    top: -7px;
+    font-size: 16px;
+    color: #2c8cb3;
+}
+
+._label-file {
+    top: -7px;
+    font-size: 16px;
+    color: #2c8cb3;
+}
+
+// .permalink_section {
+//     white-space: pre-wrap; /* CSS3 */    
+//     white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+//     white-space: -pre-wrap; /* Opera 4-6 */    
+//     white-space: -o-pre-wrap; /* Opera 7 */    
+//     word-wrap: break-word; /* Internet Explorer 5.5+ */
+// }

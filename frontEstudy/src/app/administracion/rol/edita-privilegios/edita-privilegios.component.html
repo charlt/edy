@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12 privilegiosRol  ">
+      <h4 class="top-buffer">{{title}}</h4>  
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12" >
+      <h4>{{nombreRol}}</h4>
+  </div>    
+</div><br>
+<div class="col-md-12">
+  <div class="row">
+    <div *ngFor="let _privilegio of privilegioTotal; let i = index">
+      <div class="col-md-12"  >   
+        <div  class="list-group "> 
+          <div class="list-group-item active privilegio" (click)="cambiarCheckbox(i)">
+          <input  type="checkbox" class="form-check-input" [value]="_privilegio.status"  [checked]="_privilegio.status">
+          {{_privilegio.privilegio}}<br>    
+          </div>
+            <div *ngFor="let subprivilegio of _privilegio.sub_privilegios; let j = index">
+              <div class="list-group-item subprivilegio" (click)="subPrivilegiosC(i, j)">
+                <input type="checkbox"  [checked]="subprivilegio.status">
+                {{subprivilegio.privilegio}}
+              </div> 
+          </div><br>  
+        </div> 
+      </div> 
+    </div>  
+  </div>
+      <button [hidden]="tipoAdmin == 0" (click)="alert()" class="btn btn-success pull-right">{{'fmSave' | translate}}</button>
+</div>

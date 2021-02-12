@@ -1,0 +1,32 @@
+<div class="row">
+    <form class="col"  [formGroup]="preguntaArrastrableForm" (ngSubmit)="enviarInformacionPregunta()">
+  
+      <div class="container-fluid"  formArrayName="items" *ngFor="let item of preguntaArrastrableForm.get('items')['controls']; let i = index;">
+        <div class="row" [formGroupName]="i">
+          <div class="col-1">
+            <br>
+            <h2 class="mt-2 p-1">{{i + 1}}</h2>
+          </div>
+          <div class="col-10">
+              <label class="control-label" for="tipo_pregunta">{{'textoRespuesta' | translate}}:</label>
+              <input class="form-control" formControlName="reactivo_desc">
+              <span class="invalidText" *ngIf="sf.controls[i].controls.reactivo_desc.invalid && sf.controls[i].controls.reactivo_desc.touched">
+                  {{'fmErrText' | translate}}
+              </span>
+          </div>
+          <div class="col-1">
+              <br>
+              <i *ngIf="i > 0" class="fa fa-times fa-2x mt-2 p-1 cambiaCursor" (click)="eliminarRespuesta(i)"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+            <button (click)="agregarRespuesta()" type="button" class="btn btn-link"><i class="fa fa-plus-square"></i> {{'agregarRespuesta' | translate}}</button>
+        </div>
+        <div class="col-12">
+            <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-success pull-right">{{'guardarTerminar' | translate}}</button>
+        </div>
+      </div>
+    </form>
+  </div>

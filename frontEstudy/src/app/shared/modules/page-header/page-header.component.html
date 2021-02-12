@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-xl-12">
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="javascript:void(0)" (click)="back()"><i class="fa fa-arrow-circle-left"></i></a>
+            </li>
+            <li class="breadcrumb-item">
+                <!-- <i class="fa fa-dashboard"></i> <a [routerLink]="['home']"> Inicio</a> -->
+                <a [routerLink]="['home']"> <i class="fa fa-home"></i></a>
+            </li>
+            <li *ngFor="let bread of breadcum" class="breadcrumb-item">
+                <a *ngIf="bread.route != ''" [routerLink]="[bread.route]" >{{bread.name}}</a>
+                <a *ngIf="bread.route == ''" >{{bread.name}}</a>
+            </li>
+        </ol>
+        <!--h2 *ngIf="breadcum !== undefined" class="page-header">
+                {{breadcum[0].name}}
+            </h2-->
+    </div>
+</div>

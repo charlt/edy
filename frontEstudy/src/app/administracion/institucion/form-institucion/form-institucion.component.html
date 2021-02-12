@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-6">
+    <form [formGroup]="imgForm" (ngSubmit)="enviarImagen()">
+      <div class="form-group">
+        <label class="control-label"> {{'color' | translate}}:</label><br>
+        <input type="color" style="width: 100%" formControlName="color" name="color" />
+      </div>   
+      <div class="form-group">
+
+        <label class="control-label" >{{'imagen' | translate}}:</label>
+        <app-file-upload formControlName="imagen" (change)="preview('imagen',[2048,2048,10485760])"></app-file-upload>
+        <div class="invalid-feedback" style="display: block" >
+          <ng-container *ngIf="hasError( 'imagen', 'required')">{{'fmErrfileRequired' | translate}}</ng-container>
+          <ng-container *ngIf="hasError( 'imagen', 'requiredFileType')">{{'fmErrfileImage' | translate}}</ng-container>
+        </div>
+      </div>                  
+      <button [hidden]="tipoAdmin == 0" [disabled]="btnDisabled" type="submit" class="btn btn-primary pull-right">Guardar información</button>
+    </form>
+  </div>     
+  <div class="col-md-6">
+      <div class="row">
+          <div class="col justify-content-md-center">
+              <label *ngIf="imgURL" >Vista previa</label>
+              <br>
+              <img class="rounded img-fluid" [src]="imgURL"  *ngIf="imgURL" alt="Imagen de perfil">
+          </div>
+        </div>
+  </div>
+</div>

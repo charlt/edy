@@ -1,0 +1,38 @@
+<div class="row p-3 alert" [class.alert-danger]="pregunta.incompleto" *ngIf="pregunta.pregunta_id">
+    <div class="col-md-10 preg">
+        <h5 class="titulo-ejercicio">
+            <b>Pregunta {{formato(indice+1)}}  </b>
+            <small *ngIf="tipoCalificacion != '2'">({{pregunta.ponderacion}} %)</small>
+        </h5>
+        <p [innerHTML]="pregunta.pregunta_html" ></p>
+        <div *ngIf="(pregunta.retroalimentacion && pregunta.retroalimentacion != '0') && edicion == 0 && intentosRestantes == 0" class="alert alert-primary row" role="alert">
+            <div class="col-1"><i class="fa fa-lightbulb-o fa-3x" aria-hidden="true"></i> </div>
+            <p class="col-11">{{pregunta.retroalimentacion}}</p>
+        </div>
+        <app-archivo *ngIf="pregunta.contenido_pregunta && pregunta.contenido_pregunta.contenido" [urlBase]="pregunta.contenido_pregunta.contenido"></app-archivo>
+    </div>
+    <div *ngIf="automatica == 0  && (fechaActividad.estatus_actividad_id == 3 || fechaActividad.estatus_actividad_id == 1 || fechaActividad.estatus_actividad_id == 5) && pregunta.ponderacion != 0 && rol.rol_id == 3 && tipoCalificacion != 2 " class="col-md-2 text-center p-3" >
+        <select class="form-control" [(ngModel)]="pregunta.valor" (change)="guardarCalificacion($event)">
+            <option value="" *ngIf="!pregunta.valor">Selecciona</option>
+            <option *ngFor="let metrica of metricaCalif" value="{{metrica.valor}}">{{metrica.texto}}</option>
+        </select>
+    </div>
+    <div *ngIf="edicion == 0 && (fechaActividad.estatus_actividad_id == 2 || fechaActividad.estatus_actividad_id == 4) && pregunta.calificacion" 
+    class="col-md-2  text-center p-4">
+        <span class="badge cuadro-ponderacion p-2">{{'_calificacion'|translate}}: {{pregunta.calificacion}}</span>
+    </div>
+    <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3"> -->
+
+        <!-- <respuesta-abierta          *ngIf="pregunta.tipo_pregunta_id=='1'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" (actividadCargada)="cargaActividad($event)"></respuesta-abierta>
+        <respuesta-opcion-multiple  *ngIf="pregunta.tipo_pregunta_id=='2'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" [intentosRestantes]="intentosRestantes" (actividadCargada)="cargaActividad($event)"></respuesta-opcion-multiple>
+        <relacion-columnas          *ngIf="pregunta.tipo_pregunta_id=='3'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" [intentosRestantes]="intentosRestantes" (actividadCargada)="cargaActividad($event)"></relacion-columnas>
+        <respuesta-zona-imagenes    *ngIf="pregunta.tipo_pregunta_id=='4'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" [intentosRestantes]="intentosRestantes" (actividadCargada)="cargaActividad($event)"></respuesta-zona-imagenes>
+        <drag-drop                  *ngIf="pregunta.tipo_pregunta_id=='5'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" [intentosRestantes]="intentosRestantes" (actividadCargada)="cargaActividad($event)"></drag-drop>
+        <respuesta-estrategica      *ngIf="pregunta.tipo_pregunta_id=='6'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" (actividadCargada)="cargaActividad($event)"></respuesta-estrategica>
+        <respuesta-diagnostica      *ngIf="pregunta.tipo_pregunta_id=='7'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" (actividadCargada)="cargaActividad($event)"></respuesta-diagnostica>
+        <vinculacion-ideas          *ngIf="pregunta.tipo_pregunta_id=='8'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" [tipo]="1" (actividadCargada)="cargaActividad($event)"></vinculacion-ideas>
+        <vinculacion-ideas          *ngIf="pregunta.tipo_pregunta_id=='9'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"    [edicion]="edicion" [tipo]="2" (actividadCargada)="cargaActividad($event)"></vinculacion-ideas>
+        <app-foro                   *ngIf="pregunta.tipo_pregunta_id=='10'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"   [idAlumno]="idAlumno" [rol]="rol" (actividadCargada)="cargaActividad($event)"></app-foro>
+        <carga-archivos             *ngIf="pregunta.tipo_pregunta_id=='11'" [pregunta]="pregunta" [idMateriaFechaActividad]="idMateriaFechaActividad"   [edicion]="edicion" (actividadCargada)="cargaActividad($event)"></carga-archivos> -->
+    <!-- </div> -->
+</div>

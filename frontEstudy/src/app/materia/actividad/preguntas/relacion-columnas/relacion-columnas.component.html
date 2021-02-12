@@ -1,0 +1,101 @@
+<div class="row container" *ngIf="edicion == 1">
+  <div class="col-12">
+    <div *ngFor="let pregunta of preguntas; let i = index">
+
+    <div class="row padding-answer-line-mapping"  >
+        <div class="col answer-container box-left" (click)="inicio(0,i,1)" [style.borderColor]="pregunta.color_a">
+            <p class="m-1 align-center" [innerHTML]="pregunta.columna_a_desc"></p>
+            <div class="round-pointer-right round-right-{{idPregunta}}"  id="{{ 'pointer-'+idPregunta+'-l-' + i }}" ></div>
+        </div>
+        <div class="col">
+            
+        </div>
+        <div class="col answer-container" (click)="inicio(0,i,2)" [style.borderColor]="pregunta.color_b">
+            <p class="m-1 align-center" [innerHTML]="pregunta.columna_b_desc"></p>
+            <div class="round-pointer-left"  id="{{ 'pointer-'+idPregunta+'-r-' + i  }}" ></div>
+        </div>
+    </div>
+
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="edicion == 1 && preguntas">
+    <div class="col">
+        <button class="btn btn-danger btn-sm" (click)="borrarSeleccion()">Borrar selección</button>
+    </div>  
+</div>
+
+<div class="row" *ngIf="edicion == 0 && respuestas.length > 0">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Pregunta</th>
+                        <th>Respuesta</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let respuesta of respuestas">
+                        <td [innerHtml]="respuesta.pregunta"></td>
+                        <td [innerHtml]="respuesta.respuesta"></td>
+                        <td width="5%" style="text-align: center;">
+                            <i [ngClass]="respuesta.class? 'fa fa-check fa-2x': 'fa fa-times fa-2x'" [ngStyle]="respuesta.style" aria-hidden="true">{{respuesta.icono}}</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="edicion == 0 && respuestas.length == 0">
+    <div class="alert alert-secondary mt-3">No se puede responder la pregunta.</div>
+</div>
+
+<div class="row">
+    <div class="col" *ngIf="!edicion && !intentosRestantes">
+        <button class="btn btn-primary pull-right" (click)="open(content)">Ver respuestas</button>
+    </div>
+</div>
+
+<div class="row" *ngIf="!preguntas">
+    <div class="col-12">
+        <div class="alert alert-danger">No se han cargado reactivos en la pregunta</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+      <ng-template #content>
+        <div class="modal-header">
+          <h4 class="modal-title">Respuestas</h4>
+          <button type="button" class="close" aria-label="Close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Respuesta correcta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let correcta of correctas">
+                            <td>{{correcta.pregunta}}</td>
+                            <td>{{correcta.respuesta}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="close()">Cerrar</button>
+        </div>
+      </ng-template>
+    </div>
+</div>

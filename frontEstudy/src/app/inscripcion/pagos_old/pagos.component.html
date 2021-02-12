@@ -1,0 +1,430 @@
+<div class="container" *ngIf="pasoActual > 3">
+  <div class="alert alert-success text-center" role="alert">
+    <h1><i class="fa fa-check"></i></h1>
+    <h4>Pago realizado exitosamente</h4>
+    <p></p>
+  </div>
+</div>
+<div class="container" *ngIf="pasoActual <= 2">
+  <div class="alert alert-danger text-center" role="alert">
+    Para continuar, debes terminar el bloque anterior.
+  </div>
+</div>
+<div class="container" *ngIf="pasoActual == 3">
+  <div class="row">
+    <div class="col">
+      <h4>{{title}}</h4>
+      <p>Selecciona una opción de pago:</p>
+    </div>
+  </div>
+              <ngb-tabset>
+                  <ngb-tab title="Pago único">
+                      <ng-template ngbTabContent>
+                        <div class="row ">
+
+                          <div class="col-xs-12 col-sm-12 col-md-3 text-center jumbotron  " (click)="pago_tarjeta()" style="cursor: pointer;">
+                            <i class="fa fa-credit-card fa-3x" style="color:#002144" aria-hidden="true"></i>
+                            <a   ><p><b>Pago con tarjeta<br></b>Crédito o débito</p></a>
+                            </div>
+                            <div *ngIf="cubo_tienda==true" class="col-xs-12 col-sm-12 offset-md-1 col-md-3 text-center jumbotron " (click)="pago_tiendac()"  style="cursor: pointer;">
+                              <i class="fa fa-barcode fa-3x" style="color:#002144" aria-hidden="true"></i>
+                              <a><p><b>Pago en efectivo en tienda de conveniencia</b></p></a>
+                            </div>
+                          </div>
+
+                          <div class="row" *ngIf="tarjeta==1">
+                            <div class="col-md-12">
+                              <h3 style="color:#002144;" >Pago con tarjeta<br><small>Crédito o débito</small></h3><hr>
+                              <div class="row">
+                                 
+                                  <div class="col-xs-12 col-sm-12 col-md-5">
+                                    <h4 class="text-center"><b><i class="fa fa-shopping-cart"></i> Datos de la compra:</b></h4>
+                                    <div class="form-group">
+                                      <label for="descripcion_pago">Concepto:</label>
+                                      <input type="text" class="form-control" id="descripcion_pago" [(ngModel)]="nombreCarrera" placeholder="Curso de Gerencia de Campaña del Partido Acción Nacional" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="descripcion_pago">Monto:</label>
+                                      <input type="text" class="form-control" id="descripcion_pago" name="descripcion_pago" placeholder="${{montoPagoUnico}} MXN" disabled>
+                                    </div>
+                                  </div>
+                              
+                            <div class="col-xs-12 col-sm-12 col-md-7">
+                              <form *ngIf="pagoUnico==false"  class="was-validated" action="#" method="POST" id="payment-form" >
+                                <h4 class="text-center"><b><i class="fa fa-credit-card"></i> Datos de la tarjeta:</b></h4>
+                                <input type="hidden" name="token_id" id="token_id">
+                                <div class="form-group">
+                                  <label for="uname">Nombre del titular (como aparece en la tarjeta):</label>
+                                  <input type="text" class="form-control" autocomplete="off" data-openpay-card="holder_name" minlength="5" required>
+                                  <!--<div class="valid-feedback">Correcto.</div>-->
+                                  <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                                </div>
+                                <div class="row">
+                                  
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label for="pwd">Número de la tarjeta</label>
+                                      <input type="text"class="form-control" autocomplete="off" data-openpay-card="card_number" minlength="15" required>
+                                      <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    
+                                    <div class="row">
+                                      <div class="col-md-4">
+                                        <div class="form-group">
+                                          <label for="pwd">Mes expiración</label>
+                                          <input type="text"class="form-control" autocomplete="off"data-openpay-card="expiration_month" minlength="2" maxlength="2" size="2" required>
+                                          <div class="invalid-feedback">Obligatorio.</div>
+                                        </div>                  
+                                      </div>
+                                      <div class="col-md-4">
+                                        <div class="form-group">
+                                          <label for="pwd">Año de expiración</label>
+                                          <input type="text"class="form-control" autocomplete="off"  data-openpay-card="expiration_year" minlength="2" maxlength="2" size="2" required>
+                                          <div class="invalid-feedback">Obligatorio</div>
+                                        </div>                  
+                                      </div>  
+                                      <div class="col-md-4">
+                                        <div class="form-group">
+                                          <label for="pwd">CVV o CVC</label>
+                                          <input type="password"class="form-control" autocomplete="off" data-openpay-card="cvv2" minlength="2" maxlength="4"  required>
+                                          <div class="invalid-feedback">Obligatorio.</div>
+                                        </div>                  
+                                      </div>                  
+                                    </div>
+                      
+                                  </div>            
+                                </div>
+                            
+                                <button type="button" class="btn btn-primary btn-md pull-right" id="pay-button" (click)="realizar_pago()" [disabled]="realizandoPago"><i *ngIf="realizandoPago" class="fa fa-spin fa-spinner"></i> Pagar</button>
+                              </form>
+                              </div>
+                            </div>
+                              <hr>
+                              <div class="row"  *ngIf="pagoUnico==true">
+                                <div class="col-md-12 text-center">
+                                  <i class="fa fa-check fa-3x" style="color:#28a745;"></i><br><br>
+                                  <h3 style="color:#28a745;">Gracias por su pago</h3>
+                      
+                              
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      
+                          <div class="row" *ngIf="tienda==1">
+                            <div class="col-md-12">
+                              <h3 style="color:#002144;" >Pago en tienda de conveniencia</h3><hr>
+                              <div class="row">
+                                 
+                                  <div class="col-md-5">
+                                    <h4 class="text-center"><b><i class="fa fa-shopping-cart"></i> Datos de la compra:</b></h4>
+                                    <div class="form-group">
+                                      <label for="descripcion_pago">Concepto:</label>
+                                      <input type="text" class="form-control" id="descripcion_pago" [(ngModel)]="nombreCarrera" placeholder="Curso de Gerencia de Campaña del Partido Acción Nacional" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="descripcion_pago">Monto:</label>
+                                      <input type="text" class="form-control" id="descripcion_pago" name="descripcion_pago" placeholder="${{montoPagoUnico}} MXN" disabled>
+                                    </div>
+                                    <button type="button" class="btn btn-primary btn-sm btn-block" (click)="open(content)">
+                                      <i class="fa fa-eye" style="color:#FFF" aria-hidden="true"></i> Ver todas las tiendas afiliadas
+                                    </button>  
+                                    <a href="https://www.paynet.com.mx/mapa-tiendas/index.html" class="btn btn-primary btn-sm btn-block" target="_blank"><i class="fa fa-map-marker" style="color:#FFF" aria-hidden="true"></i> Localiza tu punto de pago más cercano</a>
+                                            
+                                  </div>       
+                                <div class="col-xs-12 col-sm-12  col-md-7">
+                                  <h4 class="text-center"><b><i class="fa fa-file-pdf-o"></i> Ficha de pago:</b></h4>
+                                  <p>Instrucciones:</p>
+                                  <div *ngIf="verRecibo==true" class="alert alert-warning">
+                                    <strong>Atención:</strong> Hemos detectado que se ha generado una ficha de pago, para visualizarla favor de dar clic al siguiente botón:
+                                  </div>
+                                  <div *ngIf="generarRecibo==true" class="alert alert-warning">
+                                    <strong>Atención:</strong> Para generar una referencia de pago, favor de dar clic al siguiente botón:
+                                  </div>            
+                                    <button   *ngIf="generarRecibo==true" class="btn btn-danger btn-md pull-right" (click)="generar_recibo()"><i *ngIf="generandoRecibo"  class="fa fa-spin fa-spinner"></i> Generar ficha de pago</button>
+                                    <button  *ngIf="verRecibo==true"  class="btn  btn-success btn-md pull-right" (click)="ver_recibo()">Ver ficha de pago</button>        
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="row"  *ngIf="pagoUnico==true">
+                                <div class="col-md-12 text-center">
+                                  <i class="fa fa-check fa-3x" style="color:#28a745;"></i><br><br>
+                                  <h3 style="color:#28a745;">Gracias por su pago</h3>
+                                </div>
+                              </div>
+                              
+                      
+                      
+                            </div>
+                          </div>
+                      </ng-template>
+                  </ngb-tab>
+                  <ngb-tab>
+                      <ng-template ngbTabTitle>Pagos diferidos</ng-template>
+                      <ng-template ngbTabContent>
+                        <div class="row ">
+                          <div class="col-md-3 text-center jumbotron  " (click)="pago_domiciliado()" style="cursor: pointer;" >
+                            <div *ngIf="cubo_domiciliado==true" >
+                              <i class="fa fa-repeat fa-3x" style="color:#002144" aria-hidden="true"></i>
+                              <a  style="cursor: pointer;"><p>Pagos mensuales</p></a>
+                            </div>
+                          </div>
+                          <div class="col-md-9 p-3">
+                            <p>Los pagos diferidos seràn cobrados automaticamente cada mes hasta cubrir la totalidad de la opción seleccionada.</p>
+                              <br>
+                              
+                              <p>En esta modalidad se aceptan únicamente tarjetas de crédito: VISA, Mastercard y American Express</p>
+                              <br>
+                              
+                              <p>Las formas de pago disponibles son:</p>
+                              <ul>
+                                <li>2 pagos de $ 4,640.00</li>
+                                <li>3 pagos $ 3,886.00</li>
+                                <li>4 pagos $ 3,480.00 </li>
+                              </ul>
+                          
+                          </div>
+                         </div> 
+                         
+
+   
+    <div class="row" *ngIf="domiciliado==1">
+      <div class="col-md-12">
+        <h3 style="color:#002144;" >Pagos mensuales</h3><hr>
+        <div class="row">
+           
+            <!--div class="col-xs-12 col-sm-12 col-md-5">
+              <h4 class="text-center"><b><i class="fa fa-shopping-cart"></i> Datos de la compra:</b></h4>
+              <div class="form-group">
+                <label for="descripcion_pago">Concepto:</label>
+                <input type="text" class="form-control" id="descripcion_pago" [(ngModel)]="nombreCarrera" placeholder="Curso de Gerencia de Campaña del Partido Acción Nacional" disabled>
+              </div>
+              <div class="form-group">
+                <label for="descripcion_pago">Monto:</label>
+                <input type="text" class="form-control" id="descripcion_pago" name="descripcion_pago" placeholder="$6,690.00 MXN" disabled>
+              </div>
+            </div-->     
+            
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="row"  *ngIf="domiciliacionExitosa">
+                <div class="col-md-12 text-center">
+                  <i class="fa fa-check fa-3x" style="color:#28a745;"></i><br><br>
+                  <h3 style="color:#28a745;">Gracias por su pago</h3>
+                </div>
+              </div>
+              <form *ngIf="pagoUnico==false && !domiciliacionExitosa"  class="was-validated" action="#" method="POST"  >
+                <h4 class="text-center"><b><i class="fa fa-credit-card"></i> Datos de la tarjeta:</b></h4>
+                <input type="hidden" name="token_id" id="token_id">
+                <div class="form-group">
+                  <label for="uname"><b>Número de pagos a realizar:</b></label>
+                  <select  [(ngModel)]="suscripcion.idTipo" name="idTipo" class="form-control" required>
+                      <option value="">Selecciona una opción</option>
+                      <option value="2">2 pagos de $4,640.00</option>
+                      <option value="3">3 pagos de $3,886.00</option>
+                      <option value="4">4 pagos de $3,480.00</option>
+                    </select>
+      
+                    <div class="invalid-feedback">Por favor, selecciona una opción.</div>
+                </div>
+                <hr>
+                <div class="form-group">
+                  <label for="uname">Nombre del titular (como aparece en la tarjeta):</label>
+                  <input type="text" [(ngModel)]="suscripcion.nombre_tarjeta" #nombre_tarjeta="ngModel"    class="form-control" name="nombre_tarjeta" id="nombre_tajeta" minlength="5" required>
+                  <!--<div class="valid-feedback">Correcto.</div>-->
+                  <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                </div>
+                <div class="row">
+                  
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="pwd">Número de la tarjeta</label>
+                      <input type="text" [(ngModel)]="suscripcion.numero_tarjeta"  #numero_tarjeta="ngModel"   class="form-control" name="numero_tarjeta" id="numero_tarjeta" minlength="15" required>
+                      <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="pwd">Mes expiración</label>
+                          <input type="text" [(ngModel)]="suscripcion.mes_tarjeta"   #mes_tarjeta="ngModel"  class="form-control" name="mes_tarjeta" id="mes_tarjeta" minlength="2" maxlength="2" size="2" required>
+                          <div class="invalid-feedback">Obligatorio.</div>
+                        </div>                  
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="pwd">Año de expiración</label>
+                          <input type="text" [(ngModel)]="suscripcion.anio_tarjeta"  #ano_tarjeta="ngModel"   class="form-control" name="ano_tarjeta" id="ano_tarjeta" minlength="2" maxlength="2" size="2" required>
+                          <div class="invalid-feedback">Obligatorio</div>
+                        </div>                  
+                      </div>  
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="pwd">CVV o CVC</label>
+                          <input type="password" [(ngModel)]="suscripcion.cvv"  #cvv="ngModel"  name="cvv" class="form-control"  maxlength="4"  required>
+                          <div class="invalid-feedback">Obligatorio.</div>
+                        </div>                  
+                      </div>                  
+                    </div>
+      
+                  </div>            
+                </div>
+            
+                <button type="button" class="btn btn-primary btn-md pull-right" id="pay-button" (click)="suscribe_cliente()" [disabled]="realizandoPago"><i *ngIf="realizandoPago" class="fa fa-spin fa-spinner"></i> Pagar</button>
+              </form>
+            </div>
+        
+      </div>
+      </div>
+    </div>
+
+
+
+                      </ng-template>
+                  </ngb-tab>
+              </ngb-tabset>
+  
+</div>
+
+
+  
+
+  <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+          <h5 class="modal-title">Tiendas de conveniencia para pagar</h5>
+
+      </div>
+      <div class="modal-body py-0 px-3">
+				<div class="row text-center">
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+            <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/f-benavides.jpg"><br>
+       
+						<span style="font-size: 0.9rem;">Farmacias Benavides</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $15,000.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/01.jpg"><br>
+						<span style="font-size: 0.9rem;">7-Eleven</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $15,000.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/walmart.png"><br><br>
+						<span style="font-size: 0.9rem;">Walmart</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/02.jpg"><br>
+						<span style="font-size: 0.9rem;">Farmacias del Ahorro</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $20,000.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span><br>
+						<span style="font-size: 0.5rem;">Solo para:</span><br>
+						<span style="font-size: 0.5rem;">Vivaaerobus, Volaris, Tar</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/sams.png"><br><br>
+						<span style="font-size: 0.9rem;">Sam's</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,000.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/Superama.png"><br><br>
+						<span style="font-size: 0.9rem;">Superama</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/aurrera.png"><br><br>
+						<span style="font-size: 0.9rem;">Bodega Aurrera</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/circlek.jpg"><br>
+						<span style="font-size: 0.9rem;">Circle K</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $10,000.00</span><br>
+						<span style="font-size: 0.5rem;">CDMX, Edo. Mexico, Nuevo Léon, Puebla, Queretaro</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/asturiano.jpg"><br>
+						<span style="font-size: 0.9rem;">El Asturiano</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/k.jpg"><br>
+						<span style="font-size: 0.9rem;">K</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $10,000.00</span><br>
+						<span style="font-size: 0.5rem;">Querétaro</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/waldos.jpg"><br>
+						<span style="font-size: 0.9rem;">Waldos</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $5,000.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/17.jpg"><br>
+						<span style="font-size: 0.9rem;">Alsuper</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Chihuahua, Coahuila, Durango</span>
+					</div>
+
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/04.jpg"><br><br>
+						<span style="font-size: 0.9rem;">Extra</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $10,000.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/10.jpg"><br><br>
+						<span style="font-size: 0.9rem;">Kiosko</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Colima, Jalisco, Nayarit, Sinaloa</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/guadalajara.jpg"><br><br><br>
+						<span style="font-size: 0.9rem;">Farmacias Guadalajara</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span><br>
+						<span style="font-size: 0.5rem;">Solo para:</span><br>
+						<span style="font-size: 0.5rem;">Vivaaerobus, Volaris, Tar</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/gestoPago.jpg"><br><br>
+						<span style="font-size: 0.9rem;">GestoPago</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/aTiendas.jpg"><br><br>
+						<span style="font-size: 0.9rem;">A tiendas</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nuevo Léon, San Luis Potosi, Tamaulipas</span>
+					</div>
+
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/multiRecargas.jpg"><br>
+						<span style="font-size: 0.9rem;">Multi Recargas</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+						<img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/pagoRapido.jpg"><br>
+						<span style="font-size: 0.9rem;">Pago Rapido</span><br>
+						<span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+						<span style="font-size: 0.5rem;">Nivel nacional</span>
+					</div>
+
+				</div>
+			</div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="c('Close click')">Cerrar</button>
+      </div>
+  </ng-template>

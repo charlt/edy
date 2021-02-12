@@ -1,0 +1,78 @@
+<div [@routerTransition]>
+ 
+  <div class="row">
+    <div class="col">
+      <h4>{{title}}</h4>
+    </div>
+  </div>
+
+<div *ngIf="identificador == 1">
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="btn-group pull-right" role="group" aria-label="Basic example">
+        <!--button type="button" class="btn btn-secondary" (click)="reasignarCalif();">Reasignar calificaciónes de actividades</button-->
+        <!-- <button type="button" class="btn btn-secondary">Middle</button>
+        <button type="button" class="btn btn-secondary">Right</button> -->
+      </div>
+      <table class="table table-striped table-bordered">
+        <tr>
+          <th>{{'nmbActividad' | translate}}</th>
+          <th>{{'tbFechaInicio' | translate}}</th>
+          <th>{{'tbFechaFin' | translate}}</th>
+          <th>{{'seriacion' | translate}}</th>
+          <th>{{'ponderacion' | translate}}</th>
+          <th [hidden]="tipoAdmin == 0">{{'guardarCambios' | translate}}</th>
+          <th [hidden]="tipoAdmin == 0">{{'recalcularActividad' | translate}}</th>
+        </tr>
+        <tr *ngFor="let actividad of _actividades; let i= index">
+          <td>{{actividad.actividad_nombre}}</td>
+          <td>
+            <div class="form-group">                               
+              <input [(ngModel)]="actividad.fecha_inicio" class="form-control" id="fechaInicio_{{actividad.actividad_id}}" type="date">
+            </div>
+          </td>
+          <td>
+            <div class="form-group">                               
+              <input name="fechaFin" [(ngModel)]="actividad.fecha_fin" class="form-control" id="fechaCierre_{{actividad.actividad_id}}" type="date">
+            </div>
+          </td>
+          <td>
+            <div class="col">
+              <select class="form-control" id="actividad_vincular" [(ngModel)] ="actividad.actividad_padre_id" >
+                <option hidden value="" disabled >{{'fmOptSelect' | translate}}</option>
+                <option *ngFor="let _actividad of catalogoPadre(_actividades, actividad.actividad_id)" value="{{_actividad.actividad_id}}" >{{_actividad.actividad_nombre}}</option>
+                <option value="null" class="desvincular"><strong>{{'desvActividad' | translate}}</strong></option>
+              </select>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">                               
+              <input name="ponderacion" [(ngModel)]="actividad.ponderacion" class="form-control" id="ponderacion_{{actividad.actividad_id}}" type="number">
+            </div>
+          </td>
+          <td class="text-center" [hidden]="tipoAdmin == 0"><button class="btn btn-success" (click)="guardarDatos(actividad)"><i class="fa fa-save"></i></button></td>
+          <td class="text-center" [hidden]="tipoAdmin == 0"><button class="btn btn-warning" (click)="reasignarCalificacionActividad(actividad.actividad_id,actividad.tipo_calificacion)"><i class="fa fa-pencil-square"></i></button></td>
+        </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>{{'SumaPonderacion' | translate}}</th>
+          <th *ngIf="_identificador == 1" class="alert-danger text-center">{{ponderacionTotal}}</th>
+          <th *ngIf="_identificador == 0" class="text-center">{{ponderacionTotal}}</th>
+          <th></th>
+        </tr>
+      </table>  
+    </div>
+  </div> 
+</div>
+<div *ngIf="identificador == 0">
+  <div class="alert alert-danger">
+    <p class="text-center">{{'MsgAsignaturaVacia' | translate}}
+      <br>
+      <a [routerLink]="['/admin/carga/asignatura/'+idAsignatura+'/modulos']" class="btn btn-danger">Crear actividades</a>
+    </p>
+    
+  </div>
+</div>
+</div>

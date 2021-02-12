@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-12">
+    <h4>{{title}}</h4>
+    <div>
+      <a [routerLink]="['../nuevo']" class="btn btn-success m-3"><i class="fa fa-plus"></i> Nuevo plan de pagos</a>
+    </div>
+  </div>
+  <div class="col-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Inscripción / Reinscripción</th>
+          <th scope="col">Día de pago Límite</th>
+          <th scope="col">Colegiatura</th>
+          <th scope="col">Día de pago Límite</th>
+          <th scope="col">Pago fácil / retrasos </th>
+          <th scope="col">Lista de pagos</th>
+          <th scope="col">Editar</th>
+          <th scope="col">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="suscripcion.length == 0">
+          <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+        </tr>
+        <tr *ngFor="let _suscripcion of suscripcion; let i = index">
+          <td>{{_suscripcion.nombre_suscripcion}}</td>
+          <td [innerHTML]="_suscripcion.descripcion_suscripcion"></td>
+          <td>{{_suscripcion.monto_reinscripcion}}</td>          
+          <td>{{_suscripcion.dia_pago_reinscripcion}}</td>          
+          <td>{{_suscripcion.monto_colegiatura}}</td>          
+          <td>{{_suscripcion.dia_pago_colegiatura}}</td>          
+          <td  ><a [routerLink]="['../porcentaje/'+_suscripcion.suscripcion_id]" class="btn btn-success"><i class="fa fa-percent"></i></a></td>
+          <td  ><a [routerLink]="['../generar-pago/'+_suscripcion.suscripcion_id]" class="btn btn-success"><i class="fa fa-money"></i></a></td>
+          <td  ><a [routerLink]="['../edita/'+_suscripcion.suscripcion_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a></td>
+          <td  ><button (click)="eliminar(_suscripcion.suscripcion_id, i)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+        </tr>
+        
+      </tbody>
+    </table>    
+  </div>
+</div>

@@ -1,0 +1,47 @@
+
+<div class="row">
+  <div class="col-md-12">
+    
+    <app-encabezado-persona [idPersona]="1248" 
+    [idRol]="2"></app-encabezado-persona>
+
+  </div>
+  <div class="col-md-12 editar-ciclo"> 
+    <form [formGroup]="alumnoForm" >
+  
+  <!--<div class="col-md-6">              
+    <div class="form-group ">         
+      <label class="control-label" for="">{{'Level' | translate}}:</label>
+      <select  formControlName="nivelCiclo"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmErrSelect' | translate}} </option>
+        <option  [value]="nivelEstudio.nivel_estudios_id" *ngFor="let nivelEstudio of nivelEstudios">{{nivelEstudio.nivel_estudios}}</option>
+      </select>
+    </div>                                           
+  </div>-->
+  <div class="col-md-6">              
+    <div class="form-group">                               
+      <label class="control-label" for="beca">Porcentaje de beca:</label>
+      <input formControlName="porcentajeBeca" class="form-control" id="beca" placeholder="Ingresa un porcentaje de beca" type="text" required>
+      <span class="invalidText" *ngIf="f.porcentajeBeca.invalid && f.porcentajeBeca.touched">
+        {{'fmErrNumber' | translate}}
+      </span>
+    </div>                                                                   
+    <div class="form-group">                               
+      <label class="control-label" for="fecha_inicio"><i class="fa fa-calendar"></i>Días Límite:</label>
+      <input formControlName="diasLimite" class="form-control" id="fecha_inicio" placeholder="Número de días límite para que el alumno pague en la plataforma">
+    </div>                                                                                                
+    <div class="form-group " rel="1">
+      <label class="control-label" for="">Tipo de suscripción:</label>
+      <select  formControlName="tipoSuscripcion"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+      </select>
+      <span class="invalidText" *ngIf="f.tipoSuscripcion.invalid && f.tipoSuscripcion.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div> <br>                                      
+    <button  type="submit" class="btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+    <div class="resultado-datos-ciclo margin-top" ></div>      
+  </div>  
+  </form>
+  </div>
+  </div>

@@ -1,0 +1,90 @@
+<div class="col-md-12 animated slideInUp">
+  <div class="row">
+    <div class="col-md-6">
+      <form [formGroup]="datosForm" (ngSubmit)="enviarDatos()">  
+        <div class="form-group">                               
+          <label class="control-label">{{'nombrePerfil' | translate}}</label>
+          <input formControlName="nombrePerfil" class="form-control" placeholder="{{'nombrePerfil' | translate}}" type="text" required autocomplete="off">
+          <span class="invalidText" *ngIf="fd.nombrePerfil.invalid && fd.nombrePerfil.touched">
+              {{'fmErrName' | translate}}
+          </span>           
+        </div>
+        <div class="form-group">                               
+          <label class="control-label">{{'apPatPerfil' | translate}}</label>
+          <input formControlName="apPatPerfil" class="form-control" placeholder="{{'apPatPerfil' | translate}}" type="text" required autocomplete="off">         
+          <span class="invalidText" *ngIf="fd.apPatPerfil.invalid && fd.apPatPerfil.touched">
+              {{'fmErrText' | translate}}
+          </span>                 
+        </div>    
+        <div class="form-group">                               
+          <label class="control-label">{{'apMatPerfil' | translate}}</label>
+          <input formControlName="apMatPerfil" class="form-control" placeholder="{{'apMatPerfil' | translate}}" type="text" required autocomplete="off">         
+          <span class="invalidText" *ngIf="fd.apMatPerfil.invalid && fd.apMatPerfil.touched">
+              {{'fmErrText' | translate}}
+          </span>                 
+        </div>      
+        <div class="form-group">
+          <label class="control-label">{{'curpPerfil' | translate}}</label>
+          <input  pattern="^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$"
+          type="text"  class="form-control" formControlName="curpPerfil" placeholder="{{'curpPerfil' | translate}}">
+          <span class="invalidText" *ngIf="fd.curpPerfil.invalid && fd.curpPerfil.touched">
+              {{'fmErrCURP' | translate}}
+          </span>                         
+        </div> 
+        <div class="form-group">                               
+            <label class="control-label">Email</label>
+            <input formControlName="email" class="form-control" placeholder="Email" type="text">          
+        </div>
+        <div class="form-group">                               
+          <label class="control-label">Celular</label>
+          <input formControlName="celular" class="form-control" placeholder="Celular" type="text">          
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+      </form><br>
+      <form *ngIf="curriculumFm" [formGroup]="curriculumForm" (ngSubmit)="enviarCurriculum()">
+        <div class="form-group">
+          <label class="control-label">Currículum</label>
+          <app-file-upload formControlName="curriculum"></app-file-upload>
+        </div><br>
+          <button class="btn btn-primary pull-right" type="submit">Enviar currículum</button>
+      </form>
+    </div>
+    <div class="col-md-6"> 
+      <form (ngSubmit)="enviarImagen()">
+        <div class="form-group">                    
+          <label class="h5">{{'fotoPerfil' | translate}}</label><br>
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div *ngIf="usuario" class="row justify-content-md-center col-md-6">
+              <app-logotipo-usuario *ngIf="usuario.nombre && usuario.url_perfil == null " [iniciales]="usuario.nombre" [alto]="120" [ancho]="120" [tamLetra]="72" [color]="color"></app-logotipo-usuario>
+              <img *ngIf="usuario.nombre && usuario.url_perfil !== null " class="rounded img-fluid" [src]="imgURL" alt="Imagen de perfil">
+            </div>
+          </div>
+            <br>
+            <div class="justify-content-center">
+                <ngx-file-drop dropZoneLabel="Arrastra tu imagen aqui" (onFileDrop)="dropped($event)"
+                (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" multiple="false">
+                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector"  accept='image/*'>
+                      Arrastra tu imagen aquí o
+                      <button class="btn btn-light ml-1" type="button" (click)="openFileSelector()"> Selecciona tu imagen aquí</button>
+                    </ng-template>
+                </ngx-file-drop>              
+            </div>
+            <br>           
+            <!-- <input #imagen type="file" formControlName="imgPerfil" accept='image/*' (change)="preview($event, [800,600,10485760], 0)" name="fileToUpload"/><br> -->
+            <!-- <span class="invalidText" *ngIf="f.imgPerfil.invalid && f.imgPerfil.touched">
+                {{'fmErrImage' | translate}}
+            </span>                 -->
+        </div>                     
+        <br>
+        <button [disabled]="btnDisabled" type="submit" class="btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+      </form> 
+      <br><br>
+      
+      <div>
+        <app-password [id_usuario]="id_usuario"></app-password>
+      </div>
+    </div>
+  </div>
+</div>

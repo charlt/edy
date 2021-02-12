@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-6 carreras">
+    <form [formGroup]="carreraForm" (ngSubmit)="enviarInformacion()">
+      <div class="form-group">
+        <label class="control-label" for="clave_carrera">{{'KeyCareer' | translate}}</label>
+        <input formControlName="claveCarrera" class="form-control" id="clave_carrera"
+          placeholder="{{'KeyCareer' | translate}}" type="text" required="">
+        <span class="invalidText" *ngIf="f.claveCarrera.invalid && f.claveCarrera.touched && !repetida">
+          {{'fmErrClave' | translate}}
+        </span>
+        <span class="invalidText" *ngIf="f.claveCarrera.invalid && f.claveCarrera.touched && repetida">
+          Clave ya registrada
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="nombre_carrera">{{'NameCareer' | translate}}</label>
+        <input formControlName="nombreCarrera" class="form-control" id="nombre_carrera"
+          placeholder="{{'NameCareer' | translate}}" type="text" required="">
+        <span class="invalidText" *ngIf="f.nombreCarrera.invalid && f.nombreCarrera.touched">
+          {{'fmErrField' | translate}}
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="nivel_estudios">{{'SelectEducationalLevel' | translate}}</label>
+        <select formControlName="nivelEstudios" class="form-control" id="nivel_estudios">
+          <option [value]="nivelEstudio.nivel_estudios_id" *ngFor="let nivelEstudio of nivelEstudios">
+            {{nivelEstudio.nivel_estudios}}</option>
+          <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+        </select>
+        <span class="invalidText" *ngIf="f.nivelEstudios.invalid && f.nivelEstudios.touched">
+          {{'fmErrSelect' | translate}}
+        </span>
+      </div><br>
+      <button [hidden]="tipoAdmin == 0" [disabled]="carreraForm.invalid" type="submit"
+        class="btn btn-primary pull-right guardar-plan-estudios">{{'fmSave' | translate}}</button>
+      <br>
+    </form>
+  </div>
+</div>

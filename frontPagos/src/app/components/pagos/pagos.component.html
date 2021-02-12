@@ -1,0 +1,215 @@
+<div class="container rounded border mt-5 mb-4 p-5 bg-light" *ngIf="pay == 1 || pay == 2">
+  <div class="row">
+    <div class="col-12 mb-2">
+      <div class="d-flex justify-content-center">
+        <img *ngIf="pay == 1" height="50" [src]="urlImg + 'logo_openpay.png'" alt="Openpay">
+        <img *ngIf="pay == 2" height="80" [src]="urlImg + 'logo_pago_facil.png'" alt="">
+      </div>
+    </div>  
+  </div>
+  <div class="row" *ngIf="!success">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+      <form *ngIf="flag" id="payment-form" [formGroup]="paymentsForm" (ngSubmit)="sendData()"
+      [ngClass]="show? 'active fondo-light': ''" class="form">
+      <div class="row">
+        <div class="col-xl-7 col-lg-8 col-md-7 col-sm-8 col-8">
+          <h4 class="mt-5"><b><i class="fa fa-credit-card"></i> Datos de la tarjeta:</b></h4>
+        </div>
+        <div class="col-xl-5 col-lg-4 col-md-5 col-sm-4 col-4">
+          <div class="form-group mt-3">
+            <label class="control-label" for="disabledInput">Total a pagar:</label>
+            <input *ngIf="!monto" formControlName="monto" type="number" class="form-control form-control-sm bg-white" id="disabledInput">
+            <input *ngIf="monto" type="text" class="form-control form-control-sm bg-white" id="disabledInput" placeholder="${{monto}}" disabled>
+          </div>
+        </div>
+      </div>
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-8 col-sm-12 col-12">
+            <div class="form-group my-0 py-0">
+              <label for="uname">Nombre del titular</label>
+              <input formControlName="name" type="text" class="form-control" autocomplete="off" data-openpay-card="holder_name" minlength="5">
+              <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+            </div>
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-8 col-sm-12 col-12">
+            <div class="form-group my-0 py-0">
+              <label for="uname">Apellidos del titular</label>
+              <input formControlName="last_name" type="text" class="form-control" autocomplete="off" data-openpay-card="holder_name" minlength="5">
+              <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+            </div>
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-4 col-sm-12 col-12">
+            <div class="form-group my-0 py-0">
+              <label for="pwd">Número de la tarjeta</label>
+              <input formControlName="card" type="text" class="form-control" autocomplete="off" data-openpay-card="card_number" minlength="15" maxlength="19">
+              <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+            </div>
+          </div>
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                <div class="form-group my-0 py-0">
+                  <label for="pwd">Mes expiración</label>
+                  <select class="form-control" formControlName="month">
+                    <option value="" hidden disabled selected>Mes</option>
+                    <option [value]="i+1" *ngFor="let mes of [].constructor(12); let i = index">{{i+1}}</option>
+                  </select>
+                  <!-- <input formControlName="month" type="number" class="form-control" autocomplete="off" data-openpay-card="expiration_month" minlength="2" maxlength="2" size="2"> -->
+                  <div class="invalid-feedback">Obligatorio.</div>
+                </div>                  
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                <div class="form-group my-0 py-0">
+                  <label for="pwd">Año expiración</label>
+                  <select class="form-control" formControlName="year">
+                    <option value="" hidden disabled selected>Año</option>
+                    <option [value]="i+20" *ngFor="let year of [].constructor(10); let i = index">20{{i+20}}</option>
+                  </select>
+                  <!-- <input formControlName="year" type="number" class="form-control" autocomplete="off"  data-openpay-card="expiration_year" minlength="2" maxlength="2" size="2"> -->
+                  <div class="invalid-feedback">Obligatorio</div>
+                </div>                  
+              </div>  
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                <div class="form-group my-0 py-0">
+                  <label for="pwd">CVV o CVC</label>
+                  <input (blur)="cvvHover = false" (focus)="cvvHover = true" formControlName="cvv" 
+                    type="text" class="form-control" autocomplete="off" data-openpay-card="cvv2" minlength="2" maxlength="4">
+                  <div class="invalid-feedback">Obligatorio.</div>
+                </div>                  
+              </div>                  
+            </div>
+          </div>  
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="form-group my-0 py-0">
+                  <label for="pwd">Correo</label>
+                  <input formControlName="email" type="email" class="form-control">
+                  <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                </div>
+              </div>  
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="form-group my-0 py-0">
+                  <label for="pwd">Celular</label>
+                  <input formControlName="phone_number" type="number" class="form-control">
+                  <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                </div>
+              </div>
+            </div> 
+          </div>        
+        </div>
+        <button type="submit" class="btn btn-success btn-block mt-3" [disabled]="paymentsForm.invalid || loading || success">
+          <i *ngIf="loading" class="fa fa-spinner fa-pulse"></i>
+          <span class="h5"> {{button}}</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+      <div class="credit-card-box" [ngClass]="cvvHover? 'hover' : ''">
+        <div class="flip">
+          <div class="front">
+            <!-- <div class="chip"></div> -->
+            <div class="row data">
+              <div class="col-12 m-0 p-0">
+                <div class="number"><span>{{card}}</span></div>
+              </div>
+            </div>
+            <div class="row data">
+              <div class="col-12 m-0 p-0">
+                <div class="card-expiration-date">
+                  <span *ngIf="paymentsForm && pF.month.value >= 10">{{pF.month.value}}</span>
+                  <span *ngIf="paymentsForm && pF.month.value && pF.month.value < 10">0{{pF.month.value}}</span>
+                  <span *ngIf="pF.month.valid"><b>/</b></span>
+                  <span *ngIf="paymentsForm">{{pF.year.value}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row data">
+              <div class="col-10 m-0 p-0">
+                <div class="card-holder text-truncate"><span *ngIf="paymentsForm">{{pF.name.value}} {{pF.last_name.value}}</span></div>
+              </div>
+              <div class="col-2 m-0 p-0">
+                <div class="logo pull-right">
+                  <svg *ngIf="typeCard == 'visa'" version="1.1" id="visa" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  width="47.834px" height="47.834px" viewBox="0 0 47.834 47.834" style="enable-background:new 0 0 47.834 47.834;">
+                    <g><g><path [attr.d]="visa"/></g></g>
+                  </svg>
+                  <svg *ngIf="typeCard == 'mastercard'" width="47.834px" height="47.834px" viewBox="0 0 200 155.58" version="1.1" xmlns="http://www.w3.org/2000/svg" 
+                        xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                        x="0px" y="0px" style="enable-background:new 0 0 47.834 47.834;">
+                        
+                    <g transform="translate(1565.7 -1106.8)">
+                      <g transform="matrix(3.1437 0 0 3.1437 -4835.7 -1027.6)">
+                        <g transform="matrix(1.25 0 0 -1.25 1102.5 727.74)"><path [attr.d]="mastercard.letters" fill="#fff"/></g>
+                        <g transform="matrix(1.25 0 0 -1.25 1103.2 710.77)"><path [attr.d]="mastercard.other" fill="#f79410"/></g>
+                        <path [attr.d]="mastercard.orange" fill="#ff5f00"/>
+                        <g transform="matrix(1.25 0 0 -1.25 1064.5 698.59)"><path [attr.d]="mastercard.red" fill="#eb001b"/></g>
+                        <g transform="matrix(1.25 0 0 -1.25 1103.8 698.59)"><path [attr.d]="mastercard.yellow" fill="#f79e1b"/></g>
+                      </g>
+                    </g>
+                  </svg>            
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="back">
+            <div class="strip"></div>
+            <div class="logo">
+              <svg *ngIf="typeCard == 'visa'" version="1.1" id="visa" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  width="47.834px" height="47.834px" viewBox="0 0 47.834 47.834" style="enable-background:new 0 0 47.834 47.834;">
+                <g><g><path [attr.d]="visa"/></g></g>
+              </svg>
+              <svg *ngIf="typeCard == 'mastercard'" width="47.834px" height="47.834px" viewBox="0 0 200 155.58" version="1.1" xmlns="http://www.w3.org/2000/svg" 
+                    xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                    x="0px" y="0px" style="enable-background:new 0 0 47.834 47.834;">
+                    
+                <g transform="translate(1565.7 -1106.8)">
+                  <g transform="matrix(3.1437 0 0 3.1437 -4835.7 -1027.6)">
+                    <g transform="matrix(1.25 0 0 -1.25 1102.5 727.74)"><path [attr.d]="mastercard.letters" fill="#fff"/></g>
+                    <g transform="matrix(1.25 0 0 -1.25 1103.2 710.77)"><path [attr.d]="mastercard.other" fill="#f79410"/></g>
+                    <path [attr.d]="mastercard.orange" fill="#ff5f00"/>
+                    <g transform="matrix(1.25 0 0 -1.25 1064.5 698.59)"><path [attr.d]="mastercard.red" fill="#eb001b"/></g>
+                    <g transform="matrix(1.25 0 0 -1.25 1103.8 698.59)"><path [attr.d]="mastercard.yellow" fill="#f79e1b"/></g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <div class="ccv">
+              <label>CVV</label>
+              <div>
+                <span *ngIf="paymentsForm" class="h5">{{pF.cvv.value}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 ">
+      <div class="alert alert-danger mt-2" *ngIf="pay == 1 && errOpenpay">{{errOpenpay}}</div>
+
+      <div class="alert alert-danger mt-2" *ngIf="pay == 2 && errPagoFacil">
+        {{errPagoFacil}}
+        <ul>
+          <li *ngFor="let error of listErrorPF">{{error}}</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row" *ngIf="success">
+    <div class="col-12 mt-4">
+      <div class="alert alert-success text-center">
+        <p class="h3"> {{button}}</p>
+        <p class="h5" *ngIf="pay == 1">No de transacción: {{DataPF}}</p>
+        <p class="h5" *ngIf="pay == 2">No de transacción: {{DataPF['idTransaccion']}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

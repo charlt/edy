@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h4>{{title}}</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngIf="!(materias && materias.length)"class="col-md-12 alert alert-info">
+      La materia aún no ha sido terminada, si ya terminaste tu materia no te preocupes, se esta haciendo el proceso para que tengas muy pronto tu diploma
+    </div>
+    <div class="col-md-4" *ngFor="let materia of materias; let i = index">
+        <div class="row card-materia" (click)="abreDiploma(materia.materia_id, i);">
+          <div class="col-md-12 card imgs" [ngStyle]="{'background-image': 'url('+urlImg[i]+')'}" style="background-position: center;">
+              <p class=text-materias>{{materia.asignatura}}</p>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

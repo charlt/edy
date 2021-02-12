@@ -1,0 +1,42 @@
+<div class="list-group"  >
+  <div class="list-group-item">
+    <h4>{{title}} </h4>
+    <ngb-tabset #t="ngbTabset">
+      <ngb-tab  title="{{'DatosPrincipal' | translate }}" >
+          <ng-template ngbTabContent>
+              <form-datos-pregunta  *ngIf="tokenDatosPregunta"
+              [actividad]="actividad"
+              [idActividad]="idActividad"
+              [datosPregunta]="datosPregunta"
+              (sucessEvent)="siguientePregunta($event)">
+            </form-datos-pregunta>
+          </ng-template>
+      </ngb-tab>
+      <ngb-tab  id="tab-pregunta2" title="{{'DatosContenido' | translate }}" [disabled]="!idDatosPregunta" >
+        <ng-template ngbTabContent>
+            <form-pregunta *ngIf="tokenDatosPregunta"
+            [datosPregunta]="datosPregunta" 
+            (sucessEvent)="finalizarGuardado($event)" ></form-pregunta>
+        </ng-template>
+      </ngb-tab>    
+      
+      <ngb-tab  id="tab-pregunta3" title="{{'DatosEspecifico' | translate }}" [disabled]="!idDatosPregunta || !idPregunta"  >
+          <ng-template ngbTabContent>
+              <div *ngIf="datosPregunta && datosPregunta.reactivos == '0'" class="row">
+                <div class="col">
+                  <br>
+                  <h4 class="text-center">Este tipo de pregunta no tiene reactivos.</h4>
+                  <br>
+                </div>
+              </div>
+              <form-multiple  [idActividad]="idActividad"  [idPregunta]="idPregunta" *ngIf="idTipoPregunta == 2" (successEvent)="reactivosGuardados($event)"></form-multiple>
+              <form-relacion [idPregunta]="idPregunta" *ngIf="idTipoPregunta == 3" (successEvent)="reactivosGuardados($event)"></form-relacion>
+              <form-zona-imagenes [idPregunta]="idPregunta" *ngIf="idTipoPregunta == 4" (successEvent)="reactivosGuardados($event)"></form-zona-imagenes>
+              <form-arrastable [idPregunta]="idPregunta" *ngIf="idTipoPregunta == 5" (successEvent)="reactivosGuardados($event)"></form-arrastable>
+
+          </ng-template>
+      </ngb-tab>
+
+    </ngb-tabset>
+    </div>
+</div>

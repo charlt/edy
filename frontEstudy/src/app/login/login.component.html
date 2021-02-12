@@ -1,0 +1,87 @@
+<div class="contenido" id="particles-js"></div><!-- /.particles div -->
+<div class="login-page" [@routerTransition]>
+    
+    <div class="row col-md-12 justify-content-md-end">
+        <div class="col-md-5 formulario mt-5">
+            <form *ngIf="vLoginForm" [formGroup]="loginForm"    (ngSubmit)="logUser()">
+               <img class="logo" [src]="universidad.logo" width="150px"/>
+                <h1>Ingreso a la plataforma</h1>
+                <div *ngIf="invalidUser" class="alert alert-danger">
+                    {{invalidMsg}}
+                </div>
+                <div class="form-content">
+                    <!-- <div class="row justify-content-md-center" *ngIf="imgUrl">
+                        <img class="rounded-circle" [src]="imgUrl" width="150px" height="150px" alt="Imagen de perfil">
+                    </div>                      -->
+                    <div class="form-group">
+                        <input formControlName="usuario"   type="text" class="form-control input-underline input-lg" placeholder="{{ 'User' | translate }}">
+                    </div>
+                    <span class="invalidText" *ngIf="f.usuario.invalid && f.usuario.touched">
+                            {{'fmIncorrectUser' | translate}}
+                        </span>
+
+                    <div class="form-group">
+                        <input  formControlName="password" type="password" class="form-control input-underline input-lg"  placeholder="{{ 'Password' | translate }}">
+                    </div>
+                    <span class="invalidText" *ngIf="f.password.invalid && f.password.touched">
+                        {{'fmIncorrectPass' | translate}}
+                    </span>
+                </div>
+                <button [disabled]="loginForm.invalid || loadingLogin" type="submit" class="btn-primary btn-lg btn-block">     <!--class="btn_green btn-primary btn-lg btn-block"-->
+                    <i *ngIf="loadingLogin" class="fa fa-spin fa-spinner"></i>
+                    {{ 'Log in' | translate }}</button>
+            </form>
+
+            <form  *ngIf="vLoginRolForm" [formGroup]="loginRolForm"  (ngSubmit)="logRol()"  >
+                <h1>{{'Welcome' | translate }} {{nombre}}</h1>
+                <div class="form-content">
+                    <div class="row justify-content-md-center" *ngIf="imgUrl">
+                        <img class="rounded-circle" [src]="imgUrl" width="150px" height="150px" alt="Imagen de perfil">
+                    </div>
+                    <div class="row justify-content-md-center" *ngIf="!imgUrl">
+                        <app-logotipo-usuario [iniciales]="nombre" [alto]="120" [ancho]="120" [tamLetra]="72" [color]="color"></app-logotipo-usuario>
+                    </div>                     
+                    <div class="form-group">
+                        <select formControlName="rolInstitucion"  class="form-control input-underline input-lg" >
+                            <option hidden value="" disabled  selected>{{'fmSelectrol' | translate}}</option>
+                            <option [value]="i" *ngFor="let rol of roles;let i = index">{{rol.rol}} {{rol.institucion}}</option>
+                      
+                        </select>
+                    </div>
+                    <span class="invalidText" *ngIf="f1.rolInstitucion.invalid && f1.rolInstitucion.touched">
+                            {{'fmErrSelect' | translate}}
+                    </span>
+
+                </div>
+                <button  [disabled]="loginRolForm.invalid" type="submit" class="btn btn-primary btn-lg btn-block"  >{{ 'Log in' | translate }}</button>
+
+            </form>
+            <p class="mb-0">¿No tienes cuenta? <a [routerLink]="['/registro-alumno']">¡Regístrate aquí!</a></p>
+                <!-- &nbsp; -->
+                
+            <!-- <a class="btn rounded-btn" [routerLink]="['/signup']">{{ 'Register' | translate }}</a> -->
+            <p><button class="btn btn-link" (click)="open(content)">Recuperar contraseña</button></p>
+        </div>
+    </div>
+    <div class="footer">
+        Plataforma desarrollada por: <br>
+            <a href="https://estudy.com.mx/web/">
+            <strong class="strong"> © e-Study | Red Educativa Virtual de México</strong>
+        </a>
+    </div>
+</div>
+
+<ng-template #content>
+    <div class="modal-header">
+        <h4 class="modal-title">Recuperar contraseña</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <reset-pass [step]="0"></reset-pass>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">Cerrar</button>
+    </div>
+</ng-template>

@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <button class="btn btn-success" (click)="openModal(content, '1')"><i class="fa fa-plus"></i> Nueva clase</button>
+    <hr>
+    <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="thead-gray">
+        <tr>
+          <th class="text-center">#</th>
+          <th class="static tamT" scope="col">Nombre</th>
+          <th class="tituloActividad first-col">Matricula</th>
+          <th style="text-align: center;" *ngFor="let clase of clases; let i = index"><span class="texto"><a href="javascript:void(0)" (click)="consultaEsp(clase.clase_id)"><i class="fa fa-pencil font" aria-hidden="true" ></i></a> {{clase.fecha_clase | date: "dd/MM/yyyy"}}</span></th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let _alumno of alumnos; let j = index">
+          <td class="text-center align-middle">{{j + 1}}</td>
+          <td class="align-middle static tam">
+            {{_alumno.primer_apellido}}
+            {{_alumno.segundo_apellido}}
+            {{_alumno.nombre}}
+          </td>
+          <td class="text-right align-middle">{{_alumno.clave_alumno}}</td>
+          <td *ngFor="let clase of clases; let i = index">
+            <div style="display: flex; justify-content: center;" class="container"> 
+              <div class="round">
+                <input [(ngModel)]="alumnoAsistencia[i][j]" id="{{_alumno.alumno_id}}.{{clase.clase_id}}"  type="checkbox" (click)="modificaAsistencia(_alumno.persona_id, clase.clase_id)">
+                <label for="{{_alumno.alumno_id}}.{{clase.clase_id}}"></label>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <form [formGroup]="claseForm" (ngSubmit)="enviarInformacion()">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"> Nueva clase</h4>
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label  " for="nombre_clase">Nombre de la clase</label>
+            <input formControlName="nombreClase" class="form-control" id="nombre_clase" placeholder="Nombre de la clase"
+              type="text" required>
+            <span class="invalidText" *ngIf="f.nombreClase.invalid && f.nombreClase.touched">
+              Ingresa un nombre
+            </span>
+          </div>
+          <div class="form-group">
+            <label class="control-label  " for="descClase">Descripción de la clase (opcional)</label>
+            <input formControlName="descClase" class="form-control" id="descClase" placeholder="Descipción de la clase"
+              type="text">
+            <span class="invalidText" *ngIf="f.descClase.invalid && f.descClase.touched">
+              Ingresa una descripción
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label" for="fechaClase"><i class="fa fa-calendar"></i> Fecha de la clase</label>
+            <input formControlName="fechaClase" class="form-control" id="fechaClase" type="date">
+            <span class="invalidText" *ngIf="f.fechaClase.invalid && f.fechaClase.touched">
+              Ingresa una fecha
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Guardar</button>
+      <button type="button" id="_modal" class="btn btn-outline-dark" (click)="close()">Salir</button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- <p style="transform:rotate(-90deg);"></p> -->

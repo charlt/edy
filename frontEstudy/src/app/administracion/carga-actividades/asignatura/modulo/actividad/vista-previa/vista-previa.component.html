@@ -1,0 +1,30 @@
+<div   class="row alert  alert-actividad" role="alert" >  
+  <div *ngIf="actividad" class="col-md-9">
+    <h4 >
+       {{actividad.actividad_nombre}}</h4>
+    <p>Actividad del tipo {{actividad.tipo_actividad_nombre}}</p> 
+    <button  *ngIf="actividad.tipo_actividad == 2"  class="btn btn-info btn-sm"  (click)="redireccion('preguntas')">
+      <span ><i class="fa fa-plus-square"></i> Mostrar preguntas</span>  
+    </button>
+  </div>
+  <div class="col-md-3">
+    <button (click)="redireccion('edita')" class="btn btn-info btn-accion"><i class="fa fa-pencil"></i></button>
+    <button  (click)="redireccion('vista-previa')" class="btn btn-info btn-accion" class="btn btn-warning btn-accion" ><i class="fa fa-eye"></i></button>
+  </div>
+  <div class="col-md-12" style="color:black">
+        <div class="alert alert-warning text-center">
+          <h1><i class="fa fa-eye"></i></h1>
+          <p>Vista previa de la actividad</p>
+          <h1 *ngIf="fechaActividad && fechaActividad.estatus_actividad_id == 2">{{fechaActividad.calificacion}}<br>
+            <small>Calificación</small>
+          </h1>
+        </div>
+        <app-contenido  *ngIf="actividad" [actividad]="actividad"></app-contenido>
+    </div>
+    <div class="col-12"  style="color:black"  >
+        <app-actividad 
+          *ngIf="finalizaCarga && (actividad.tipo_actividad_id == 2 || actividad.tipo_actividad_id == 4)" 
+          (actividadEnviada)="refrescaHeader($event)"
+          [actividad]="actividad" [fechaActividad]="fechaActividad" [edicion]="edicion"></app-actividad>
+    </div>
+</div>

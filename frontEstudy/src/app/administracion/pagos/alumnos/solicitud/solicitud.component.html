@@ -1,0 +1,58 @@
+<app-encabezado-persona [idPersona]="idAlumno" 
+[idRol]="2"></app-encabezado-persona>
+<h5 class="mt-3">Pagos del alumno </h5>
+<a [routerLink]="['/admin/solicitud-pagos/nueva-colegiatura/'+idAlumno]" class="btn btn-success m-3"><i class="fa fa-plus"></i> Agregar pago de colegiatura/reinscripción</a>
+<a [routerLink]="['/admin/solicitud-pagos/nuevo-producto/'+idAlumno]" class="btn btn-success m-3"><i class="fa fa-plus"></i> Agregar pago de producto/servicio</a>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Pago</th>
+      <th scope="col">Monto</th>
+      <th scope="col">Estatus del pago</th>
+      <th scope="col">Fecha del pago</th>
+      <th scope="col">Forma de pago</th>
+      <th scope="col">Descuento</th>
+      <th scope="col">Total a pagar</th>
+      <th scope="col">Observación</th>
+      <th scope="col">Ficha de pago</th>
+      <!--th scope="col">Editar</th-->
+      <th scope="col">Eliminar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="pagos.length == 0">
+      <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+    </tr>
+    <tr *ngFor="let pago of pagos; let i = index">
+      <td>{{pago.nombre_pago}}</td>
+      <td>{{pago.monto}}</td>
+      <td>
+        <button [routerLink]="['/admin/solicitud-pagos/estatus-pago/'+pago.solicitud_pago_id]" class="btn " [ngClass]="{'btn-outline-success': pago.estatus_solicitud_pago_id == 3,'btn-outline-warning': pago.estatus_solicitud_pago_id == 2 ,'btn-outline-danger': pago.estatus_solicitud_pago_id == 1}">{{pago.desc_estatus_solicitud_pago}}</button>
+      </td>
+      <td><span *ngIf="pago.fecha_pago && pago.fecha_pago != '0000-00-00 00:00:00'">{{pago.fecha_pago | date:"dd/MM/yyy hh:mm:a"}}</span></td>
+      <td>{{pago.desc_forma_pago}}</td>
+      <td>
+        <span class="badge badge-success m-1" *ngIf="pago.beca > 0 ">Beca (${{pago.beca}})</span><br>
+        <span class="badge badge-success m-1" *ngIf="pago.descuento_id">
+          {{pago.desc_descuento}}
+          (<span *ngIf="pago.valor == 1"> $ </span>
+          {{pago.descuento}}
+          <span *ngIf="pago.valor == 2"> % </span>)
+        </span>
+        <span class="badge m-1" [ngClass]="pago.porcentaje < 0 ? 'badge-danger' : 'badge-success'" *ngIf="pago.porcentaje != 0 ">
+          <span  *ngIf="pago.porcentaje < 0">Recargo ${{pago.porcentaje * -1}} </span>
+          <span *ngIf="pago.porcentaje > 0">Pronto pago ${{pago.porcentaje}} </span>
+        </span> <br>
+
+              
+      </td>
+      <td>{{pago.monto_final}}</td>
+      <td>{{pago.observacion}}</td>
+      <td><a *ngIf="pago.estatus_solicitud_pago_id == '3'" [href]="url +'pagos/docs/ficha.php?id_solicitud_pago='+pago.solicitud_pago_id"  target="_blank" class="btn btn-success"><i class="fa fa-file-pdf-o"></i></a></td>
+      <!--td><a [routerLink]="['/admin/solicitud-pagos/edita/'+pago.solicitud_pago_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a></td-->
+      <td><button (click)="eliminar(pago.solicitud_pago_id, i)" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>    
+    </tr>
+    
+  </tbody>
+</table>

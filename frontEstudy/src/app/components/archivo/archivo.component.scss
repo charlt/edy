@@ -1,0 +1,28 @@
+audio:focus, audio.form-control:focus{
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+iframe{
+    margin-top: -50px;
+    width: 100%;
+    height: 600px;
+}
+.archivo{
+    overflow:hidden;
+    height: 600 px;
+}
+.img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pantallaC{
+    margin-top: -91%;
+}
+// div{
+//     border: solid 1px black;
+// }

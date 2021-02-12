@@ -1,0 +1,263 @@
+<div class="container rounded border mt-5 mb-4 p-5 bg-light">
+    <div class="row">
+      <div class="col-12 mb-2">
+        <div class="d-flex justify-content-center">
+          <img  height="80" [src]="urlImg + 'logo_pago_facil.png'" alt="">
+        </div>
+      </div>  
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <h4>
+          Pago de colegiatura, cursos y/o diplomados <br>
+          <small>Instituto de enlaces educativos</small>
+        </h4>
+        
+        
+      </div>
+      <div class="col-6 text-right">
+        <a target="_blank" href="https://www.enlace.edu.mx/web/pagos/términos.html">Ver términos y condiciones</a><br>
+        <a target="_blank" href="https://www.enlace.edu.mx/web/pagos/precios.html">Ver catálogo de precios</a><br>
+        <b>Contacto:</b><br>
+        <a>facturacion@enlace.edu.mx</a><br>
+        <a>55-26-15-27-27 ext 174</a>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+        <form  method="POST"  id="form3ds" name="form3ds"  [formGroup]="paymentsForm" (ngSubmit)="sendData()" >
+          <input name="idSucursal" type="hidden" value="{{apiSucursal}}" />
+          <input name="idUsuario" type="hidden" value="{{apiUsuario}}" />
+          <input name="idPedido" type="hidden" value="{{matricula}}" />
+          <input name="idServicio" type="hidden" value="3" />
+          <input id="calleyNumero" name="calleyNumero" type="hidden" value="Rinconada Camino a Sta. Teresa #1040 Piso 7 Of. 702." />
+          <input id="cp" name="cp" type="hidden" value="14210" />
+          <input id="colonia" name="colonia" type="hidden" value="Jardines en la Montaña" />
+          <input id="municipio" name="municipio" type="hidden" value="Delegación Tlalpan" />
+          <input id="estado" name="estado" type="hidden" value="Ciudad de México" />
+          <input id="pais" name="pais" type="hidden" value="México" />
+          <input id="telefono" name="telefono" type="hidden" value="5526152727" />
+          <input id="plan" name="plan" type="hidden" value="" />
+          <input id="mensualidades" name="mensualidades" type="hidden" value="" />
+          <input id="param1" name="param1" type="hidden" value="{{matricula}}" />
+          <input id="param2" name="param2" type="hidden" value="" />
+          <input id="param3" name="param3" type="hidden" value="" />
+          <input type="hidden" name="httpUserAgent" value="{{userAgent}}" />
+
+          
+
+          <div class="row">
+            <div class="col-xl-7 col-lg-8 col-md-7 col-sm-8 col-8">
+              <h4 class="mt-5"><b><i class="fa fa-credit-card"></i> Datos de la tarjeta:</b></h4>
+              <div class="pt-0">
+                <img [src]="urlImg + 'visa.png'" width="60">
+                <img [src]="urlImg + 'mastercard.png'" height="50" class="ml-3">
+                <img [src]="urlImg + 'amex.png'" width="50" class="ml-3">
+                <br>
+                <small>Aceptamos tarjetas de crédito y débito</small>
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-4 col-md-5 col-sm-4 col-4">
+              <div class="form-group mt-5">
+                <label class="control-label" for="disabledInput">Total a pagar:</label>
+                <input id="monto" name="monto" type="number" min="0" class="form-control form-control-sm bg-white" formControlName="monto" [readonly]="readonly" >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-8 col-sm-12 col-12">
+              <div class="form-group my-0 py-0">
+                <label for="nombre">Nombre del titular</label>
+                <input formControlName="nombre" id="nombre" name="nombre" type="text" type="text" class="form-control" autocomplete="off" minlength="5">
+                <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+              </div>
+            </div>
+
+            <div class="col-xl-12 col-lg-12 col-md-8 col-sm-12 col-12">
+              <div class="form-group my-0 py-0">
+                <label for="uname">Apellidos del titular</label>
+                <input formControlName="apellidos" id="apellidos" name="apellidos" type="text" class="form-control" autocomplete="off" minlength="5">
+                <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+              </div>
+            </div>
+
+            <div class="col-xl-12 col-lg-12 col-md-4 col-sm-12 col-12">
+              <div class="form-group my-0 py-0">
+                <label for="pwd">Número de la tarjeta</label>
+                <input formControlName="numeroTarjeta" id="numeroTarjeta" name="numeroTarjeta"  type="text" class="form-control" autocomplete="off" minlength="15" maxlength="19">
+                <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+              </div>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                  <div class="form-group my-0 py-0">
+                    <label for="pwd">Mes expiración</label>
+                    <select class="form-control" formControlName="mesExpiracion" id="mesExpiracion" name="mesExpiracion">
+                      <option value="" hidden disabled selected>Mes</option>
+                      <option [value]="mes" *ngFor="let mes of meses; let i = index">{{mes}}</option>
+                    </select>
+                    <!-- <input formControlName="mesExpiracion" type="number" class="form-control" autocomplete="off" minlength="2" maxlength="2" size="2"> -->
+                    <div class="invalid-feedback">Obligatorio.</div>
+                  </div>                  
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6">
+                  <div class="form-group my-0 py-0">
+                    <label for="pwd">Año expiración</label>
+                    <select class="form-control" formControlName="anyoExpiracion" id="anyoExpiracion" name="anyoExpiracion">
+                      <option value="" hidden disabled selected>Año</option>
+                      <option [value]="i+20" *ngFor="let year of [].constructor(10); let i = index">20{{i+20}}</option>
+                    </select>
+                    <!-- <input formControlName="anyoExpiracion" type="number" class="form-control" autocomplete="off" minlength="2" maxlength="2" size="2"> -->
+                    <div class="invalid-feedback">Obligatorio</div>
+                  </div>                  
+                </div>  
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                  <div class="form-group my-0 py-0">
+                    <label for="pwd">CVV o CVC</label>
+                    <input (blur)="cvvHover = false" (focus)="cvvHover = true" formControlName="cvt" 
+                      id="cvt" name="cvt" type="text" class="form-control" autocomplete="off" minlength="2" maxlength="4">
+                    <div class="invalid-feedback">Obligatorio.</div>
+                  </div>                  
+                </div>                  
+              </div>
+            </div>  
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="form-group my-0 py-0">
+                    <label for="email">Correo</label>
+                    <input formControlName="email" id="email" name="email" type="email" class="form-control">
+                    <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                  </div>
+                </div>  
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="form-group my-0 py-0">
+                    <label for="celular">Celular</label>
+                    <input formControlName="celular" id="celular" name="celular" type="text" class="form-control">
+                    <div class="invalid-feedback">Por favor, ingresa información válida.</div>
+                  </div>
+                </div>
+              </div> 
+            </div>        
+          </div>
+          <button type="submit" class="btn btn-success btn-block mt-3" [disabled]="paymentsForm.invalid || loading || success">
+            <i *ngIf="loading" class="fa fa-spinner fa-pulse"></i>
+            <span class="h5"> {{button}}</span>
+          </button>
+        </form>
+      </div>
+  
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="row">
+          <div class="col-12 mt-5 pt-2">
+            <div class="d-flex justify-content-center">
+              <img [src]="urlImg + 'cvv.jpg'">
+            </div>
+          </div>
+        </div>
+        <div class="row"></div>
+        <div class="credit-card-box" [ngClass]="cvvHover? 'hover' : ''">
+          <div class="flip">
+            <div class="front">
+              <!-- <div class="chip"></div> -->
+              <div class="logo_institucion">
+                <img class="pull-right" src="assets/images/logo.png" width="25%" alt="">
+              </div>
+              <div class="row data">
+                <div class="col-12 m-0 p-0">
+                  <div class="number"><span>{{card}}</span></div>
+                </div>
+              </div>
+              <div class="row data">
+                <div class="col-12 m-0 p-0">
+                  <div class="card-expiration-date">
+                    <span *ngIf="paymentsForm && pF.mesExpiracion.value">{{pF.mesExpiracion.value}}</span>
+                    <!-- <span *ngIf="paymentsForm && pF.mesExpiracion.value && pF.mesExpiracion.value < 10">0{{pF.mesExpiracion.value}}</span> -->
+                    <span *ngIf="pF.mesExpiracion.valid"><b>/</b></span>
+                    <span *ngIf="paymentsForm">{{pF.anyoExpiracion.value}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row data">
+                <div class="col-10 m-0 p-0">
+                  <div class="card-holder text-truncate"><span *ngIf="paymentsForm">{{pF.nombre.value}} {{pF.apellidos.value}}</span></div>
+                </div>
+                <div class="col-2 m-0 p-0">
+                  <div class="logo pull-right">
+                    <svg *ngIf="typeCard == 'visa'" version="1.1" id="visa" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="47.834px" height="47.834px" viewBox="0 0 47.834 47.834" style="enable-background:new 0 0 47.834 47.834;">
+                      <g><g><path [attr.d]="visa"/></g></g>
+                    </svg>
+                    <svg *ngIf="typeCard == 'mastercard'" width="47.834px" height="47.834px" viewBox="0 0 200 155.58" version="1.1" xmlns="http://www.w3.org/2000/svg" 
+                          xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                          x="0px" y="0px" style="enable-background:new 0 0 47.834 47.834;">
+                          
+                      <g transform="translate(1565.7 -1106.8)">
+                        <g transform="matrix(3.1437 0 0 3.1437 -4835.7 -1027.6)">
+                          <g transform="matrix(1.25 0 0 -1.25 1102.5 727.74)"><path [attr.d]="mastercard.letters" fill="#fff"/></g>
+                          <g transform="matrix(1.25 0 0 -1.25 1103.2 710.77)"><path [attr.d]="mastercard.other" fill="#f79410"/></g>
+                          <path [attr.d]="mastercard.orange" fill="#ff5f00"/>
+                          <g transform="matrix(1.25 0 0 -1.25 1064.5 698.59)"><path [attr.d]="mastercard.red" fill="#eb001b"/></g>
+                          <g transform="matrix(1.25 0 0 -1.25 1103.8 698.59)"><path [attr.d]="mastercard.yellow" fill="#f79e1b"/></g>
+                        </g>
+                      </g>
+                    </svg>            
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="back">
+              <div class="strip"></div>
+              <div class="logo">
+                <svg *ngIf="typeCard == 'visa'" version="1.1" id="visa" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="47.834px" height="47.834px" viewBox="0 0 47.834 47.834" style="enable-background:new 0 0 47.834 47.834;">
+                  <g><g><path [attr.d]="visa"/></g></g>
+                </svg>
+                <svg *ngIf="typeCard == 'mastercard'" width="47.834px" height="47.834px" viewBox="0 0 200 155.58" version="1.1" xmlns="http://www.w3.org/2000/svg" 
+                      xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                      x="0px" y="0px" style="enable-background:new 0 0 47.834 47.834;">
+                      
+                  <g transform="translate(1565.7 -1106.8)">
+                    <g transform="matrix(3.1437 0 0 3.1437 -4835.7 -1027.6)">
+                      <g transform="matrix(1.25 0 0 -1.25 1102.5 727.74)"><path [attr.d]="mastercard.letters" fill="#fff"/></g>
+                      <g transform="matrix(1.25 0 0 -1.25 1103.2 710.77)"><path [attr.d]="mastercard.other" fill="#f79410"/></g>
+                      <path [attr.d]="mastercard.orange" fill="#ff5f00"/>
+                      <g transform="matrix(1.25 0 0 -1.25 1064.5 698.59)"><path [attr.d]="mastercard.red" fill="#eb001b"/></g>
+                      <g transform="matrix(1.25 0 0 -1.25 1103.8 698.59)"><path [attr.d]="mastercard.yellow" fill="#f79e1b"/></g>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <div class="ccv">
+                <label>CVV</label>
+                <div>
+                  <span *ngIf="paymentsForm" class="h5">{{pF.cvt.value}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-12 ">  
+        <div class="alert alert-danger mt-2" *ngIf="errPagoFacil">
+          {{errPagoFacil}}
+          <ul>
+            <li *ngFor="let error of listErrorPF">{{error}}</li>
+          </ul>
+        </div>
+      </div>
+  
+    </div>
+  
+    <div class="row" *ngIf="success">
+      <div class="col-12 mt-4">
+        <div class="alert alert-success text-center">
+          <p class="h3"> {{button}}</p>
+          <p class="h5">No de transacción: {{DataPF['idTransaccion']}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

@@ -1,0 +1,78 @@
+@import "../../../shared/styles/forms.component.scss";
+@import "../../../app.component.scss";
+
+
+
+.plan-container{
+    margin:20px;
+    padding:20px;
+    border:2px solid black ;
+}
+
+.orden_jerarquico{
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+ ::ng-deep .xlModal .modal-dialog{
+    max-width: 1000px;
+  }
+
+.card-orden-jerarquico{
+    .fa-accion{
+        display: none;
+        position: absolute;
+        font-size: 18px;
+        margin: 5px;
+        :hover > & {
+            display: inline;   
+        }        
+    }
+    .fa-edita{
+        left:0px;
+    }
+    .fa-elimina{
+        right:0px;
+    }
+}
+
+.card-asignatura{
+    font-size: 12px;
+    height: 100px;
+    text-align: center;
+    cursor:pointer;
+    
+    
+
+    .fa-accion{
+        display: none;
+        position: absolute;
+        font-size: 18px;
+        margin: 5px;
+        :hover > & {
+            display: inline;   
+        }        
+    }
+    .fa-edita{
+        left:0px;
+    }
+    .fa-elimina{
+        right:0px;
+    }
+}
+
+.orden_jerarquico.nuevo{
+    border: 2px dashed black;
+}
+.card-asignatura.nuevo{
+    border: 2px dashed black;
+}
+
+.bg-normal{
+    background-color: var(--blue);
+}
+
+.bg-tronco{
+    background-color: var(--indigo);
+}

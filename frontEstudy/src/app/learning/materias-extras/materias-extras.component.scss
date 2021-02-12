@@ -1,0 +1,36 @@
+@import "../../app.component.scss";
+
+$topnav-background-color: #075C8B;
+
+.card-materia{
+
+    padding:20px;
+
+    .card{
+        background-image: url('https://inspiredideasblogging.files.wordpress.com/2014/01/magazine-layout-inspiration-by-annabell.jpg');
+        background-size: cover; 
+        height:200px;
+        padding:0px;
+
+        .text-materias{
+            padding:10px;
+            margin: 0px;
+            color: white;
+            min-height: 60px;
+            position: absolute;
+            width: 100%;
+            bottom: 0px;
+        }
+        
+        .header-activo{
+            background-color: $topnav-background-color;
+
+        }
+        .header-inactivo{
+            background-color: gray;
+        }
+
+        
+    
+    }
+}

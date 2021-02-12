@@ -1,0 +1,107 @@
+<div [@routerTransition]>
+    <div class="row">
+        <div class="col-md-9">
+            <h3 class="text-center">Portal de administración</h3>
+            <app-accesos-plataforma></app-accesos-plataforma>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div *ngIf="alumnosSnOferta && alumnosSnOferta > 0" [ngClass]="{'alert-info': alumnosSnOferta <= 100, 'alert-danger': alumnosSnOferta > 100}" class="alert " role="alert" [routerLink]="['/admin/alumno']">
+                        <p class="alert-heading">Alumnos sin vincular a oferta:</p>
+                        <h4 class="alert-body texto">{{alumnosSnOferta}}</h4>
+                    </div>
+                </div>
+                <div *ngIf="alumnosSnExpediente && alumnosSnExpediente > 0" class="col-md-12">
+                    <div [ngClass]="{'alert-info': alumnosSnExpediente <= 100, 'alert-warning': alumnosSnExpediente > 100}" class="alert" role="alert" [routerLink]="['/admin/expediente']">
+                        <p class="alert-heading">Alumnos sin expediente completo:</p>
+                        <h4 class="alert-body texto">{{alumnosSnExpediente}}</h4>
+                    </div>
+                </div>
+                <div *ngIf="pendientesTicket && pendientesTicket > 0" class="col-md-12">
+                    <div [ngClass]="{'alert-info': pendientesTicket <= 25, 'alert-warning': pendientesTicket > 25}" class="alert" role="alert" [routerLink]="['/admin/tickets']">
+                        <p class="alert-heading">Tickets sin responder:</p>
+                        <h4 class="alert-body texto">{{pendientesTicket}}</h4>
+                    </div>
+                </div>
+                
+            </div>
+            <div *ngIf="cicloPorCerrar && cicloPorCerrar.length" class="alert alert-warning" role="alert" [routerLink]="['/admin/ciclo']">
+                <p class="alert-heading">Ciclos a punto de cerrar:</p>
+                <ul *ngFor="let ciclo of cicloPorCerrar">
+                    <li>{{ciclo.ciclo_desc}} ({{ciclo.fecha_fin | date:"dd/MMM/yyyy"}} {{ciclo.fecha_fin | date:"shortTime"}})</li>
+                </ul>
+                <!-- <span *ngFor="let ciclo of cicloPorCerrar">{{ciclo.ciclo_desc}}</span> -->
+            </div>
+            <div *ngIf="asignaturasPorCerrar && asignaturasPorCerrar.length"  class="alert alert-warning" role="alert" [routerLink]="['/admin/asignatura']">
+                <p class="alert-heading">Asignaturas a punto de cerrar:</p>
+                <!-- <span *ngFor="let asignatura of asignaturasPorCerrar">{{asignaturasPorCerrar}}</span> -->
+                <ul *ngFor="let asignatura of asignaturasPorCerrar">
+                    <li>{{asignatura.asignatura}} ({{asignatura.fecha_fin | date:"dd/MMM/yyyy"}} {{asignatura.fecha_fin | date:"shortTime"}})</li>
+                </ul>
+            </div>
+        </div>
+    </div><br>
+
+    <!-- <h2 class="text-muted">Dashboard <small>Statistics Overview</small></h2>
+    <div class="row">
+        <div class="col-md-12">
+            <ngb-carousel>
+                <ng-template ngbSlide *ngFor="let slider of sliders">
+                    <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%">
+                    <div class="carousel-caption">
+                        <h3>{{slider.label}}</h3>
+                        <p>{{slider.text}}</p>
+                    </div>
+                </ng-template>
+            </ngb-carousel>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-xl-3 col-lg-6">
+            <app-stat [bgClass]="'primary'" [icon]="'fa-comments'" [count]="26" [label]="'New Comments!'" ></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <app-stat [bgClass]="'warning'" [icon]="'fa-tasks'" [count]="12" [label]="'New task!'" ></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <app-stat [bgClass]="'success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'" ></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+            <app-stat [bgClass]="'danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
+        </div>
+    </div>
+    <hr />
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">{{ alert.message }}</ngb-alert>
+    <hr />
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card card-default">
+                <div class="card-header">
+                    <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+                </div> -->
+    <!-- /.card-header -->
+    <!-- <app-timeline></app-timeline> -->
+    <!-- /.card-body -->
+    <!-- </div> -->
+    <!-- /.card -->
+    <!-- </div> -->
+    <!-- /.col-lg-8 -->
+    <!-- <div class="col-lg-4">
+            <div class="card card-default mb-3">
+                <div class="card-header">
+                    <i class="fa fa-bell fa-fw"></i> Notifications card
+                </div> -->
+    <!-- /.card-header -->
+    <!-- <app-notification></app-notification> -->
+    <!-- /.card-body -->
+    <!-- </div> -->
+    <!-- /.card -->
+
+    <!-- <app-chat></app-chat> -->
+    <!-- /.card .chat-card -->
+    <!-- </div> -->
+    <!-- /.col-lg-4 -->
+    <!-- </div> -->
+</div>

@@ -1,0 +1,48 @@
+
+      <div class="row" *ngIf="bandera && parentForm" [formGroup]="parentForm">
+        <div [className]="style" *ngFor="let select of Selects; let i = index">
+          <label class="control-label" for="SeleccionarAsignatura">* {{ select.label | translate}}</label>
+          <select formControlName="{{select.value}}" class="form-control" (change)="this[select.function]($event)">
+            <option hidden value="" selected>{{'fmOptSelect' | translate}}</option>
+            <option  [value]="item[select.value]" *ngFor="let item of select['iterator']">{{item[select.key]}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="bandera && !parentForm">
+        <div [className]="style" *ngFor="let select of Selects; let i = index">
+          <label class="control-label" for="SeleccionarAsignatura">{{i+1}}. {{ select.label | translate}}</label>
+          <select class="form-control" id="asignatura_id" (change)="this[select.function]($event)"  >
+            <option hidden value="" selected>{{'fmOptSelect' | translate}}</option>
+            <option  [value]="item[select.value]" *ngFor="let item of select['iterator']">{{item[select.key]}}</option>
+          </select>
+        </div>
+      </div>
+      <!-- <div [className]="style" *ngFor="let select of Selects; let i = index">
+        <label class="control-label" for="SeleccionarAsignatura">{{i+1}}. {{ select.label | translate}}</label>
+        <select class="form-control" id="asignatura_id" (change)="this[select.function]($event)"  >
+          <option hidden value="" selected>{{'fmOptSelect' | translate}}</option>
+          <option  [value]="item[select.value]" *ngFor="let item of select.iterator">{{item[select.key]}}</option>
+        </select>
+      </div> -->
+      <!-- <div [className]="style"> 
+        <label class="control-label" for="SeleccionarAsignatura">2. {{'selectPlanEstudio' | translate}}</label>
+        <select class="form-control" id="asignatura_id" (change)="grado($event)" >
+          <option hidden value=""  selected>{{'fmOptSelect' | translate}}</option>
+          <option  [value]="_planEstudio.plan_estudio_id" *ngFor="let _planEstudio of planEstudio">{{_planEstudio.plan_estudio}}</option>
+        </select>
+      </div>
+      <div [className]="style"> 
+        <label class="control-label" for="SeleccionarAsignatura">3. Selecciona un grado</label>
+        <select class="form-control" id="asignatura_id" (change)="_asignatura($event)">
+          <option hidden value=""  selected>{{'fmOptSelect' | translate}}</option>
+          <option [value]="orden.plan_orden_id" *ngFor="let orden of ordJerarquicos">{{orden.orden_jerarquico_descripcion}}</option>
+        </select>
+      </div>
+      <div [className]="style">
+        <label class="control-label" for="SeleccionarAsignatura">4. {{'selectAsignatura' | translate}}</label>
+      <select class="form-control" id="asignatura_id" (change)="output($event)" >
+        <option hidden value=""  selected>{{'fmOptSelect' | translate}}</option>
+        <option  [value]="_asignatura.asignatura_id" *ngFor="let _asignatura of _asignaturas">{{_asignatura.asignatura}}</option>
+      </select>
+      </div>     -->
+    

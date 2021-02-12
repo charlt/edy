@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-6">              
+      <form [formGroup]="campusCarreraForm" (ngSubmit)="enviarInformacion()" >
+
+
+      <div class="form-group">
+        <label class="control-label" for="nivel_estudios">{{'SelectCampus' | translate}}</label>
+          <select formControlName="campus" class="form-control" >
+              <option  [value]="_campus.campus_id" *ngFor="let _campus of campus">{{_campus.campus}}</option>
+              <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+            </select>
+          <span class="invalidText" *ngIf="f.campus.invalid && f.campus.touched">
+              {{'fmErrSelect' | translate}}
+          </span>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="nivel_estudios">{{'SelectCareer' | translate}}</label>
+          <select formControlName="carrera" class="form-control" >
+              <option  [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera}}</option>
+              <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+            </select>
+          <span class="invalidText" *ngIf="f.carrera.invalid && f.carrera.touched">
+              {{'fmErrSelect' | translate}}
+          </span>
+      </div>              
+      <button [hidden]="tipoAdmin == 0" [disabled]="campusCarreraForm.invalid" type="submit" class="btn btn-primary pull-right guardar-plan-estudios">{{'fmSave' | translate}}</button>
+      <br>
+    </form>
+  </div>
+</div>

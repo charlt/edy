@@ -1,0 +1,20 @@
+  <div class="col-md-12">
+    <graficas-persona [idPersona]="id_persona"></graficas-persona>
+    <div class="row">
+      <div class="ml-2">
+        <a [routerLink]="['/admin/docente/materias/'+id_persona]" class="btn btn-lg btn-info">
+          <h1><i class="fa fa-book"></i></h1><p>Materias</p>
+        </a>
+      </div>
+      <div class="ml-2">
+        <a [routerLink]="['/admin/docente/accesos/'+id_persona]" class="btn btn-lg btn-info">
+          <h1><i class="fa fa-sign-in"></i></h1><p>Accesos</p>
+        </a>
+      </div>
+      <div class="ml-2">
+        <a [routerLink]="['/admin/docente/expediente/'+id_persona]" class="btn btn-lg btn-info">
+          <h1><i class="fa fa-file-text-o"></i></h1><p>Expediente</p>
+        </a>
+      </div>
+    </div>
+  </div>

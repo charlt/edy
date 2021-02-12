@@ -1,0 +1,99 @@
+<div class="row">
+    <div class="col">
+<div [hidden]="edicion == 0 && !hayRespuesta" *ngIf="edicion == 1" class="row d-flex justify-content-center">
+
+  <div class="col" [hidden]="orientacion == 1">
+    <div *ngIf="orientacion == 0 && reactivos" cdkDropList class="list-h"    
+    cdkDropListOrientation="horizontal" 
+    (cdkDropListDropped)="drop($event)"
+    >
+      <div class="example-box" *ngFor="let reactivo of reactivos" cdkDrag>
+        <p> {{reactivo.reactivo_desc}}</p></div>
+    </div>
+  </div>
+
+  <div class="col-6" [hidden]="orientacion==0">
+    <div *ngIf="orientacion == 1 && reactivos" cdkDropList class="list-v"    
+    cdkDropListOrientation="vertical" 
+    (cdkDropListDropped)="drop($event)"
+    >
+      <div class="example-box "   *ngFor="let reactivo of reactivos" cdkDrag>
+        <p> {{reactivo.reactivo_desc}} </p></div>
+    </div>
+  </div>
+
+</div>
+
+<div [hidden]="edicion == 1" *ngIf="edicion == 0 && orientacion == 0" class="row">
+        <div class="col ">
+          <div class="list-h">
+            <div class="example-box-1"  [class.alert-success]="reactivo.correcta == true" [class.alert-danger]="reactivo.correcta == false"  *ngFor="let reactivo of reactivos" >
+              <p> {{reactivo.reactivo_desc}}               
+                </p></div>
+          </div>
+        </div>
+</div>
+
+<div [hidden]="edicion == 1" *ngIf="edicion == 0 && orientacion == 1" class="row">
+    <div class="col  d-flex justify-content-center">
+      <div class="list-v">
+        
+        <div class="example-box-1" [class.alert-success]="reactivo.correcta == true" [class.alert-danger]="reactivo.correcta == false" *ngFor="let reactivo of reactivos" >
+          <p> {{reactivo.reactivo_desc}}  </p></div>
+      </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col" *ngIf="!edicion && !intentosRestantes">
+    <button class="btn btn-primary pull-right" (click)="open(content)">Ver respuestas</button>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="row" *ngIf="!reactivos">
+  <div class="col-12">
+      <div class="alert alert-danger">No se han cargado reactivos en la pregunta</div>
+  </div>
+</div>
+
+<div class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <ng-template #content>
+            <div class="modal-header">
+              <h4 class="modal-title">Respuestas</h4>
+              <button type="button" class="close" aria-label="Close" (click)="close()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row justify-content-md-center">
+                <div [hidden]="edicion == 1" *ngIf="edicion == 0 && orientacion == 0" class="row">
+                  <div class="col ">
+                    <div class="list-h">
+                      <div class="example-box-1" *ngFor="let reacCorrecto of reactivosCorrectos" >
+                        <p> {{reacCorrecto.reactivo_desc}}               
+                          </p></div>
+                    </div>
+                  </div>
+          </div>
+          
+          <div [hidden]="edicion == 1" *ngIf="edicion == 0 && orientacion == 1" class="row">
+              <div class="col  d-flex justify-content-center">
+                <div class="list-v">
+                  
+                  <div class="example-box-1" *ngFor="let reacCorrecto of reactivosCorrectos" >
+                    <p> {{reacCorrecto.reactivo_desc}}  </p></div>
+                </div>
+              </div>
+          </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="close()">Cerrar</button>
+            </div>
+          </ng-template>
+    </div>
+  </div>

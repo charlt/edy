@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <form [formGroup]="switchForm"  class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label *ngIf="tipoForm != 1" class="control-label">Selecciona a quién va dirigida la encuesta</label>
+          <label *ngIf="tipoForm == 1" class="control-label">Selecciona a quién va dirigido el aviso</label>
+          <select class="form-control" formControlName="rol">
+            <option value="" selected disabled hidden>Selecciona una opción</option>
+            <option [value]="rol.rol_id" *ngFor="let rol of Roles; let i = index;">{{rol.rol}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mt-2" *ngIf="sF.nivel">
+        <label *ngIf="tipoForm != 1">Selecciona la ubicación de la encuesta</label>
+        <label *ngIf="tipoForm == 1">Selecciona la ubicación del aviso</label>
+        <div class="form-group">
+          <div class="custom-control custom-radio custom-control-inline"
+            *ngFor="let nivel of Radios; let i = index;">
+            <input formControlName="nivel" type="radio" id="radio_{{i}}" class="custom-control-input" [value]="nivel.valor">
+            <label class="custom-control-label" for="radio_{{i}}">{{nivel.texto}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-2" *ngIf="nivel">
+        <app-consulta-asignatura (completado)="seleccionado($event)" (ready)="getReady($event)" [parentForm]="switchForm" [tipo]="tipo" [nivel]="nivel"></app-consulta-asignatura>
+      </div>
+      <div class="col-12 mt-2" *ngIf="sF.grupo">
+        <div class="form-group">
+          <label class="control-label">Selecciona un grupo</label>
+          <select class="form-control" formControlName="grupo">
+            <option value="" selected disabled hidden>Selecciona una opción</option>
+            <option [value]="grupo.grupo_id" *ngFor="let grupo of Grupos; let i = index;">{{grupo.nombre_grupo}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mt-2" *ngIf="sF.grupo_asignatura">
+        <div class="form-group">
+          <label class="control-label">Selecciona una asignatura en el grupo</label>
+          <select class="form-control" formControlName="grupo_asignatura">
+            <option value="" selected disabled hidden>Selecciona una opción</option>
+            <option [value]="asignatura.asignatura_grupo_id " *ngFor="let asignatura of Asignaturas; let i = index;">{{asignatura.asignatura}}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+.container {
+	padding-right: 2px;
+	padding-left: 1px;
+	padding-bottom: 2px;
+}
+
+.title {
+    color: rgb(51, 51, 51);
+}
+
+th {
+	text-align: center;
+	padding: 3px 0px 3px 0px;
+	margin: 0;
+	font-size: 12px;
+}
+
+td {
+	text-align: center;
+	padding: 5px 0px 5px 0px;
+	// padding: 3px, 0px, 3px, 0px; 
+	margin: 0;
+	font-size: 10px;
+}
+
+.borderless td, .borderless th {
+    border: none;
+}
+
+.border-white {
+	border: 1px solid white;
+	border-radius: 5px;
+} 
+
+.prev-month, .next-month {
+	color: #cbd1d2;
+}
+
+.prev-month:hover, .next-month:hover {
+	background-color: #cbd1d2;
+	color: white;
+	// cursor: not-allowed;
+}
+
+.today {
+	// background-color: #299e4c;
+	color: white;
+}
+
+.day:hover {
+    // background-color:#00addf;
+	// color: white;
+	cursor: pointer;
+}
+
+.today:hover {
+	background-color: #198138;
+	color: white;
+	cursor: pointer;
+}
+
+.day-active {
+	// background-color:#00addf;
+	color: white;
+}

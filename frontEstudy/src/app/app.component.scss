@@ -1,0 +1,54 @@
+
+
+$school-color: #1e5799;
+
+
+.form-group{
+ margin-bottom: 0px;
+}
+
+
+.invalidText{
+    color: red;
+    text-align: left !important;
+}
+
+.card-estudy{
+    text-align: left;
+    padding: 20px;
+}
+
+.card-estudy:hover{
+    cursor: pointer;
+    -webkit-box-shadow: 2.5px 2.5px 5   px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2.5px 2.5px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2.5px 2.5px 5px 0px rgba(0,0,0,0.75); 
+}
+
+.alert-estudy{
+    background-color: $school-color;
+    color: white;
+}
+
+.header-estudy{
+    color: $school-color
+}
+
+.icon-estudy{
+    color: $school-color
+}
+.btn-estudy{
+    background-color: $school-color;
+    color: white;
+}
+
+::ng-deep .modal-xl .modal-dialog { 
+    max-width: 80%;
+    width: 80%;
+}
+
+.fondo { 
+    background: rgb(241, 241, 241);
+    min-height: 100vh;
+    min-width: 100%; 
+}

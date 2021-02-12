@@ -1,0 +1,107 @@
+<div *ngIf="bandera"> 
+  <div class="row">
+    <div class="col-md-6">
+      <h4>{{title}}</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-3">
+          <div class="container m-0 p-0 text-center">
+
+            <div class="border rounded-top pl-2 pr-2 pt-3 pb-3 click" (click)="setDatos(0, 1, 0)" 
+            [ngClass]="selecciones[0]? 'font-weight-bold seleccionado' : '' ">
+              * Datos personales <i *ngIf="infoPersonalCompleta == '1'" class="fa fa-check text-success"></i>
+            </div>
+            <div *ngIf="seleccionAsesor == 1" [ngClass]="selecciones[1]? 'font-weight-bold seleccionado' : '' " 
+              class="border border-top-0 rounded-bottom pl-2 pr-2 pt-3 pb-3 click" (click)="setDatos(0, 3, 1)">
+              Selección de asesor 
+              <i *ngIf="infoAsesor" class="fa fa-check text-success"></i>
+            </div>
+
+            <div (click)="setDatos(formulario.formulario_id, 0, i)"
+              class="border border-top-0 pl-2 pr-2 pt-3 pb-3 click" 
+              *ngFor="let formulario of Formularios; let i = index"
+              [ngClass]=" [selecciones[i + 2]? 'font-weight-bold seleccionado' : ''] ">
+              <span *ngIf="formulario.obligatorio == '1'"> * </span>
+              {{formulario.titulo}} <i *ngIf="formulario.contestado" class="fa fa-check text-success"></i>
+            </div>
+
+            <!--div  [ngClass]="selecciones[Formularios.length + 1]? 'font-weight-bold seleccionado' : '' " 
+              class="border border-top-0 rounded-bottom pl-2 pr-2 pt-3 pb-3 click" (click)="setDatos(0, 2, Formularios.length + 1)">
+              Prueba de Cleaver <i *ngIf="infoCleaverCompleto == '1'" class="fa fa-check text-success"></i>
+            </div-->
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="container border rounded">
+
+            <div *ngIf="!id && !tipoForm" class="p-4">
+              <div *ngIf="!solicitudCompleta">
+                <h4><b>Información de inscripción</b></h4>
+                <p>Llena cada uno de los apartados con la información solicitada, <b>aquellos marcados con (*)
+                  son obligatorios.</b>
+                </p>
+              </div>
+              <div *ngIf="solicitudCompleta" class="text-center">
+                <h4><i class="fa fa-check" style="color:green"></i><b> Información de inscripción completa</b></h4>
+                <p >Has cubierto la información necesaria para continuar con tu proceso. A continuación ingresa al siguiente apartado: 
+                  <a (click)="closeModal()" class="btn btn-success mt-3" [routerLink]="['/inscripcion/terminos']">Apartado de Términos</a>                  
+                </p>
+              </div>            
+            </div>
+
+            <div *ngIf="id">
+              <div class="row" *ngIf="cargando">
+                <div class="col text-center mt-5 mb-5">
+                  <i class="fa fa-spinner fa-pulse fa-2x fa-fw mb-3"></i>
+                  <h5>"Cargando formulario, por favor espere."</h5>
+                </div>
+              </div>
+              <form-generator (setId)="changeForm($event)" [hidden]="cargando" (cargado)="formularioCargado($event)" 
+              [idFormulario]="id" [contestado]="Formularios[indexForm]" [idAspirante]="aspiranteId" [idCarrera]="idCarrera" [idRol]="rolId"></form-generator>
+            </div>
+
+            <div *ngIf="!id && tipoForm">
+              <div *ngIf="tipoForm == 1" class="mt-4">
+                <div class="col-12">
+                  <div *ngIf="infoPersonalCompleta == '1'" class="alert alert-success">
+                    <i class="fa fa-check"></i> Información actualizada correctamente
+                  </div>
+                </div>
+                <app-persona *ngIf="aspiranteId" [idPersona]="aspiranteId" (registroExitoso)="changeForm($event, 1)"
+                  [idRol]="rolId" [tipoForm]="0"></app-persona>
+              </div>
+
+              <!--div class="m-1 p-1" *ngIf="tipoForm == 2">
+                <cleaver (finalizado)="changeForm($event, 2)" [cleaverCompleto]="infoCleaverCompleto" [idRol]="rolId"
+                  [idAspirante]="aspiranteId"></cleaver>
+              </div-->
+              <div class="mt-4 mb-5" *ngIf="tipoForm == 3">
+                <app-asesor (registroExitoso)="changeForm($event, 3)" [infoAsesor]="infoAsesor"></app-asesor>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+      <h4 class="modal-title ml-2"><b>Información de inscripción completa</b></h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body ml-3 mr-3">
+    <p Class="text-center">Has cubierto la información necesaria para continuar con tu proceso. A continuación ingresa al apartado Términos. 
+      <a class=" btn btn-success" (click)="closeModal()" [routerLink]="['/inscripcion/terminos']">Apartado de términos</a>
+    </p>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+  </div>
+</ng-template>

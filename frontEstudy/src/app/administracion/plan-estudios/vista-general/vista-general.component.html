@@ -1,0 +1,140 @@
+<div class="row">
+  <div class="col-md-12 plan-estudios  ">
+    <h4 class="top-buffer">{{title}}</h4>  
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <h5>{{carrera.carrera}}</h5>
+    <h4>{{planEstudios.plan_estudio}}</h4>
+  </div>    
+</div>
+<div class="col-md-12 m-0 px-1">
+  <div class="container">
+    <span class="badge bg-normal text-white">Regular</span> 
+    <span class="badge bg-tronco text-white ml-2">Tronco común</span>
+  </div>
+</div>
+<div class="row plan-container" >
+  <div class="col-md-12" >
+    <div class="row orden_jerarquico alert-secondary " *ngFor="let _ordenJerarquico of ordenJerarquico; let i = index;">
+      <div class="col-md-1 d-flex card-orden-jerarquico " >
+        <p class="text-center align-self-center"><b>{{_ordenJerarquico.orden_jerarquico_descripcion}}</b>
+          <br>
+          <i *ngIf="i == ordenJerarquico.length - 1" class="fa fa-accion fa-trash" (click)="eliminaOrdenJerarquico(_ordenJerarquico.plan_orden_id)" ></i></p>
+      </div>
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-3" *ngFor="let _asignatura of _ordenJerarquico.asignaturas" >
+            <div class="card text-white  mb-3 card-asignatura" [ngClass]="[_asignatura.tipo_asignatura_id == '6' ? 'bg-tronco' : 'bg-normal']" role="alert">
+              <i class="fa fa-accion fa-pencil fa-edita" (click)="open(content,_ordenJerarquico.plan_orden_id,_asignatura.asignatura_id)"></i>
+              <i class="fa fa-accion fa-trash fa-elimina" (click)="eliminaAsignatura(_asignatura.orden_asignatura_id)" ></i>
+              <div class="card-body" (click)="consultaAsignatura(_asignatura.asignatura_id, _asignatura.orden_asignatura_id)">
+                <p>{{_asignatura.asignatura}}</p>
+                <p class="mb-0"><b>Créditos:</b> {{_asignatura.creditos}}</p>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="alert card-asignatura nuevo" (click)="open(content2,_ordenJerarquico.plan_orden_id,null)"  role="alert">
+              <p><i class="fa fa-plus"  ></i> <br> Nueva asignatura</p>
+            </div>
+          </div>      
+          <div class="col-md-3">
+            <div class="alert  card-asignatura nuevo" (click)="open3(modalTroncoComun,_ordenJerarquico.plan_orden_id)"  role="alert">
+              <p><i class="fa fa-sitemap"  ></i> <br>Agregar asignatura existente</p>
+            </div>
+          </div>
+        </div>
+      </div>         
+    </div>
+    <div *ngIf="ordenJerarquico.length < 10" class="row orden_jerarquico nuevo text-center" (click)="nuevoOrden()">
+      <div class="col-md-12">
+        <p><i class="fa fa-plus"></i> <br> Nuevo grado</p>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Editar asignatura</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-edicion [id_asignatura]="idAsignaturaSelected" [tipo]="1"></app-edicion>
+  </div>
+</ng-template>
+<ng-template #content2 let-c="close" let-d="dismiss" class="modal-lg">
+  <div class="modal-header">
+    <h4 class="modal-title">Nueva asignatura</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-tabset>
+      <ngb-tab>
+        <ng-template ngbTabTitle><p>Principal</p></ng-template>
+          <ng-template ngbTabContent><!---->
+            <div class="modal-body">
+              <app-form (sucessEvent)="getInsertAsignatura($event)"  [idAsignatura]="idAsignaturaSelected" [tipoForm]="1" [idPlanOrdenSelected]="idPlanOrdenSelected"></app-form>
+            </div>
+          </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</ng-template>
+<ng-template #modalTroncoComun let-c="close" let-d="dismiss" class="modal-lg">
+  <div class="modal-header">
+    <h4 class="modal-title">Agregar asignatura existente</h4>    
+  </div>
+  <div class="modal-body mx-4 mb-3">
+    <app-consulta-asignatura [nivel]="4" [tipo]="'small'" (sucessEvent)="getDatos($event)"></app-consulta-asignatura>
+    <div class="row mt-3">
+      
+      <div class="col-12">
+        <label>5. Selecciona una acción</label>
+      </div>
+      <div class="col-6 text-center">
+        <button class="btn" [ngClass]="tipoCopia == 2 ? ' btn-info' : '' " (click)="tipoCopia=2">
+          <i class="fa fa-external-link"></i>
+          Tomar como referencia
+        </button>
+      </div>
+      <div class="col-6 text-center">
+        
+        <button class="btn" [ngClass]="tipoCopia == 3 ? 'btn-warning' : '' "  (click)="tipoCopia=3">
+          <i class="fa fa-copy"></i>
+          Hacer una copia
+        </button>    
+      </div>
+      <div class="col-12 mt-3">
+        <div class="alert alert-info" *ngIf="tipoCopia == 2">
+          <p><b>Tomar como referencia</b><br>
+            La misma asignatura se ocupa en ambos planes de estudios
+          </p>
+        </div>
+        <div class="alert alert-warning" *ngIf="tipoCopia == 3">
+          <p><b>Hacer una copia</b><br>
+            Se realiza un clon de la asignatura. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <button [hidden]="tipoAdmin == 0" [disabled]="(tipoCopia != 2 && tipoCopia != 3 ) || cargandoAsignatura" class="btn btn-success pull-right mt-3" (click)="guardarAsignaturaExistente()"><i *ngIf="cargandoAsignatura" class="fa fa-spin fa-spinner"></i> Guardar información</button>
+  </div>
+</ng-template>
+<!--ng-template #content1 let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Nuevo Grado</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-form-orden-jerarquico  (sucessEvent)="getInsertOrden($event)"  [idOrdenJerarquico]="idOrdenJerarquicoSelected"></app-form-orden-jerarquico>
+  </div>
+</ng-template-->

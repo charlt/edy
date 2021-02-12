@@ -1,0 +1,91 @@
+    <form *ngIf="usuarioForm" [formGroup]="usuarioForm" (ngSubmit)="enviarInformacion()">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group mb-2">
+                    <label class="control-label">Rol</label>
+                    <select formControlName="catRoles" class="form-control"
+                        (change)="cambiaValidacion(f.catRoles.value)">
+                        <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+                        <option [value]="rol.rol_id" *ngFor="let rol of roles">{{rol.rol}}</option>
+                    </select>
+                    <span class="invalidText" *ngIf="f.catRoles.invalid && f.catRoles.touched">
+                        {{'fmErrSelect' | translate}}
+                    </span>
+                </div>
+                <div [hidden]="f.catRoles.value != 3">
+                    <label><input type="checkbox" formControlName="muestraClave"> ¿Deseas agregar la clave manualmente?</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div [hidden]="f.catRoles.valid && f.catRoles.value == 1  || !f.muestraClave.value" class="col-md-12">
+                <label *ngIf="f.catRoles.value == 2" class="control-label">{{'matrícula' | translate}}</label>
+                <label *ngIf="f.catRoles.value != 2" class="control-label">{{'clave' | translate}}</label>
+                <input formControlName="clave" class="form-control">
+            </div>
+        </div>
+        <div class="row" [hidden]="f.catRoles.value != 1">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">{{'TypeRol' | translate}}</label>
+                    <select formControlName="catArea" class="form-control">
+                        <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+                        <option [value]="area.area_id" *ngFor="let area of areas">{{area.area_nombre}}</option>
+                    </select>
+                    <span class="invalidText" *ngIf="f.catArea.invalid && f.catArea.touched">
+                        {{'fmErrSelect' | translate}}
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Tipo de consulta</label>
+                    <select formControlName="tipoConsulta" class="form-control">
+                        <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+                        <option [value]="1">Consulta</option>
+                        <option [value]="2">Consulta y edición</option>
+                    </select>
+                    <span class="invalidText" *ngIf="f.tipoConsulta.invalid && f.tipoConsulta.touched">
+                        {{'fmErrSelect' | translate}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="f.catRoles.value == 2">
+            <!--app-consulta-asignatura [tipo]="'small'" [parentForm]="usuarioForm" [nivel]="3"></app-consulta-asignatura-->
+            <label>Matrícula</label>
+            <input formControlName="clave" class="form-control" placeholder="{{'matricula' | translate}}">
+        </div>
+        <!--div class="row" *ngIf="f.catRoles.value == 2">
+            <div class="col-12">
+                <label><input type="checkbox" formControlName="campusUs">¿Deseas agregar a campus?</label>
+            </div>
+            <div class="col-12" [hidden]="!f.campusUs.value" rel="1">
+                <label class="control-label" for="">Campus</label>
+                <select formControlName="campus" class="form-control">
+                    <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+                    <option [value]="_campus.campus_id" *ngFor="let _campus of campus">{{_campus.campus}}</option>
+                </select>
+                <span class="invalidText" *ngIf="f.campus.invalid && f.campus.touched">
+                    {{'fmErrSelect' | translate}}
+                </span>
+            </div>
+        </div--><hr>
+        <div class="row">
+            <div class="col-md-12">
+                <button [hidden]="tipoAdmin == 0" [disabled]="buttonDisabled || loading" type="submit"
+                    class="btn btn-success pull-right"><i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                    {{'fmSave' | translate}}</button>
+            </div>
+        </div>
+    </form>
+<!-- <div *ngIf="registroExitoso" class="col col-xl-12 col-lg-12">
+    <div class="alert alert-success text-center">
+        <h1><i class="fa fa-check"></i></h1>
+        <h3>Registro exitoso</h3>
+        <p>Se ha creado el usuario exitosamente, estas son las credenciales</p>
+        <h5>Usuario: {{usuario}}</h5>
+        <h5>Contraseña: {{password}}</h5><br>
+        <button class="btn btn-success" (click)="redireccion()">Continuar</button>
+    </div>
+</div> -->

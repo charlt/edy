@@ -1,0 +1,25 @@
+<router-outlet *ngIf="statusWindow"></router-outlet>
+<div class="fondo" *ngIf="!statusWindow">
+    <div class="d-flex justify-content-center">
+        <div class="card w-25 p-5 text-center mt-5">
+            <div class="card-body">
+                <p class="font-weight-bold">{{messageTitle}}</p>
+                <p>{{messageText}}</p>
+                <!-- <button class="btn btn-info" (click)="chargePage()">Usar aquí</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #modalSesion let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h5 class="modal-title">{{'HeaderSessionExpired' | translate}}</h5> 
+    </div>
+    <div class="modal-body">
+        {{'BodySessionExpired' | translate}}<hr>
+        <app-basic-login (login)="reLogged($event)"></app-basic-login>
+    </div>
+    <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" [routerLink]="['/login']" (click)="onLoggedout(); c('Close click')">Salir de la plataforma</button>
+    </div>
+</ng-template>

@@ -1,0 +1,38 @@
+<div class="row">  
+  <div class="col-12 col-xl-12 col-lg-12">
+    <h4>{{title}}</h4><br>
+    <form *ngIf="flag" [formGroup]="alumnoForm" (ngSubmit)="sendInfo()" class="row">
+      <div class="form-group mt-2" [className]="Sizes[item['size']]" *ngFor="let item of FormData.first; let i = index">
+        <div *ngIf="item['type'] != 'select' && item['type'] != 'radio' && item['type'] != 'checkbox'">
+          <label class="control-label"><span *ngIf="item['required']">* </span>{{item['label']}}</label>
+          <input [formControlName]="item['control']" [className]="item['class']" [type]="item['type']"
+            [attr.placeholder]="item['label']">
+          <span class="invalidText" *ngIf="c[item.control].invalid && c[item.control].touched">
+            {{ item['error'] | translate}}
+          </span>   
+        </div>    
+        <div *ngIf="item['type'] == 'select'"> 
+          <label class="control-label"><span *ngIf="item['required']">* </span>{{item['label']}}</label>
+          <select [formControlName]="item['control']" [className]="item['class']" name="cat_situacion" id="cat_situacion">
+            <option value="" hidden disabled>Selecciona una opción</option>
+            <option *ngFor="let situacion of Situacion; let i = index" [value]="situacion['situacion_alumno_id']">
+              {{situacion['situacion_alumno_descripcion']}}
+            </option>
+          </select>
+        </div> 
+      </div> 
+      <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12">
+        <app-consulta-asignatura [parentForm]="alumnoForm" [nivel]="2" [tipo]="'select_alumno'"></app-consulta-asignatura>
+      </div>
+      <div class="form-group mt-2" [className]="item['size']" *ngFor="let item of FormData.last; let i = index">
+        <div *ngIf="item['type'] == 'checkbox'" class="custom-control custom-checkbox ml-3">
+          <input [formControlName]="item['control']" type="checkbox" class="custom-control-input t-3" id="correo" name="correo">
+          <label class="custom-control-label" for="correo">{{item['label']}}</label>
+        </div>
+      </div>
+      <div class="col-12 mt-3">
+        <button class="btn btn-success pull-right" type="submit" [disabled]="alumnoForm.invalid">Guardar información</button>
+      </div>             
+    </form> 
+  </div> 
+</div>

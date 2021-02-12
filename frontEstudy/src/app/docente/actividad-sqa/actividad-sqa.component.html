@@ -1,0 +1,107 @@
+
+<div class="row">
+  <div class="col-md-12">
+        <h2>Actividad SQA</h2>
+  </div>
+  <div class="col-md-6" >
+      <app-encabezado-persona *ngIf="idAlumno !== undefined" [idPersona]="idAlumno" [idRol]="2"></app-encabezado-persona>
+  </div>
+</div>
+<div [hidden]="estatusActividad==4" *ngIf="sqam3 && sqam3.length > 0" class="row">
+    <div  class="col-md-12 text-center">
+        <p *ngIf="!valor">{{'_sinCalificar' | translate}}</p>
+        <h4 *ngIf="valor">{{valor}}</h4>
+
+        <button class="btn btn-success btn-lg my-3" type="submit" id="button-addon2" (click)="guardarCalificacion()">{{'_guardarCalificacion'| translate }}</button>
+    </div>
+    
+</div>
+<div class="row" >
+  <div class="col-md-12 text-center" *ngIf="estatusActividad==4">
+      <label><b>{{'calificacionActividad' | translate}}</b></label>
+      <h4 class="col-md-12 text-center" >{{calif}}</h4>
+  </div>
+</div>
+
+<div class="row" >
+
+  <div  *ngIf="sqam1 && sqam1.length > 0 " class="col-4" >
+    <br>
+    <h4>Momento 1:</h4> 
+    <div  *ngFor="let sqa of sqam1">
+      <p class="header-estudy" >
+         <span [innerHtml]="sqa.pregunta"></span></p>
+      <div class="alert alert-primary col-md-12" role="alert">
+          <b>Respuesta:</b>
+        <p [innerHtml]="sqa.respuesta"></p>
+      </div>
+    </div>
+  </div>
+  <div  *ngIf="sqam2 && sqam2.length > 0" class="col-4" >
+      <br>
+      <h4>Momento 2:</h4> 
+      <div  *ngFor="let sqa of sqam2">
+        <p class="header-estudy" >
+          <span [innerHtml]="sqa.pregunta"></span></p>
+        <div class="alert alert-primary col-md-12" role="alert">
+            <b>Respuesta:</b>
+          <p [innerHtml]="sqa.respuesta"></p>
+        </div>
+      </div>
+    </div>
+    <div  *ngIf="sqam3 && sqam3.length > 0" class="col-4" >
+    <form [formGroup]="finalForm" (ngSubmit)="enviarInformacion()">
+        <div [hidden]="estatusActividad==4" class="form-group"> 
+        <select class="form-control"  formControlName="valor" (change)="valor = f.valor.value * 10">
+            <option value="" >Selecciona</option>
+            <option *ngFor="let metrica of metricaCalif; let i = index" value="{{metrica.valor}}">{{metrica.texto}}</option>
+            <!-- <option value="0.00">0.0</option>
+            <option value="0.50">5.0</option>
+            <option value="0.60">6.0</option>
+            <option value="0.65">6.5</option>
+            <option value="0.70">7.0</option>
+            <option value="0.75">7.5</option>
+            <option value="0.80">8.0</option>
+            <option value="0.85">8.5</option>
+            <option value="0.9">9.0</option>
+            <option value="0.95">9.5</option>
+            <option value="1.00">10.0</option> -->
+        </select>
+        <span class="invalidText" *ngIf="f.valor.invalid && f.valor.touched">
+          {{'fmErrSelect' | translate}}
+        </span>
+        </div>
+        
+        <h4>Conclusión:</h4> 
+        <div  *ngFor="let sqa of sqam3">
+          <p class="header-estudy" >
+            <span [innerHtml]="sqa.pregunta"></span></p>
+          <div class="alert alert-primary col-md-12" role="alert">
+              <b>Respuesta:</b>
+            <p [innerHtml]="sqa.respuesta"></p>
+          </div>
+        </div>
+        <div [hidden]="estatusActividad==4" class="form-group">
+        <textarea class="form-control" formControlName="nota" name="textarea" rows="10" cols="30" placeholder="{{'Ingresaretroalimentacion' | translate}}">...</textarea>
+        <span class="invalidText" *ngIf="f.nota.invalid && f.nota.touched">
+          {{'Ingresaretroalimentacion' | translate}}
+        </span>
+        </div>
+        <!-- <span class="invalidText" *ngIf="f.textarea.invalid && f.textarea.touched">
+            {{'fmErrSelect' | translate}}
+          </span> -->
+        <!-- <div class="row">
+            <div class="col">
+                <retroalimentacion [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id"></retroalimentacion>
+            </div>
+          </div> -->
+  
+    </form>
+  </div>
+
+
+      
+</div  >
+
+
+ 

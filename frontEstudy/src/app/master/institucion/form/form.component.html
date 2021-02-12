@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-12 editar-ciclo"> 
+    <form [formGroup]="institucionForm"  (ngSubmit)="enviarInformacion()">
+      <div class="col-md-6"><br>
+        <div class="form-group">                               
+          <label class="control-label  " for="">{{'fmCvInstitucion' | translate}}:</label>
+          <input formControlName="cvInstitucion" class="form-control" placeholder="{{'fmCvInstitucion' | translate}}" type="text" required>
+          <span class="invalidText" *ngIf="f.cvInstitucion.invalid && f.cvInstitucion.touched">
+              {{'fmErrKey' | translate}}
+          </span>
+        </div>
+        <div class="form-group">                               
+          <label class="control-label  " for="">{{'TbInstitucion' | translate}}:</label>
+          <input formControlName="nombreInstitucion" class="form-control"  placeholder="{{'TbInstitucion' | translate}}" type="text" required>
+          <span class="invalidText" *ngIf="f.nombreInstitucion.invalid && f.nombreInstitucion.touched">
+            {{'fmErrName' | translate}}
+          </span>
+        </div>
+        <div class="form-group " rel="1">
+          <label class="control-label" for="">{{'fmTipoInstitucion' | translate}}:</label>
+          <select  formControlName="tipoInstitucion"  class="form-control"  >
+            <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+            <option  [value]="instituciones.tipo_institucion_id" *ngFor="let instituciones of institucion">{{instituciones.tipo_institucion}}</option>
+          </select>
+          <span class="invalidText" *ngIf="f.tipoInstitucion.invalid && f.tipoInstitucion.touched">
+            {{'fmOptSelect' | translate}}
+          </span>
+        </div><br>
+          <button type="submit" class="btn btn-primary pull-right guardar-info">{{'fmSave' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</div>

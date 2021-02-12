@@ -1,0 +1,102 @@
+<div class="container" >
+  <div class="row">
+    <div class="col-12">
+      <h4 >{{title}}</h4>
+    </div>
+  </div>
+  
+  <div class="row" *ngIf="paso == 1">
+    <div class="col-12 alert alert-danger text-center"  *ngIf="!(actividades && actividades.length)">
+      <h4>Importante</h4>
+      <p>Antes de realizar el cálculo de calificaciones, es necesario tener actividades y calificaciones cargadas en esta asignatura del grupo</p>
+      <button  (click)="paso = 2" class="btn btn-success">Entiendo y deso continuar de todos modos</button>
+    </div>
+    <div class="col-12 "  *ngIf="actividades && actividades.length">
+      <div class="alert alert-warning text-center">
+        <h4>Importante</h4>
+        <p>Antes de realizar el cálculo de calificaciones, es necesario establecer una <b>suma total de 100% en las actividades</b></p>
+      </div>
+      <table class="table">
+        <thead >
+          <tr>
+            <td>
+              Nombre de la actividad
+            </td>
+            <td>
+              Ponderación (%)
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr [ngClass]="actividad.tipo_actividad_id == '5'? 'alert-info  font-weight-bold':''" *ngFor="let actividad of actividades">
+            <td >
+              {{actividad.actividad_nombre}}
+            </td>
+            <td>
+              <input [(ngModel)]="actividad.ponderacion" (keyup)="suma()" class="form-control" [disabled]="actividad.tipo == '1' && idRol == 3">
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr >
+            <td></td>
+            <td>
+              <b>Suma: {{ponderacionTotal}}</b>
+              <button [hidden]="tipoAdmin == 0" [disabled]="ponderacionTotal != 100 "  (click)="guardarPonderaciones()" class="btn btn-success float-right">Guardar</button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+  </div>
+    
+  <div class="row" *ngIf="paso == 2">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <p>Selecciona el metodo de cálculo</p>
+        </div>
+        <div class="col-4 p-3">
+          <div class="alert  text-center" [ngClass]="tipoCalculo == 1 ? 'alert-warning':'alert-secondary'" style="cursor: pointer;" (click)="tipoCalculo = 1">
+            <h4>Revisión parcial</h4>
+            <p>Se hace el cálculo de la calificación para alumnos que hayan completado sus actividades al 100%. Los demás alumnos permanecen sin calificación  </p>
+          </div>
+        </div>
+        <div class="col-4 p-3">
+          <div class="alert  text-center" [ngClass]="tipoCalculo == 2 ? 'alert-warning':'alert-secondary'" style="cursor: pointer;" (click)="tipoCalculo = 2">
+            <h4>Revisión Total</h4>
+            <p>Se hace el cálculo de la calificación para <b>todos</b> los alumnos en la asignatura, incluidos los que no han completado sus actividades </p>
+          </div>
+        </div>
+        <div class="col-4 p-3" >
+          <div class="alert  text-center" [ngClass]="tipoCalculo == 3 ? 'alert-danger':'alert-secondary'" style="cursor: pointer;" (click)="tipoCalculo = 3">
+            <h4 *ngIf="tipo == 1">Cierre del grupo</h4>
+            <h4 *ngIf="tipo ==2">Cierre de la asignatura</h4>
+            <p>Realiza el cálculo completo, se guardan las calificaciones en el historial y se cierra        
+            <span *ngIf="tipo ==1">el grupo completo</span>
+            <span *ngIf="tipo ==2">la asignatura</span>. <b>Está acción solo puede hacerse una vez</b>
+              
+            
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button  [disabled]="procesando" type="submit" class="btn btn-success float-right" (click)="realizarCalculo()">
+            <i *ngIf="procesando" class="fa fa-spin fa-spinner"></i>
+            Realizar cálculo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="paso == 3">
+    <div class="col-12 text-center">
+      <div class="alert alert-danger">
+        <p *ngIf="tipo == 1">Grupo cerrado</p>
+        <p *ngIf="tipo ==2">Asignatura cerrada</p>
+      </div>
+    </div>
+  </div>
+</div>

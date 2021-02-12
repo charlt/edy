@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Rol</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rol of Roles; let i = index;">
+            <td>{{rol['rol']}}</td>
+            <td class="text-center"><button class="btn btn-info" (click)="openModalEdita(contentEdita, rol.rol_id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+            <td class="text-center"><button class="btn btn-danger" (click)="elimina(rol.rol_id)"><i class="fa fa-times"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-success pull-right" (click)="openModalAgregar(content)"><i class="fa fa-plus"></i> Agregar rol</button>
+  </div>
+</div>
+
+<ng-template #contentEdita let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edita rol</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body m-3">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <app-edita-rol-usuario [idRol]="id_rol" [idUsuario]="idUsuario" [idPersona]="idPersona"></app-edita-rol-usuario>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close()">Salir</button>
+  </div>
+</ng-template>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Agregar roles</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body m-3">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <form [formGroup]="rolForm" (ngSubmit)="agrega()">
+        <div class="form-group">
+          <label class="control-label">Elige el rol que se agregará</label>
+          <select class="form-control" formControlName="rol">
+            <option value="" selected disabled hidden>{{ 'fmOptSelect' | translate }}</option>
+            <option [value]="rol.rol_id" *ngFor="let rol of catRoles">{{rol.rol}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Ingresa la clave/matricula</label>
+          <input class="form-control" formControlName="clave_usuario" >
+        </div>
+        <button class="btn btn-success pull-right mt-3" type="submit" [disabled]="rolForm.invalid">Guardar información</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close()">Salir</button>
+  </div>
+</ng-template>

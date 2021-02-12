@@ -1,0 +1,47 @@
+
+<div class="row">
+  <div class="col-md-4">
+    <b [innerHTML]="Positivo"></b>
+    <div  *ngIf="edicion" class="form-group" >
+      <input hidden [(ngModel)]="idPositivo">
+      <ckeditor [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}" 
+        
+        [(ngModel)]="respuestaP" name="Positivo" id="Positivo"  (blur)="guardarBorrador(Positivo)" ></ckeditor>
+    </div>
+    <div  *ngIf="!edicion && respuestaP" class=" alert alert-info" [innerHTML]="respuestaP" >
+    </div>
+    <div *ngIf="!edicion && !respuestaP" class="aler alert-secondary" >
+        <div class="alert alert-secondary mt-3">No se puede responder la pregunta.</div>
+      </div>
+  </div>
+  
+  <div class="col-md-4">
+    <b [innerHTML]="Negativo"></b>
+    <div  *ngIf="edicion" class="form-group">
+      <input hidden [(ngModel)]="idNegativo">
+      <ckeditor [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}" 
+           
+        [(ngModel)]="respuestaN" name="Negativo" id="Negativo"  (blur)="guardarBorrador(Negativo)" ></ckeditor>
+    </div>
+    <div  *ngIf="!edicion && respuestaN" class="alert alert-info" [innerHTML]="respuestaN" >
+    </div>
+    <div *ngIf="!edicion && !respuestaN" class="aler alert-secondary" >
+        <div class="alert alert-secondary mt-3">No se puede responder la pregunta.</div>
+      </div>
+  </div>
+  <div class="col-md-4">
+    <b [innerHTML]="Interesante"></b>
+    <div *ngIf="edicion" class="form-group" >
+      <input hidden [(ngModel)]="idInteresante">
+      <ckeditor [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}"   
+        (ready)="editorCargado($event)"
+       [(ngModel)]="respuestaI" name="Interesante" id="Interesante" (blur)="guardarBorrador(Interesante)" ></ckeditor>
+    </div>
+    <div *ngIf="!edicion && respuestaI" class="alert alert-info" [innerHTML]="respuestaI" >
+    </div>
+    <div *ngIf="!edicion && !respuestaI" class="aler alert-secondary" >
+      <div class="alert alert-secondary mt-3">No se puede responder la pregunta.</div>
+    </div>
+    
+  </div>
+</div>

@@ -1,0 +1,159 @@
+@import "../../../shared/styles/forms.component.scss";
+
+
+
+@media print {
+    @page {
+        size: Letter landscape; 
+      }
+     .reference{
+         text-align: right;
+     }
+     .form{
+		 visibility: visible;
+		//  margin-top: 21%;
+     }
+     .no-print{
+         visibility: hidden;
+     }
+     .imprimir{
+         margin-top: -289%;
+         visibility: visible;
+	 }
+	 .iframe{
+		 visibility: hidden;
+	 }
+	 .codigo_promocion{
+		visibility: hidden;
+	 }
+
+	 .datos{
+		margin-top: 25%;
+	 }
+}
+
+@media screen {
+	.pagina {
+		display: none;
+	}
+ }
+
+.pagina {
+
+	h2 {
+		font-size:22px;
+		font-weight:lighter;
+	}
+	h3 {
+		font-size:20px;
+		margin:15px 0 0 0;
+	}
+	h4 {
+		font-size:16px;
+		margin:8px 0;
+	}
+
+	.small {
+		font-size: 9px;
+	}
+
+	td {
+		padding: 10px 8.5% 10px 8.5%;
+	}
+
+	li {
+		margin-top: 2px;
+	}
+
+	font-family:Helvetica, Arial, sans-serf;
+
+	.logos-tiendas {
+		clear:both;
+		float:left;
+		width:100%;
+		padding:10px 0 10px 8%;
+		border-top:1px solid #EDEDED;
+		border-bottom:1px solid #EDEDED;
+		margin:20px 0 0 0;
+	}
+	.logos-tiendas div {
+		float:left;
+		margin-right:50px;
+	}
+	.logos-tiendas small {
+		font-size:11px;
+		margin-left:20px;
+		float:left;
+	}
+	.logos-tiendas ul {
+		margin: 0;
+		list-style: none;
+		padding: 0;
+		width: 480px;
+		float: left;
+	}
+	.logos-tiendas li {
+		float: left;
+		margin: 10px 10px 0 10px;
+	}
+}
+
+
+.logo_empresa {
+	height: 80px;
+}
+
+.logo_paynet {
+	height: 60px;
+}
+
+// .cuadro {
+// 	width:40px;
+// 	// float:left;
+// 	// margin-right:24px;
+// }
+
+// .cuadro span, .col2 {
+// 	background-color:#f9b317;
+// }
+.cuadro {
+	// background-color:rgb(249, 179, 23);
+	height: 55px;
+	// display: block;
+}
+
+.azul {
+	width: 75%;
+	background-color: #007bff;
+}
+
+.gris {
+	width: 100%;
+	// background-color: #f8f9fa;
+}
+
+.tabla{
+    display: table;
+    height: 55px;
+}
+
+.tabla div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.bg-light-1 {
+	background-color: #f3f3f3;
+}
+
+.bg-light-2 {
+	background-color: #ebebeb;
+}
+
+.font-11 {
+	font-size: 11px;
+}
+
+.font-13 {
+	font-size: 13px;
+}

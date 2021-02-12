@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-6 carreras">              
+    <form [formGroup]="campusForm" *ngIf="campusForm" (ngSubmit)="enviarInformacion()" >
+      <div class="form-group">
+        <label class="control-label">{{'KeyCampus' | translate}}</label>
+        <input formControlName="claveCampus" class="form-control" placeholder="{{'KeyCampus' | translate}}" type="text" required="">
+        <span class="invalidText" *ngIf="f.claveCampus.invalid && f.claveCampus.touched">
+            {{'fmErrNumber' | translate}}
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="nombre_carrera">{{'NameCampus' | translate}}</label>
+        <input formControlName="nombreCampus" class="form-control" placeholder="{{'NameCampus' | translate}}" type="text" required="">
+        <span class="invalidText" *ngIf="f.nombreCampus.invalid && f.nombreCampus.touched">
+            {{'fmErrField' | translate}}
+        </span>
+      </div> 
+      <div class="form-group my-2">
+        <div class="form-check form-check-inline">
+          <input formControlName="online" class="form-check-input" type="checkbox" id="checkboxOnline">
+          <label class="form-check-label" for="checkboxOnline">Campus online</label>
+        </div>
+      </div>   
+      <div class="form-group">
+        <label>{{'Tipo de campus' | translate}}</label>
+        <select class="form-control" formControlName="tipoCampus">
+          <option value="" hidden>Selecciona una opción</option>
+          <option [value]="tipo.tipo_campus_id" *ngFor="let tipo of catTipoCampus; let i = index;">{{tipo.tipo_campus}}</option>
+        </select>
+      </div>         
+      <button [hidden]="tipoAdmin == 0" [disabled]="campusForm.invalid" type="submit" class="btn btn-primary pull-right guardar-plan-estudios mt-2">{{'fmSave' | translate}}</button>
+      <br>
+    </form>
+  </div>
+</div>

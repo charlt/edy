@@ -1,0 +1,261 @@
+  
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <p>Realiza el pago y una vez que tengas el comprobante, adjuntalo en este apartado y espera a que sea validado por un administrador.</p>
+    </div>
+    <div class="col-md-6 form" *ngIf="transferencias && transferencias.length > 0 " > 
+      <div *ngFor="let transferencia of transferencias">
+        <ul class="list-group list-group-flush datos">
+          <li class="list-group-item active">Ficha de pago</li>
+          <li class="list-group-item"><b class="float-left"> Monto:</b>
+            <p class="float-right">
+              <span>${{monto}}</span></p>
+          </li>
+          <li class="list-group-item"><b class="float-left"> Banco:</b>
+            <p class="float-right">{{transferencia.banco}}</p>
+          </li>
+          <li class="list-group-item"><b class="float-left"> Beneficiario:</b>
+            <p class="float-right">{{transferencia.beneficiario}}</p>
+          </li>
+          <li class="list-group-item"><b class="float-left"> CLABE:</b>
+            <p class="float-right"> {{transferencia.clabe}}</p>
+          </li>
+          <li class="list-group-item"><b class="float-left"> Referencia:</b><span
+              class="float-right reference">{{identity.nombre + ' ' + identity.primer_apellido + ' ' + identity.segundo_apellido }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="row d-print-none">
+        <div class="col-md-12 text-center">
+          <button [disabled]="imprimiendo" class="btn btn-success form pull-right" (click)="imprimir();">
+            <span *ngIf="!imprimiendo">Imprimir</span>
+            <span *ngIf="imprimiendo"><i class="fa fa-spinner fa-pulse"></i> Imprimiendo</span>
+          </button><br><br>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 d-print-none">
+      <div *ngIf="comprobanteExitoso" class="alert alert-success text-center">
+        <h1><i class="fa fa-check"></i></h1>
+        <h4>Comprobante adjuntado exitosamente</h4>
+      </div>
+      <form *ngIf="!comprobanteExitoso" [formGroup]="tranferenciaForm" (ngSubmit)="enviarInformacion()">
+        
+        <div class="form-group">
+          <label class="control-label" for="">Comprobante de pago</label>
+          <app-file-upload formControlName="contenido"></app-file-upload>
+        </div><br>
+        <button [disabled]="isDisabled || cargando " class="btn btn-success pull-right" type="submit"><i *ngIf="cargandop" class="fa fa-spin fa-spinner"></i> Enviar comprobante</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row pagina mt-0 pt-0" *ngIf="bandera">
+    <div class="col-12 mt-0 pt-0">
+      <div class="row mb-2">
+        <div class="col-6 ml-0 pl-0">
+          <img class="logo_empresa" src="assets/images/logo.png" alt="Logo">
+        </div>
+        <div class="col-6 p-0 m-0">
+          <!-- <img class="logo_empresa pull-right" src="assets/images/logo.png" alt="Logo"> -->
+
+          <!-- <div class="d-flex flex-row justify-content-end bd-highlight mb-3">
+            <div class="bd-highlight mt-5 pr-3">
+              Servicio a pagar
+            </div>
+            <div class="bd-highlight mt-4">
+              <img class="logo_paynet pull-right" src="http://localhost/estudy_new/assets/openpay/images/paynet_logo.png" alt="Logo Paynet">
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1 pl-0">
+          <div class="cuadro azul"></div>
+        </div>
+        <div class="col-5 pl-0">
+          <h3>Fecha límite de pago</h3>
+          <h4>{{fecha_limite | date: 'dd/MM/yyyy hh:mm a' }}</h4>
+          <img [src]="Datos.pago.barcode_url" alt="Código de Barras">
+          <div><p class="font-13">{{Datos.pago.reference}}</p></div>
+          <p class="small mb-0 pb-0">En caso de que el escáner no sea capaz de leer el código de barras, escribir la referencia tal como se muestra.</p>
+        </div>
+        <div class="col-6 bg-primary text-white">
+          <div class="container px-3 pt-4">
+            <h2>Total a pagar</h2>
+            <h1>${{stringMonto}}<span style="font-size: 30px">.00</span><small style="font-size: 22px"> MXN</small></h1>
+            <p class="font-11">La comisión por recepción del pago varía de acuerdo a los términos y condiciones que cada cadena comercial establece.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1" style="margin-top: 55px;">
+        <div class="col-1 pl-0">
+          <div class="cuadro azul"></div>
+        </div>
+        <div class="col-11 pl-0">
+          <h3>Detalles de la compra</h3>
+        </div>
+      </div>
+      <div class="row" *ngFor="let fila of Tabla; let i = index;">
+        <div class="col-1 px-0">
+          <div class="cuadro" [ngClass]="i == 1? 'bg-light-2': 'bg-light-1'"></div>
+        </div>
+        <div class="col-4 pl-0" [ngClass]="i == 1? 'bg-light-2': 'bg-light-1'">
+          <div class="tabla">
+            <div>{{fila.titulo}}</div>
+          </div>
+        </div>
+        <div class="col-7" style="border-left: 2px solid white" [ngClass]="i == 1? 'bg-light-2': 'bg-light-1'">
+          <div class="tabla pl-4">
+            <div *ngIf="i != 1">{{fila.valor}}</div>
+            <div *ngIf="i == 1">{{fila.valor | date: 'dd/MM/yyyy hh:mm a'}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col-1 pl-0">
+          <div class="cuadro azul"></div>
+        </div>
+        <div class="col-5 pl-0">
+          <h3 class="mb-3">Como realizar el pago</h3>
+          <ol class="pl-3 font-11">
+            <li>Acude a cualquier tienda afiliada</li>
+            <li>Entrega al cajero el código de barras y menciona que realizarás un pago de servicio Paynet</li>
+            <li>Realizar el pago en efectivo por ${{stringMonto}}.00 MXN </li>
+            <li>Conserva el ticket para cualquier aclaración</li>
+          </ol>
+          <p class="font-11">Si tienes dudas comunícate a e-Study al teléfono TELEFONO TIENDA o al correo CORREO SOPORTE TIENDA</p>
+        </div>
+        <div class="col-6">
+          <h3 class="mb-3">Instrucciones para el cajero</h3>
+          <ol class="pl-3 font-11">
+            <li>Ingresar al menú de Pago de Servicios</li>
+            <li>Seleccionar Paynet</li>
+            <li>Escanear el código de barras o ingresar el núm. de referencia</li>
+            <li>Ingresa la cantidad total a pagar</li>
+            <li>Cobrar al cliente el monto total más la comisión</li>
+            <li>Confirmar la transacción y entregar el ticket al cliente</li>
+          </ol>
+          <p class="font-11">Para cualquier duda sobre como cobrar, por favor llamar al teléfono +52 (55) 5351 7371 en un horario de 8am a 9pm de lunes a domingo</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center mt-3">
+          <img height="140" [src]="url + 'assets/openpay/images/Horizontal_1.gif'" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="whitepaper">
+    <div class="Header">
+    <div class="Logo_empresa">
+        <img src="assets/images/logo.png" alt="Logo">
+      </div>
+      <div class="Logo_paynet">
+        <div>Servicio a pagar</div>
+        <img src="http://localhost/estudy_new/assets/openpay/images/paynet_logo.png" alt="Logo Paynet">
+      </div>
+      </div>
+      <div class="Data">
+        <div class="Big_Bullet">
+            <span></span>
+          </div>
+        <div class="col1">
+            <h3>Fecha límite de pago</h3>
+              <h4>30 de Noviembre 2018, a las 2:30 AM</h4>
+              <img width="300" src="https://api.openpay.mx/barcode/0129384756234859?height=30" alt="Código de Barras">
+            <p><span>0129384756234859</span></p>
+              <small>En caso de que el escáner no sea capaz de leer el código de barras, escribir la referencia tal como se muestra.</small>
+  
+          </div>
+          <div class="col2">
+            <h2>Total a pagar</h2>
+              <h1>$9,000<span>.00</span><small> MXN</small></h1>
+              <span class="note">La comisión por recepción del pago varía de acuerdo a los términos y condiciones que cada cadena comercial establece.</span>
+          </div>
+      </div>
+      <div class="DT-margin"></div>
+      <div class="Data">
+        <div class="Big_Bullet">
+            <span></span>
+          </div>
+        <div class="col1">
+            <h3>Detalles de la compra</h3>
+          </div>
+    </div>
+      <div class="Table-Data">
+        <div class="table-row color1">
+            <div>Descripción</div>
+              <span>Descripción de la compra realizada</span>
+          </div>
+        <div class="table-row color2">
+            <div>Fecha y hora</div>
+              <span>30 de Noviembre de 2018 a las 4:00 A.M.</span>
+          </div>
+        <div class="table-row color1">
+            <div>Correo del cliente</div>
+              <span>nombre@dominio.com</span>
+          </div>
+        <div class="table-row color2"  style="display:none">
+            <div>&nbsp;</div>
+              <span>&nbsp;</span>
+          </div>
+        <div class="table-row color1" style="display:none">
+            <div>&nbsp;</div>
+              <span>&nbsp;</span>
+          </div>
+      </div>
+      <div class="DT-margin"></div>
+      <div>
+          <div class="Big_Bullet">
+            <span></span>
+          </div>
+        <div class="col1">
+            <h3>Como realizar el pago</h3>
+              <ol>
+                <li>Acude a cualquier tienda afiliada</li>
+                  <li>Entrega al cajero el código de barras y menciona que realizarás un pago de servicio Paynet</li>
+                  <li>Realizar el pago en efectivo por $9,000.00 MXN </li>
+                  <li>Conserva el ticket para cualquier aclaración</li>
+              </ol>
+              <small>Si tienes dudas comunícate a NOMBRE TIENDA al teléfono TELEFONO TIENDA o al correo CORREO SOPORTE TIENDA</small>
+          </div>
+        <div class="col1">
+            <h3>Instrucciones para el cajero</h3>
+              <ol>
+                <li>Ingresar al menú de Pago de Servicios</li>
+                  <li>Seleccionar Paynet</li>
+                  <li>Escanear el código de barras o ingresar el núm. de referencia</li>
+                  <li>Ingresa la cantidad total a pagar</li>
+                  <li>Cobrar al cliente el monto total más la comisión</li>
+                  <li>Confirmar la transacción y entregar el ticket al cliente</li>
+              </ol>
+              <small>Para cualquier duda sobre como cobrar, por favor llamar al teléfono +52 (55) 5351 7371 en un horario de 8am a 9pm de lunes a domingo</small>
+          </div>
+      </div>
+  
+      <div class="logos-tiendas">
+  
+        <ul>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/01.png" width="100" height="50"></li>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/02.png" width="100" height="50"></li>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/03.png" width="100" height="50"></li>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/04.png" width="100" height="50"></li>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/05.png" width="100" height="50"></li>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/06.png" width="100" height="50"></li>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/07.png" width="100" height="50"></li>
+          <li><img src="http://localhost/estudy_new/assets/openpay/images/08.png" width="100" height="50"></li>
+        </ul>
+          <div style="height: 90px; width: 190px; float: right; margin-top: 30px;">
+            ¿Quieres pagar en otras tiendas? visítanos en: www.openpay.mx/tiendas
+          </div>
+  
+      </div>
+      <div class="Powered">
+        <img src="http://localhost/estudy_new/assets/openpay/images/powered_openpay.png" alt="Powered by Openpay" width="150">
+        <a href="#">Imprimir</a>
+        <a href="#">Seguir comprando</a>
+      </div>
+  </div> -->
+  <!-- <div style="height: 40px; width: 100%; float: left;"></div> -->

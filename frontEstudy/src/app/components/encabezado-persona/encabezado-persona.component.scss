@@ -1,0 +1,67 @@
+@import "../../app.component.scss";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+
+.imagenes{
+    width: 12.5%;
+}
+
+.texto{
+    width: 60%;
+}
+
+.fondo{
+ background-image: url("../../../assets/images/bg_alumno.png");
+ background-repeat: no-repeat;
+ background-color: white;
+ min-height: auto;
+ min-width: auto;
+ height: 150px;
+}
+
+.margen{
+    position: absolute;
+    margin-left: auto;
+    margin-top: auto;
+    display: block;
+    z-index: 1;
+}
+
+.icono{
+    position: absolute;
+    margin-left: 9%;
+    margin-top: auto;
+    display: block;
+    z-index: 2;
+}
+
+// div{
+//     border-color: black;
+
+// }
+
+.imagen_persona{
+    vertical-align:middle;
+    z-index: -1;
+}
+
+.nombre_persona{
+    font-family: 'Open Sans';
+    font-size: 24px;
+    src: local('Open Sans Regular'), local('OpenSans-Regular'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTa-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+.rol_persona{
+    font-family: 'Open Sans';
+    font-size: 16px;
+    src: local('Open Sans Regular'), local('OpenSans-Regular'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTa-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+.matricula{
+    font-family: 'Open Sans';
+    font-size: 16px;
+    src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTa-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}

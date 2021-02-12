@@ -1,0 +1,346 @@
+<div class="row">
+  <div class="col-md-12" style="display: contents;">
+  <div *ngIf="asignaturaGrupo" class="t" [ngClass]="(idRol == 3)? 'col-md-5': 'col-md-12'">
+    <h6> {{asignaturaGrupo.carrera}} - grupo {{asignaturaGrupo.grupo}} <span class="badge" [ngClass]="{'badge-danger' : asignaturaGrupo.situacion_asignatura_grupo_id == 4, 'badge-warning' : asignaturaGrupo.situacion_asignatura_grupo_id == 3 || asignaturaGrupo.situacion_asignatura_grupo_id == 2,'badge-success' : asignaturaGrupo.situacion_asignatura_grupo_id == 1}">{{asignaturaGrupo.situacion_asignatura_grupo_descripcion}}</span></h6>
+    <h4 class="header-estudy" style="width: auto;">{{asignaturaGrupo.asignatura}}</h4>
+    <p style="margin-bottom: 0px"> <b>{{'_vigenciaCiclo' | translate}}</b> : {{asignaturaGrupo.fecha_inicio_ciclo | date: 'dd/MM/yyyy'}} - {{asignaturaGrupo.fecha_fin_ciclo | date: 'dd/MM/yyyy'}}</p>
+    <p *ngIf="asignaturaGrupo.fecha_inicio  != '0000-00-00 00:00:00' && asignaturaGrupo.fin != '0000-00-00 00:00:00'"> <b>{{'_vigenciaAsignatura' | translate}}</b> : {{asignaturaGrupo.fecha_inicio | date: 'dd/MM/yyyy'}} - {{asignaturaGrupo.fecha_fin | date: 'dd/MM/yyyy'}}</p>
+  </div>
+  <div class="col-md-12" *ngIf="idRol == 1">
+    <button [routerLink]="['/admin/grupo/calculo/'+idAsignaturaGrupo+'/2']" class="btn btn-outline-info float-right">Cálculo de promedio final</button>
+  </div>
+  <div class="col-md-7 cuadro" *ngIf="idRol == 3">
+      <div class="btngroup pull-right" role="group" aria-label="Basic example" *ngIf="Privilegios">
+          <div *ngFor="let item of Privilegios">
+            <button [ngClass]="item['tooltip']? '_tooltip': ''" *ngIf="item['type'] == 'button'" type="button" class="btn btn-sm  {{item['class']}}" (click)="item['function']? this[item.function]() : false">
+              <div *ngIf="item['tooltip']" class="top">
+                {{item['tooltip']}}
+                <i></i>
+              </div>
+              <h4><i [className]="'fa ' + item['icon']"></i></h4>
+              <p><small>{{ item['label'] | translate }}</small></p>
+            </button>
+            <a [ngClass]="item['tooltip']? '_tooltip': ''" *ngIf="item['type'] == 'router'" [routerLink]="[item['url']]" class="btn btn-sm  {{item['class']}}">
+              <div *ngIf="item['tooltip']" class="top">
+                {{item['tooltip']}}
+                <i></i>
+              </div>
+              <h4><i [className]="'fa ' + item['icon']"></i></h4>
+              <p><small>{{ item['label'] | translate }}</small></p>
+            </a>
+            <a [ngClass]="item['tooltip']? '_tooltip': ''" *ngIf="item['type'] == 'href'" class="btn btn-sm {{item['class']}} " [href]="item['url']" target="_new">
+              <div *ngIf="item['tooltip']" class="top">
+                {{item['tooltip']}}
+                <i></i>
+              </div>
+              <h4><i [className]="'fa ' + item['icon']"></i></h4>
+              <p ><small>{{ item['label'] | translate }}</small></p>
+            </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!cargandoGrupo && !alumnos" class="alert alert-warning text-center" role="alert">{{'trabajoAsignatura' | translate}}</div>
+<div *ngIf="cargandoGrupo">
+  <div >
+    <i style="margin-left: 50%; margin-top: 20%; size: 20%;" class="fa fa-spin fa-spinner"></i>
+    <h5 style="margin-left: 31%;">{{'TiempoEspera' | translate}}</h5>
+  </div>
+</div>
+<div class="in" *ngIf="!cargandoGrupo">
+<div class="row">
+  <div class="col-12">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button *ngIf="idRol == 3" type="button" class="btn btn-info" [ngClass]="tipoConsulta == 1 ? 'active':''" (click)="consultaAlumnos(1)">Pendientes</button>
+      <button *ngIf="idRol == 3" type="button" class="btn btn-info" [ngClass]="tipoConsulta == 2 ? 'active':''" (click)="consultaAlumnos(2)">Mensajes sin leer</button>
+      <button type="button" class="btn btn-info" [ngClass]="tipoConsulta == 3 ? 'active':''" (click)="consultaAlumnos(3)">Retroalimentaciones</button>
+      <button type="button" class="btn btn-info" [ngClass]="tipoConsulta == 4 ? 'active':''" (click)="consultaAlumnos(4)">Todos</button>
+      <a type="button" class="btn btn-info" [routerLink]="['/docente/asistencia-alumno/'+idAsignaturaGrupo]">Asistencia</a>
+    </div>
+    <br><br>
+  </div>
+  
+  <div class="col-8">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" [formControl]="searchField" placeholder="{{'SearchInput' | translate}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <!-- <input type="text" class="form-control" [(ngModel)]="search" placeholder="{{'SearchInput' | translate}}" aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <ngb-pagination *ngIf="totalAlumnos >50" [collectionSize]="totalAlumnos" [pageSize]="paginacion" [(page)]="pagina" 
+        [maxSize]="paginacion" [rotate]="true" (pageChange)="consultaAlumnos(4)"></ngb-pagination>
+  </div>
+  
+  <div class="table-responsive tabla-grupo">
+    <table class="table table-bordered">
+    <thead class="thead-gray" >
+      <tr>
+        <th> # </th>
+        <!--th class="static tamT" scope="col">Nombre</th-->
+        <th class="static tamT" scope="col">Nombre</th>
+        <th class="tituloActividad first-col">Matricula</th>
+        <th class="tituloActividad" scope="col">Mensajes</th>
+        <th class="tituloActividad" [ngClass]="_actividad.tipo_actividad_id == 5 ? 'table-info':'' " *ngFor="let _actividad of actividad; let i = index;">
+          {{_actividad.actividad_nombre}}<br>
+          <i *ngIf="tipoConsulta == 4 && asignaturaGrupo && asignaturaGrupo.situacion_asignatura_grupo_id != 4" 
+            (click)="seleccionaSeccion(i, _actividad.modulo_id,_actividad.actividad_id,_actividad.tipo_actividad_id)" style="cursor: pointer;" class="fa fa-lg text-primary" 
+            [ngClass]="_actividad.tipo_actividad_id == 5? 'fa-calculator' : 'fa-pencil'" placement="top" 
+            [ngbTooltip]="_actividad.tipo_actividad_id == 5? 'Calcular calificaciones': 'Editar calificaciones'"></i> 
+          <i placement="top" ngbTooltip="Mostrar al alumno" *ngIf="tipoConsulta == 4 && _actividad.tipo_actividad_id == 5" class="fa fa-lg ml-2" [ngClass]="_actividad.visible == 1? 'fa-eye' : (_actividad.visible == 0? 'fa-eye-slash': '')" 
+            style="cursor: pointer;" (click)="editaVisible(i, _actividad.visible, _actividad.actividad_id)"></i>
+            <!-- <button type="button" class="btn btn-secondary" placement="top" ngbTooltip="Tooltip on top">
+              Tooltip on top
+            </button> -->
+        </th>
+        <th class="table-info tituloActividad">
+          <b>CALIFICACIÓN FINAL EN MATERIA</b> <br *ngIf="idRol == 1 || idRol == 3">
+          <i *ngIf="tipoConsulta == 4 && (idRol == 1 || idRol == 3)" (click)="editaCalificacion = !editaCalificacion" style="cursor: pointer;" class="fa fa-pencil fa-lg text-primary"></i>
+        </th>
+        <!--th class="tituloActividad" *ngIf="actividadSQA && actividadSQA.length == 3">Ejercicios SQA</th-->
+        <th class="tituloActividad" >Archivos</th>
+        <th class="tituloActividad" >Notas</th>
+      </tr>
+    </thead>
+    <tbody >
+      <!--tr *ngIf="(alumnos | filter: search).length === 0">
+        <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+      </tr-->
+      <tr *ngIf="!(alumnos && alumnos.length)">
+        <td colspan="20" class="text-center p-3">
+          <span *ngIf="tipoConsulta == 1"> <i class="fa fa-check"></i>Sin actividades pendientes </span>
+          <span *ngIf="tipoConsulta == 2"> <i class="fa fa-check"></i>Sin Mensajes pendientes </span>
+          <span *ngIf="tipoConsulta == 3"> <i class="fa fa-check"></i>Aún no cuentas con alumnos </span>
+        </td>
+      </tr>
+      <tr *ngFor="let _alumno of alumnos; let i = index">
+        <td class="text-center align-middle" >{{i + 1}}</td> 
+        <td class="align-middle static tam">
+          <a  href="javascript:void(0)" [routerLink]="['../../../../dashboard/'+_alumno.alumno_id]">
+            {{_alumno.primer_apellido}}
+            {{_alumno.segundo_apellido}}
+            {{_alumno.nombre}}
+          </a> 
+        </td>
+        <td class="text-right align-middle" >{{_alumno.clave_alumno}}</td>
+        <td>
+          <!-- <a [routerLink]="['../../../mensajeria/'+_alumno.materia_id]" class="notification">
+            <span  class="badge" 
+              [ngClass]="[_alumno.numero_mensajes > 0? 'badge-success' : 'badge-secondary']">{{_alumno.numero_mensajes}}</span>
+            <i class="fa fa-envelope"></i>
+          </a> -->
+          <a href="javascript:void(0)" class="notification" (click)="openMensajeria(modalMensajeria, _alumno.materia_id)">
+            <span *ngIf="_alumno.numero_mensajes.nuevos > 0" class="badge" 
+                [ngClass]="[_alumno.numero_mensajes.nuevos > 0?  'badge-info' : 'badge-secondary']">{{_alumno.numero_mensajes.nuevos}}</span>
+            <span *ngIf="_alumno.numero_mensajes.vistos > 0 && _alumno.numero_mensajes.nuevos == 0" class="badge" style="color:#71deff;"><i class="fa fa-circle" aria-hidden="true"></i></span>
+            <i class="fa fa-envelope"></i>  
+          </a>
+        </td>
+        <td class="text-center align-middle"  *ngFor="let _calificacion of _alumno.actividadesAlumno; let j = index;">
+          <!--div *ngIf="!actividad[j]['editar']"-->
+            <a  *ngIf="tipoConsulta != 3 && _calificacion && _calificacion.estatus_actividad_id == 0 && !actividad[j]['editar'] " [routerLink]="[urlRedirect+'/actividad/'+_calificacion.actividad_id+'/'+_alumno.materia_id]">
+              <span title="{{actividad[j].actividad_nombre}} | Sin realizar" *ngIf="_calificacion.tipo_actividad_id == 2">
+                <i class="fa fa-circle-o " style="color:  lightblue;"></i>
+              </span>
+              <span title="{{actividad[j].actividad_nombre}} | Sin realizar" *ngIf="_calificacion.tipo_actividad_id == 3">
+                <i  class="fa fa-circle  icon-incompleto" ></i>
+                <i  class="fa fa-circle  icon-incompleto" ></i>
+              </span>
+            </a>
+            <a class="actividad" 
+            [ngClass]="[_calificacion.estatus_actividad_id == 3 || _calificacion.estatus_actividad_id == 6 ? 'actividad-danger': '', _calificacion.estatus_actividad_id == 5 ? 'actividad-warning': '']" 
+            *ngIf="tipoConsulta != 3 && _calificacion && _calificacion.estatus_actividad_id != 0 && !actividad[j]['editar']" [routerLink]="[urlRedirect+'/actividad/'+_calificacion.actividad_id+'/'+_alumno.materia_id]" >
+              <span   *ngIf="_calificacion.tipo_actividad_id== 2"  title=" {{_calificacion.estatus_actividad}}" >
+                <i *ngIf="!_calificacion.calificacion" class="fa {{_calificacion.icono}}" ></i>
+                <span *ngIf="_calificacion.calificacion">{{_calificacion.calificacion}}</span>
+              </span>
+              <span   *ngIf="_calificacion.calificacion && _calificacion.tipo_actividad_id== 5"  [ngClass]="_calificacion.calificacion >= 6  ? 'text-success' : 'text-danger'"  title=" {{_calificacion.estatus_actividad}}" >
+                <span >{{_calificacion.calificacion}}</span>
+              </span>
+              <span *ngIf="_calificacion.tipo_actividad_id== 3">
+                <i *ngIf="_calificacion.estatus_actividad_id == 3"  ></i>
+                <span  *ngIf="_calificacion.estatus_actividad_id == 4">{{_calificacion.calificacion}}</span>
+                <span *ngIf="_calificacion.estatus_actividad_id == 7">
+                  <i  class="fa fa-circle  icon-estudy" ></i>
+                  <i  class="fa fa-circle  icon-incompleto" ></i>
+                </span>
+                <span *ngIf="_calificacion.estatus_actividad_id == 1">
+                  <i  class="fa fa-circle  icon-incompleto" ></i>
+                  <i  class="fa fa-circle  icon-incompleto" ></i>
+                </span>
+              </span>
+            </a>
+            <a  *ngIf="tipoConsulta == 3">
+              <button [routerLink]="[urlRedirect+'/actividad/'+_calificacion.actividad_id+'/'+_alumno.materia_id]" *ngIf="_calificacion.nuevos > 0" class="btn btn-sm btn-success">{{_calificacion.nuevos}} <i  class="fa fa-exchange" ></i> </button>
+              <button [routerLink]="[urlRedirect+'/actividad/'+_calificacion.actividad_id+'/'+_alumno.materia_id]" *ngIf="_calificacion.nuevos == 0 && _calificacion.vistos > 0  " class="btn btn-sm btn-info"><i  class="fa fa-exchange" ></i> </button>
+              <span *ngIf="_calificacion.nuevos == 0 && _calificacion.vistos == 0  " ><i  class="fa fa-exchange" ></i> </span>
+            </a>
+          <!--/div-->
+
+          <div *ngIf="actividad[j]['editar']">
+            <a class="text-decoration-none" *ngIf="tipoConsulta != 3 && _calificacion && _calificacion.estatus_actividad_id == 0 ">
+              <input (blur)="modificaCalificacion(_calificacion, $event, _alumno.materia_id, i, j)" type="text" class="form-control form-control-sm" style="max-width:50px;margin:0px auto;display:block;">
+            </a>
+            <div class="actividad"
+            [ngClass]="[_calificacion.estatus_actividad_id == 3 || _calificacion.estatus_actividad_id == 6 ? 'actividad-danger': '', _calificacion.estatus_actividad_id == 5 ? 'actividad-warning': '']" 
+            *ngIf="tipoConsulta != 3 && _calificacion && _calificacion.estatus_actividad_id != 0">
+              <span *ngIf="_calificacion.tipo_actividad_id== 2 || _calificacion.tipo_actividad_id== 5 " title=" {{_calificacion.estatus_actividad}}" >
+                <input (blur)="modificaCalificacion(_calificacion, $event, _alumno.materia_id, i, j)" [value]="_calificacion.calificacion? _calificacion.calificacion: ''" type="text" class="form-control form-control-sm" style="max-width: 50px;margin:0px auto;display:block;">
+              </span>
+              <span *ngIf="_calificacion.tipo_actividad_id== 3">
+                <i *ngIf="_calificacion.estatus_actividad_id == 3"  ></i>
+                <span *ngIf="_calificacion.estatus_actividad_id == 4">
+                  <input (blur)="modificaCalificacion(_calificacion, $event, _alumno.materia_id, i, j)" [value]="_calificacion.calificacion? _calificacion.calificacion: ''" type="text" class="form-control form-control-sm" style="max-width: 50px;margin:0px auto;display:block;">
+                </span>
+                <span *ngIf="_calificacion.estatus_actividad_id == 7">
+                  <input (blur)="modificaCalificacion(_calificacion, $event, _alumno.materia_id, i, j)" type="text" class="form-control form-control-sm" style="max-width: 50px;margin:0px auto;display:block;">
+                </span>
+                <span *ngIf="_calificacion.estatus_actividad_id == 1">
+                  <input (blur)="modificaCalificacion(_calificacion, $event, _alumno.materia_id, i, j)" type="text" class="form-control form-control-sm" style="max-width: 50px;margin:0px auto;display:block;">
+                </span>
+              </span>
+            </div>
+          </div>
+
+        </td>
+        <td class="text-center align-middle font-weight-bold" [ngClass]="_alumno.calificacion >= 6 ? 'text-success' : 'text-danger'">
+          <span *ngIf="!editaCalificacion">{{_alumno.calificacion}}</span>
+          <input *ngIf="editaCalificacion" [value]="_alumno.calificacion" (blur)="modificaCalificacionFinal(_alumno, $event, i)" type="text" class="form-control form-control-sm" style="max-width:50px;margin:0px auto;display:block;">
+
+        </td>
+        <td class="text-center align-middle">
+          <button type="button" class="btn btn-estudy" (click)="openModalArchivo(contentModalA,_alumno.materia_id,_alumno.alumno_id)"><i class="fa fa-file"></i></button>
+        </td>
+
+        <td class="text-center align-middle">
+          <a  class="btn btn-estudy" [routerLink]="[urlRedirect+'/notas/'+_alumno.materia_id]"  ><i class="fa fa-sticky-note-o"></i></a>
+        </td>
+
+        <!--td  *ngIf="actividadSQA && actividadSQA.length == 3"  class="text-center align-middle">
+          <a  [ngClass]="!_alumno.calificacionSQA && _alumno.actividadesSQA == 3 ? 'actividad actividad-danger':''" [routerLink]="['../../../actividadSQA/'+_alumno.materia_id+'/'+_alumno.alumno_id]" >
+            
+            <span *ngIf="_alumno.calificacionSQA">{{_alumno.calificacionSQA}}</span>
+            <span title="{{actividad[i].actividad_nombre}} |Pendiente de calificar" *ngIf="!_alumno.calificacionSQA && _alumno.actividadesSQA == 3"><i class="fa fa-pencil-square-o" ></i></span>
+            <span *ngIf="_alumno.actividadesSQA != 3">
+                <i  *ngIf="_alumno.actividadesSQA > 0" class="fa fa-circle icon-estudy" ></i>
+                <i  *ngIf="_alumno.actividadesSQA > 1" class="fa fa-circle icon-estudy" ></i>
+                <i  *ngIf="_alumno.actividadesSQA < 1" class="fa fa-circle icon-incompleto"></i>
+                <i  *ngIf="_alumno.actividadesSQA < 2" class="fa fa-circle icon-incompleto"></i>
+                <i  class="fa fa-circle icon-incompleto"></i>
+              </span>
+          </a>
+      </td-->
+      </tr>
+    </tbody>
+  </table>
+  
+  
+
+  <ng-template #contentModalA let-c="close" let-d="dismiss"  >
+
+    <div class="modal-body">
+        <div class="col-md-12">
+            <div class="row alert alert-info">
+                <app-encabezado-persona *ngIf="idAlumnoSelected" [idPersona]="idAlumnoSelected"></app-encabezado-persona>
+            </div>
+        </div>
+        <h5 class="text-center p-3" *ngIf="!archivos || archivos.length==0">No hay Archivos</h5>
+
+              <table class="table table-borderless" *ngIf="archivos && archivos.length>0">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="header-estudy">Actividad</th>
+                      <th scope="col" class="header-estudy">Archivo</th>
+                      <th scope="col" class="header-estudy">Fecha</th>
+                      <th scope="col" class="header-estudy">Calificación</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let archivo of archivos">
+                    <tr>
+                      <td><p class="header-estudy">{{archivo.actividad_nombre}}</p></td>
+                      <td><app-archivo *ngIf="archivo.url_archivo" [urlBase]="archivo.url_archivo"></app-archivo></td>
+                      <td>{{archivo.fecha_creacion | date : "dd/MM/yyyy HH:mm"}}</td>
+                      <td>{{archivo.calificacion}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+   </div>              
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn" (click)="c('Close click')">Salir</button>
+    </div>
+</ng-template>
+
+
+  
+  <ng-template #modalMensajeria let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col">
+                <app-mensajeria [activo]="0" [idMateria]="idMateriaAlumno" (sucessEvent)="getMensajeEnviado($event)"></app-mensajeria>
+            </div>
+          </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalCalificacion let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Calcular calificación</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center"  *ngIf="!formActividades" >
+        <div class="alert alert-warning col-6 text-center">
+          <p>No se cuenta con actividades para promediar en este bloque</p>
+          <button (click)="ingresarCalificacionesDirecto()" class="btn btn-warning">Agregar la calificación directamente</button>
+        </div>
+      </div>
+      <form class="row" [formGroup]="formActividades" *ngIf="formActividades" (ngSubmit)="enviarPorcentajes()">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table formArrayName="items" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Actividad</th>
+                  <th>Porcentaje</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of items.controls; let i = index"
+                  [formGroupName]="i">
+                  <td>{{actividadesModulo[i]['actividad_nombre']}}</td>
+                  <td><input class="form-control" type="number" formControlName="porcentaje"></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>Suma: {{getPorcentaje()}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-12 my-2" *ngIf="getPorcentaje() > 100">
+          <div class="alert alert-danger">
+            La ponderación excede el 100% ¿desea continuar de todos modos? <input type="checkbox" (change)="cambioCheckbox($event)">
+          </div>
+        </div>
+        <div class="col-12 mb-3">
+          <button (click)="ingresarCalificacionesDirecto()" class="btn btn-default btn-sm m-1">Agregar la calificación directamente</button>
+          <button class="btn btn-success pull-right" [disabled]="(sumaTotal < 100 || btnBloqueo) || (sumaTotal > 100 && !banderaCheckbox)">Guardar información</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Salir</button>
+    </div>
+</ng-template>
+  </div>
+</div>

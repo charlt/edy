@@ -1,0 +1,86 @@
+
+      <div class="row" cdkDropList (cdkDropListDropped)="dropActividad($event)">
+        <div  cdkDrag class="col-12 alert" role="alert" *ngFor="let actividad of actividades; let j=index" [ngClass]="actividad.total_preguntas == 0 && actividad.tipo_actividad_id == 2 ? 'alert-danger':'alert-actividad'">
+          <div class="row">
+            <div class="col-8">
+              <h5  class="text-left text-dark" >
+                {{actividad.actividad_nombre}}
+                <span *ngIf="actividad.unica == 1" class="mx-1 fa fa-road" style="color:red " title="Actividad única"></span>
+                <span *ngIf="actividad.metodo_resolver_id == 2" class="mx-1 fa fa-users" style="color:blue " title="{{'_trabajoEquipoActivo' | translate}}"></span>
+                <span *ngIf="actividad.aleatorio == 1" class="mx-1 fa fa-random" style="color:orange " title="Aleatoria"></span>
+                <span *ngIf="actividad.portafolio == 1" class="mx-1 fa fa-book" style="color:green " title="pertenece al portafolio"></span>
+              </h5>
+              <p>{{actividad.tipo_actividad_nombre}}</p>
+              <p *ngIf="actividad.total_preguntas == 0 && actividad.tipo_actividad_id == 2"><b>(Debes cargar al menos una pregunta en esta actividad)</b></p>
+            </div>
+            <div class="col-4" *ngIf="actividad.tipo_actividad_id != 5">
+              <button [hidden]="tipoAdmin == 0" class="btn btn-danger btn-accion" (click)="eliminaActividad(actividad.actividad_id,j)" ><i class="fa fa-trash" ></i></button>
+              <a [hidden]="tipoAdmin == 0" [routerLink]="['./edita/'+actividad.actividad_id]" class="btn btn-info btn-accion" (click)="actividad.editar = !actividad.editar"><i class="fa fa-pencil"></i></a>
+              <a [routerLink]="['./vista-previa/'+actividad.actividad_id]" class="btn btn-warning btn-accion" ><i class="fa fa-eye"></i></a>
+              <button cdkDragHandle class="btn btn-success btn-accion" [ngClass]="actividad.tipo_actividad_id == 4? 'd-none': ''"><i class="fa fa-arrows-alt" ></i></button>
+              <button (click)="reasignaCalificacion(actividad)" class="btn btn-light btn-accion" *ngIf="actividad.tipo_actividad_id == 2"><i class="fa fa-edit" ></i></button>
+              <button class="btn btn-accion" [ngClass]="{'btn-success': actividad.visible == '1', 'btn-light': actividad.visible == '0'}" (click)="cambiaVisibleActividad(actividad.actividad_id,actividad.visible)" >
+                <i class="fa " [ngClass]="{'fa-circle': actividad.visible == '1', 'fa-circle-o': actividad.visible == '0'}"></i>
+                <span *ngIf="actividad.visible == '1'"> Visible</span>
+                <span *ngIf="actividad.visible == '0'"> Oculto</span>
+
+              </button>
+            </div>  
+            <div  class="col-md-12">
+              <a  *ngIf="actividad.tipo_actividad_id == 2" class="btn btn-link" [routerLink]="['./preguntas/'+actividad.actividad_id]">
+                <span ><i class="fa fa-plus-square"></i> {{'verPreguntas' | translate}}</span>  
+              </a>
+            </div>   
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div  class="alert col-md-12 alert-actividad">
+          <a [routerLink]="['./nuevo']">
+            <h5 class="text-center text-dark"><i class="fa fa-plus"></i> {{'nuevaActividad' | translate}}</h5> 
+          </a>
+        </div>
+        <div class="alert col-md-12 alert-actividad text-center">
+          <button (click)="open(content)" class="btn btn-link m-0 p-0">
+            <h5 class="text-dark"><i class="fa fa-plus"></i> Usar actividad existente</h5> 
+          </button>
+        </div>
+      </div>
+
+      <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title"><h5>Agregar existente</h5></h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body mx-3">
+          <div class="row">
+            <div class="col-12">
+              <form [formGroup]="actividadForm" *ngIf="catActividades && actividadForm && !cargando" 
+                (ngSubmit)="clonarActividad()">
+                <div class="form-group" >
+                  <select class="form-control" formControlName="id_actividad">
+                    <option value="" selected hidden>Selecciona una opción</option>
+                    <option [value]="actividad.actividad_id" *ngFor="let actividad of catActividades; let i = index;">
+                      {{actividad.actividad_nombre}}
+                    </option>
+                  </select>
+                  <button type="button" class="btn btn-success pull-right mt-3" type="submit">Clonar actividad</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-12" *ngIf="!catActividades && !cargando">
+              <div class="alert alert-secondary text-center">
+                No se encontraron actividades
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+        </div>
+    </ng-template>
+      
+    

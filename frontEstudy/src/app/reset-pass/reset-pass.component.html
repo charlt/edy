@@ -1,0 +1,72 @@
+  <div class="d-flex justify-content-center" *ngIf="bandera" [ngClass]="(step != 0)? 'mt-5': ''">
+    <form *ngIf="step != 3" class="col-7" [formGroup]="FormData[0].form" (submit)="this[FormData[0].function]()">
+      <div class="card">
+        <!-- <div class="card-header">
+          {{Data[0][0].title}}
+        </div> -->
+        <div class="card-body m-5">
+          <div *ngIf="idUsuario" class="mb-5">
+            <h4>{{nombreUsuario}}</h4>
+          </div>
+          <div *ngIf="!enviado">
+            <div class="form-group pb-2" id="group_{{i}}" [ngClass]="[i > 0? 'mt-4': '', i == 0? 'mt-2': '']"
+              *ngFor="let item of Data[0]; let i = index;">
+            <!-- <div class="form-group border" [ngClass]="[i > 0? 'mt-5': '', i == 0? 'mt-2': '']" 
+              *ngFor="let item of Data[0]; let i = index;"> -->
+              <label for="input_{{i}}" class="inp">
+                <input class="form-control" formControlName="{{item.control}}" type="{{item.type}}"id="input_{{i}}" placeholder="&nbsp;">
+                <span class="label"><i class="fa {{item.icon}}"></i> {{item.label}}</span>
+                <span class="border"></span>
+              </label>
+              <small *ngIf="FormData[0].form.controls.confirm && FormData[0].form.controls.confirm.dirty 
+                && FormData[0].form.controls.confirm.invalid && item.error" 
+                class="text-danger">{{item.error}}</small>
+
+                <!-- {{FormData[0].form.controls[item.control].value}} -->
+            </div>
+          <!-- <div class="form-group"  [ngClass]="i > 0? 'mt-2': ''" *ngFor="let item of Data[0]; let i = index;">
+            <label>{{item.label}}</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span *ngIf="!item.showPass" class="input-group-text"><i class="fa {{item.icon}}"></i></span>
+                <button type="button" *ngIf="item.showPass" class="input-group-text" (click)="this[item.showPass]()"><i class="fa {{item.icon}}"></i></button>
+              </div>
+              <input formControlName="{{item.control}}" type="{{item.type}}" class="form-control" placeholder="{{item.placeholder}}">
+            </div>
+            <small *ngIf="Data[0][0].form.controls.confirm && Data[0][0].form.controls.confirm.dirty 
+              && Data[0][0].form.controls.confirm.invalid && item.error" 
+              class="text-danger">{{item.error}}</small>
+          </div> -->
+            <button type="submit" class="btn btn_custom btn-block mt-3 text-white" [disabled]="FormData[0].form.invalid || cargando">
+              <span *ngIf="!cargando">{{FormData[0].button}}</span>
+              <span *ngIf="cargando"><i class="fa fa-spinner fa-pulse"></i> {{FormData[0].loading}}</span>
+            </button>
+          </div>
+
+          <div *ngIf="enviado && step == 0">
+            {{FormData[0].message}}
+          </div>
+          <div class="alert alert-danger mt-3" *ngIf="invalido && FormData[0].error">
+            {{FormData[0].error}}
+          </div>
+          
+        </div>
+      </div>
+    </form>
+
+    <div class="col-7" *ngIf="step == 3">
+      <div class="card">
+        <div class="card-body m-5">
+          <div *ngIf="idUsuario" class="mb-5">
+            <h4>{{nombreUsuario}}</h4>
+          </div>
+          <div class="alert alert-info mt-3" 
+            *ngIf="step == 3 && FormData[0].message">
+            {{FormData[0].message}}
+          </div>
+          <a class="btn btn_custom btn-block mt-2 text-white" [routerLink]="['../login']">Regresar al inicio</a>
+        </div>
+      </div>
+    </div>
+
+  </div>

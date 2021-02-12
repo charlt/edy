@@ -1,0 +1,149 @@
+<div class="col-md-12  nuevaAsignatura">
+        <form [formGroup]="asignaturaForm" (ngSubmit)="enviarInformacion()">
+
+                <div class="row">
+                        <!--div class="col-md-6">
+            <div class="form-group repo_carrera">
+                <label class="control-label" for="consulta_carrera">{{'SelectCareerSyllabus' | translate}}</label>
+                <select   formControlName="catCarreras"  class="form-control" (change)="consultaPlan($event.target.value)">
+                    <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+                    <option  [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera}}</option>
+                </select>
+                <span class="invalidText" *ngIf="f.catCarreras.invalid && f.catCarreras.touched">
+                    {{'fmErrSelect' | translate}}
+                </span>
+            </div>
+       </div>
+       <div class="col-md-6">
+            <div class="form-group cat_tipo_asignaturas">         
+                <label class="control-label" for="">{{'PlanEstudios' | translate}}:</label>
+                <select  formControlName="catPlanEstudio"  class="form-control"  >
+                <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+                <option  [value]="_planEstudio.plan_estudio_id" *ngFor="let _planEstudio of planEstudio">{{_planEstudio.plan_estudio}}</option>
+                </select>
+                <span class="invalidText" *ngIf="f.tipoAsignatura.invalid && f.tipoAsignatura.touched">
+                        {{'fmErrSelect' | translate}}
+                </span>
+            </div>  
+       </div-->
+                        <div class="col-md-12">
+                                <div class="form-group">
+                                        <label class="control-label  "
+                                                for="nombre_asignatura">{{'nombreAsignatura' | translate}}:</label>
+                                        <input formControlName="nombreAsignatura" class="form-control"
+                                                id="nombre_asignatura" placeholder="{{'nombreAsignatura' | translate}}"
+                                                type="text" required>
+                                        <span class="invalidText"
+                                                *ngIf="f.nombreAsignatura.invalid && f.nombreAsignatura.touched">
+                                                {{'fmErrNombre' | translate}}
+                                        </span>
+                                </div>
+                        </div>
+                        <div class="col-md-6">
+                                <div class="form-group">
+                                        <label class="control-label"
+                                                for="clave_asignatura">{{'claveAsignatura' | translate}}:</label>
+                                        <input formControlName="claveAsignatura" class="form-control"
+                                                id="clave_asignatura" placeholder="{{'claveAsignatura' | translate}}"
+                                                type="text" required>
+                                        <span class="invalidText"
+                                                *ngIf="f.claveAsignatura.invalid && f.claveAsignatura.touched && !repetida">
+                                                {{'fmErrClave' | translate}}
+                                        </span>
+                                        <span class="invalidText"
+                                                *ngIf="f.claveAsignatura.invalid && f.claveAsignatura.touched && repetida">
+                                                Clave ya registrada
+                                        </span>
+                                </div>
+                                <div class="form-group">
+                                        <label class="control-label  ">{{'califMin' | translate}}:</label>
+                                        <input formControlName="califMin" class="form-control"
+                                                placeholder="{{'califMin' | translate}}" type="number">
+                                        <span class="invalidText" *ngIf="f.califMin.invalid && f.califMin.touched">
+                                                {{'fmErrNumber' | translate}}
+                                        </span>
+                                </div>
+                                <!-- aqui va el plan estudios -->
+                                <div *ngIf="!idCarrera" class="form-group cat_tipo_asignaturas">
+                                        <label class="control-label" for="">Plan de estudios</label>
+                                        <select formControlName="planEstudio" class="form-control" (change)="consultaOrdenJerarquico()">
+                                                <option hidden value="" disabled selected>{{'fmOptSelect' | translate}}
+                                                </option>
+                                                <option [value]="plan.plan_estudio_id"
+                                                        *ngFor="let plan of planesEstudio">{{plan.plan_estudio}}
+                                                </option>
+                                        </select>
+                                        <span class="invalidText"
+                                                *ngIf="f.planEstudio.invalid && f.planEstudio.touched">
+                                                {{'fmErrSelect' | translate}}
+                                        </span>
+                                </div>
+                                <div class="form-group cat_tipo_asignaturas">
+                                        <label class="control-label" for="">{{'tipoAsignatura' | translate}}:</label>
+                                        <select formControlName="tipoAsignatura" class="form-control">
+                                                <option hidden value="" disabled selected>{{'fmOptSelect' | translate}}
+                                                </option>
+                                                <option [value]="tipo_asignatura.tipo_asignatura_id"
+                                                        *ngFor="let tipo_asignatura of asignaturas">
+                                                        {{tipo_asignatura.tipo_asignatura}}</option>
+                                        </select>
+                                        <span class="invalidText"
+                                                *ngIf="f.tipoAsignatura.invalid && f.tipoAsignatura.touched">
+                                                {{'fmErrSelect' | translate}}
+                                        </span>
+                                </div>
+                        </div>
+                        <div class="col-md-6">
+
+                                <div class="form-group">
+                                        <label class="control-label"
+                                                for="nombre_asignatura">{{'creditosAsignatura' | translate}}:</label>
+                                        <input formControlName="creditosAsignatura" class="form-control"
+                                                id="nombre_asignatura"
+                                                placeholder="{{'creditosAsignatura' | translate}}" type="number"
+                                                required>
+                                        <span class="invalidText"
+                                                *ngIf="f.creditosAsignatura.invalid && f.creditosAsignatura.touched">
+                                                {{'fmErrCreditos' | translate}}
+                                        </span>
+                                </div>
+                                <div class="form-group">
+                                        <label class="control-label">{{'califMax' | translate}}:</label>
+                                        <input formControlName="califMax" class="form-control"
+                                                placeholder="{{'califMax' | translate}}" type="number">
+                                        <span class="invalidText" *ngIf="f.califMax.invalid && f.califMax.touched">
+                                                {{'fmErrNumber' | translate}}
+                                        </span>
+                                </div>
+                                <!-- aqui va el grado de la asignatura -->
+                                <div *ngIf="!idCarrera" class="form-group">
+                                        <label class="control-label" for="grado_asignatura">{{'gradoAsignatura' | translate}}:</label>
+                                        <select formControlName="gradoAsignatura" class="form-control">
+                                                <option hidden value="" disabled selected>{{'fmOptSelect' | translate}}</option>
+                                                <option [value]="grado.orden_jerarquico_id" *ngFor="let grado of grados">{{grado.orden_jerarquico_descripcion}}</option>
+                                        </select>
+                                        <span class="invalidText" *ngIf="f.gradoAsignatura.invalid && f.gradoAsignatura.touched">{{'fmErrGrado' | translate}}</span>
+                                </div> 
+                                <div *ngIf="tipoForm == 1" class="form-group">
+                                        <label class="control-label" for="">Seriar materia con:</label>
+                                        <select formControlName="asignaturaPlan" class="form-control">
+                                                <option hidden value="" disabled selected>{{'fmOptSelect' | translate}}
+                                                </option>
+                                                <option [value]="asignaturaPlan.asignatura_id"
+                                                        *ngFor="let asignaturaPlan of asignaturasPlan">
+                                                        {{asignaturaPlan.asignatura}}</option>
+                                        </select>
+                                        <span class="invalidText"
+                                                *ngIf="f.asignaturaPlan.invalid && f.asignaturaPlan.touched">
+                                                {{'fmErrSelect' | translate}}
+                                        </span>
+                                </div>
+                        </div>
+                </div><br>
+                <div class="row">
+                        <div class="col-md-12">
+                                <button [hidden]="tipoAdmin == 0" type="submit"class="btn btn-primary float-right enviar-datos-asignaturas">{{'fmSave' | translate}}</button>
+                        </div>
+                </div>
+        </form>
+</div>

@@ -1,0 +1,6 @@
+<app-header-asesor></app-header-asesor>
+<app-sidebar-asesor (collapsedEvent)="receiveCollapsed($event)"></app-sidebar-asesor>
+<section class="main-container" [ngClass]="{collapsed: collapedSideBar}">
+    <app-page-header [breadcum]="breadcum"></app-page-header>
+    <router-outlet></router-outlet>
+</section>

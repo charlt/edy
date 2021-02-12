@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col">
+    <br>
+    <p>{{ 'instruccionRelacion' | translate }}</p>
+  </div>    
+</div> 
+<form class="row"  [formGroup]="preguntaMultipleForm" (ngSubmit)="enviarInformacionPregunta()">
+  <div class="container-fluid"  formArrayName="items" *ngFor="let item of preguntaMultipleForm.get('items')['controls']; let i = index;">
+    
+    <div class="row" [formGroupName]="i">
+      <div class="col-12">
+        <p>Escribe la pregunta con su respectiva respuesta <b>Sólo puedes relacionar una respuesta por pregunta</b></p>
+      </div>
+      <div class="col">
+          <label class="control-label" for="tipo_pregunta">{{i+1}} - {{'Pregunta' | translate}}: </label>
+          <!--input class="form-control" formControlName="columna_a"-->
+          <ckeditor [config]="{
+            toolbar: reactiveEditor,
+            extraPlugins: ['uploadimage','justify'],
+            filebrowserUploadUrl: 'http://plataforma.estudy.com/apiestudy/extras/archivo/carga_ckeditor.php'
+            }"
+            (ready)="comienza($event)" (blur)="getData($event,i)"
+             formControlName="columna_a" name="columna_a"></ckeditor>
+          <span class="invalidText" *ngIf="sf.controls[i].controls.columna_a.invalid && sf.controls[i].controls.columna_a.touched">
+              {{'fmErrText' | translate}}
+          </span>
+      </div>
+      <div class="col">
+          <label class="control-label" for="tipo_pregunta">{{'Respuesta' | translate}}:</label>
+          <!--input class="form-control" formControlName="columna_b"-->
+          <ckeditor [config]="{
+            toolbar: reactiveEditor,
+            extraPlugins: ['uploadimage','justify'],
+            filebrowserUploadUrl: 'http://plataforma.estudy.com/apiestudy/extras/archivo/carga_ckeditor.php'
+            }"
+            (ready)="comienza($event)" (blur)="getData($event,i)"
+             formControlName="columna_b" name="columna_b"></ckeditor>
+          <span class="invalidText" *ngIf="sf.controls[i].controls.columna_b.invalid && sf.controls[i].controls.columna_b.touched">
+              {{'fmErrText' | translate}}
+          </span>
+      </div>
+      <div class="col-1">
+          <br>
+          <i *ngIf="i > 0" class="fa fa-times fa-2x cambiaCursor pt-2 mt-1" (click)="eliminarRespuesta(i)" ></i>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+      <button (click)="agregarRespuesta()" type="button" class="btn btn-link"><i class="fa fa-plus-square"></i> {{'agregarRespuesta' | translate}}</button>
+  </div>
+    <div class="col-12">
+      <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-success pull-right" [disabled]="preguntaMultipleForm.invalid">{{'guardarTerminar' | translate}}</button>
+  </div>
+</form>

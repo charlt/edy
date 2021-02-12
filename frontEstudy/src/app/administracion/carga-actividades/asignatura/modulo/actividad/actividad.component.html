@@ -1,0 +1,19 @@
+<div class="container-modulo">
+  <div  class="alert  row   alert-modulo alert-info " role="alert">
+    <div class="col-12 pl-3">
+        <h4 *ngIf="modulo" class="text-left">
+          {{modulo.modulo_nombre}}</h4>
+        <p *ngIf="modulo && modulo.fecha_inicio && modulo.fecha_fin && modulo.fecha_inicio != '0000-00-00 00:00:00' && modulo.fecha_fin != '0000-00-00 00:00:00'">
+          Periodo: {{modulo.fecha_inicio | date : "dd/MM/yyyy"}} -
+          {{modulo.fecha_fin | date: "dd/MM/yyyy"}}
+        </p>
+        <a  class="btn btn-link"  (click)="menu()">
+          <span ><i class="fa fa-plus-square"></i> Mostrar actividades</span>  
+        </a>
+    </div>
+    <div class="col-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  </div>
+  

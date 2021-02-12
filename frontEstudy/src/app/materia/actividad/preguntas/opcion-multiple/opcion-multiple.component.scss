@@ -1,0 +1,223 @@
+.scale{
+    transform: scale(2,2);
+}
+.custom-control{
+    display: block;
+    margin: auto;
+
+}
+.col-imagen{
+    height: 300px;
+    background-repeat: no-repeat;
+    background-position: center; /* Center the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+
+/* Global Styling */
+html, body {margin:0px; padding: 0px;}
+
+nav {
+    background-color: #34495e;
+    height: 80px;
+        position: fixed;
+        width: 100vw;
+        top: 0;
+        z-index: 999;
+}
+
+#logo {height: 80px; margin-left: 20px;}
+
+.wrapper {
+    padding: 50px 50px;
+    max-width: 1200px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+        margin-top: 80px;
+}
+
+.right {float: right !important;}
+/* Image zoom on hover + Overlay colour */
+.parent {
+    margin: 20px;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+.parent_respuesta {
+  margin: 20px;
+  height: 300px;
+}
+.child.seleccionado{
+  border: 6px solid #1e5799;
+  a{
+      i{
+          color: #1e5799;
+      }
+      display: block;
+  }
+}
+.child.correcto{
+    border: 6px solid #28a745;
+    a{
+        i{
+            color:#28a745;
+        }
+        display: block;
+    }
+}
+.child.incorrecto{
+  border: 6px solid #959ea7;
+  a{
+      i{
+          color: #959ea7;
+      }
+      display: block;
+  }
+}
+
+.child {
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+
+/* Several different images */
+.bg-one {background-image: url(https://media.timeout.com/images/101602611/image.jpg);}
+.bg-two {background-image: url(http://s1.it.atcdn.net/wp-content/uploads/2015/08/2-London.jpg);}
+.bg-three {background-image: url(https://media.timeout.com/images/101484105/image.jpg);}
+.bg-four {background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Hollywood_Sign.jpg/1280px-Hollywood_Sign.jpg);}
+.bg-five {background-image: url(http://www.travelandleisure.com/sites/default/files/styles/tnl_redesign_article_landing_page/public/1453920892/DUBAI-554088081-ABOVE0116.jpg?itok=dcoZnCrc);}
+.bg-six {background-image: url(http://blog.whitepages.com/wp-content/uploads/2015/04/san-franc.jpg);}
+
+a {
+    display: none;
+    font-size: 35px;
+    color: #ffffff !important;
+    font-family: sans-serif;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 50px;
+    cursor: pointer;
+    /*text-decoration: none;*/
+}
+
+.parent:hover .child, .parent:focus .child {
+    -ms-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+}
+
+.parent:hover .child:before, .parent:focus .child:before {
+    display: block;
+}
+
+.parent:hover a, .parent:focus a {
+    display: block;
+}
+
+.child:before {
+    content: "";
+    display: none;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    //background-color: rgba(52,73,94,0.75);
+}
+
+/* Media Queries */
+@media screen and (max-width: 960px) {
+    .parent {width: 100%; margin: 20px 0px}
+        .wrapper {padding: 20px 20px;}
+}
+
+.hello {display: none}
+
+/*estilo square*/
+.styled-input-single {
+    position: relative;
+    padding: 5px 5px 5px 35px;
+    margin: 5px;
+    text-align: left;
+    
+    display: inline-block;
+    
+    .cursor{
+      cursor:pointer
+    }
+    
+    label {
+      
+      
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        top: 52%;
+        border-radius: 50%;
+      }
+      &:before {
+        left: 0;
+        width: 20px;
+        height: 20px;
+        margin: -15px 0 0;
+        background: #f7f7f7;
+        box-shadow: 0 0 1px grey;
+      }
+      &:after {
+        left: 3px;
+        width: 15px;
+        height: 15px;
+        margin: -12px 0 0;
+        opacity: 0;
+        background: #37b2b2;
+        transform: translate3d(-40px, 0, 0) scale(0.5);
+        transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+      }
+    }
+    
+    input[type="radio"],
+    input[type="checkbox"] {
+      position: absolute;
+      top: 0;
+      left: -9999px;
+      visibility: hidden;
+      
+      &:checked + label {
+        // &:before {
+        // }
+        &:after {
+          transform: translate3d(0, 0, 0);
+          opacity: 1;
+        }
+      }
+    }
+  }
+  
+  .styled-input--square {
+    label {
+      &:before,
+      &:after {
+        border-radius: 0;
+      }
+    }
+  }
+  

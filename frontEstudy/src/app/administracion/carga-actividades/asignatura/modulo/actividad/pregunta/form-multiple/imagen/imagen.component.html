@@ -1,0 +1,46 @@
+<div class="row">
+  <form class="col"  [formGroup]="preguntaMultipleForm" > 
+    <div class="container-fluid"  formArrayName="items" *ngFor="let item of preguntaMultipleForm.get('items')['controls']; let i = index;">
+      <form class="row" [formGroupName]="i" (ngSubmit)="enviarInformacionPregunta(i)">
+        <div class="col-md-1">
+            <input class="form-control" formControlName="idReactivo" type="hidden"  >
+            <label class="control-label" for="tipo_pregunta">{{'correcto' | translate}}</label>
+          <input class="form-control" formControlName="ponderacion" type="checkbox"  >
+        </div>
+        <div class="col-md-5" >
+            <label class="control-label" for="tipo_pregunta">{{'archivoImagen' | translate}}:</label>
+            <div class="form-group text-center">
+              <app-file-upload formControlName="imagen"></app-file-upload>
+              <div class="invalid-feedback" style="display: block">
+                <ng-container *ngIf="hasError(i , 'imagen', 'required')">{{'fmErrfileRequired' | translate}}</ng-container>
+                <ng-container *ngIf="hasError(i , 'imagen', 'requiredFileType')">{{'fmErrfileImage' | translate}}</ng-container>
+              </div>
+            </div>
+            <app-archivo *ngIf="sf.controls[i].controls.url_imagen.value" [urlBase]="sf.controls[i].controls.url_imagen.value"></app-archivo>          
+            <input type="text" formControlName="url_imagen"  type="hidden">
+        </div>  
+        <div class="col-md-5">
+            <label class="control-label" for="tipo_pregunta">{{'retroalimentacion' | translate}}:</label>
+            <textarea class="form-control" formControlName="retroalimentacion"></textarea>
+        </div>
+        <div class="col-md-1 text-center">
+          <br>
+            <button [hidden]="tipoAdmin == 0" [disabled]="sf.controls[i].invalid" type="submit" class="btn btn-success mt-2"><i class="fa fa-save " ></i> </button>
+            <button [hidden]="tipoAdmin == 0" type="button" class="btn btn-danger mt-2" (click)="confirmaRespuesta(i)"><i class="fa fa-trash "  ></i> </button>
+        </div>
+
+
+        
+      </form>
+    </div>
+    <div class="row">
+      <div class="col-12">
+          <button [hidden]="tipoAdmin == 0" (click)="agregarRespuesta()" type="button" class="btn btn-link"><i class="fa fa-plus"></i>{{'agregarRespuesta' | translate}}</button>
+      </div>
+      <div class="col">
+        <button [hidden]="tipoAdmin == 0" (click)="finalizar()" type="button" 
+          class="btn btn-success pull-right">{{'Finalizar' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,166 @@
+<div class="col-12 mt-3">
+  <div class="alert alert-info text-center my-3 textReporte">
+    En este reporte se muestra el avance correspondiente a las actividades con ponderación: ejercicios autocalificables, actividades de aprendizaje.
+    <br>
+    <b>Este reporte no indica la calificación definitiva de la materia</b>, sólo muestra el avance de las actividades asignadas por el profesor
+  </div>
+</div>
+<div class="col-12"><br>
+  <ngb-tabset class="tabset1">
+    <ngb-tab >
+      <ng-template ngbTabTitle ><p>Avance de materia</p></ng-template>
+        <ng-template ngbTabContent><!---->
+          <div class="modal-body">
+            <app-historial></app-historial>
+          </div>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab>
+      <ng-template ngbTabTitle><p>Avance general</p></ng-template>
+        <ng-template ngbTabContent><!---->
+          <div class="modal-body">
+            <div class="row">
+              <div  class=" col-12 text-center">
+                <h3 style="color: royalblue;"><b>REPORTE DE AVANCE</b></h3>
+                <b>Fecha del reporte</b>
+                <p>{{fechaActual}}</p>
+              </div>
+            </div><br>
+          <div class="row">
+            <div class=" col-md-6 alert alert-primary nombre" role="alert">
+              <app-encabezado-persona [idPersona]="idPersona" [idRol]="idRol"></app-encabezado-persona>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-primary pull-right impresion" (click)="imprimir()">Imprimir</button>
+            </div>
+          </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-6 text-center">
+                  <!--div class="card w-50 tarjetaMateria">
+                      <div class="card-body text-center">
+                        <h6 class="card-title">Licenciatura en Educación Familiar</h6>
+                        <p class="card-text">Semestre: 4°</p>
+                      </div>
+                  </div--><br>
+                  <div class="cont_avance">
+                    <h6><b class="avanceGeneral">Avance de todas las actividades pendientes</b></h6>
+                    <div class="porcentaje">{{porcentajeTotal}}%</div>
+                      <round-progress class="col-sm-5 grafica"
+                          [current]= porcentajeTotal
+                          [max]="100"
+                          [color]="'#45ccce'"
+                          [background]="'#eaeaea'"
+                          [radius]="100"
+                          [stroke]="15"
+                          [semicircle]="false"
+                          [rounded]="true"
+                          [clockwise]="true"
+                          [responsive]="false"
+                          [duration]="800"
+                          [animation]="'easeInOutQuart'"
+                          [animationDelay]="0">
+                          </round-progress>
+                      <h6 class="titulo"><b>Bitácora de avance</b></h6>
+                      <div class="col-lg-6 tabla">
+                        <table class="table">
+                          <tr>
+                            <th>Mes</th>
+                            <th>Actividades</th>
+                          </tr>
+                          <tr *ngFor="let mes of meses">
+                            <td>{{mes.mes}}</td>
+                            <td class="text-center">{{mes.actividades_mes}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                  </div>
+                  <div class="cont_acceso">
+                    <div class="alert alert-primary  accesso pAccesso" role="alert">Primer acceso: {{fechaPrimer | date: "dd/MM/yyy"}}, {{fechaPrimer | date: "shortTime"}}</div>
+                    <div class="alert alert-info  accesso uAccesso" role="alert"> Último acceso: {{fechaUltim | date: "dd/MM/yyy"}},  {{fechaUltim | date: "shortTime"}}</div>
+                  </div>
+                  </div>
+              <div class="col-lg-6">
+                  <h5 class="text-center asignaturasSemestre"><b>Asignaturas del semestre</b></h5><br>
+                  <p class="altura" style="visibility: hidden;">.</p>
+                  <div *ngFor="let materia of materias">
+                      <h5 class="text-center nombreMateria"><b>{{materia.asignatura}}</b></h5>
+                      <div class="row">
+                        <div class="col-lg-12">
+                            <p class="pull-right">{{materia.porcentaje}}%</p>
+                        </div>
+                      </div>
+                      <div class="progress">
+                        <div *ngIf="materia.porcentaje >= 66 " class="progress-bar bg-success" role="progressbar" [ngStyle]="{ 'width': materia.porcentaje + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>       
+                        <div *ngIf="materia.porcentaje >= 33 && materia.porcentaje <= 65" class="progress-bar bg-warning" role="progressbar" [ngStyle]="{ 'width': materia.porcentaje + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>              
+                        <div *ngIf="materia.porcentaje >= 0 && materia.porcentaje <= 32" class="progress-bar bg-danger" role="progressbar"  [ngStyle]="{ 'width': materia.porcentaje + '%'}"  aria-valuenow="0" aria-valuemin="0" aria-valuemax=100></div>
+                      </div><br>
+                      <div class="row">
+                        <div class="col-lg-4" >
+                            <div class=" card text-white mb-3 actProm" >
+                                <div class="card-body badge-secondary text-center">
+                                  <p class="card-text">Promedio de actividades calificadas</p>
+                                  <p>{{materia._promActividades}}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="materia.calificacion" class="card text-white mb-3 califActual" [ngClass]="materia.calificacion >= 6 ? 'badge-success' : 'badge-danger'" style="max-width: 18rem;">
+                              <div class="card-body text-center">
+                                <p class="card-text">Calificación actual de la asignatura</p>
+                                <p class="card-text">{{materia.calificacion}}</p>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 text-center textoAct"><br><br>
+                          <p><b>{{materia.contestadas}}</b> de <b>{{materia.total}}</b> actividades entregadas</p>
+                          <p *ngIf="materia.actividadesSinCalificacion == 1"><b>{{materia.actividadesSinCalificacion}}</b> actividad pendiente de calificación</p>
+                          <p *ngIf="materia.actividadesSinCalificacion >= 2 || materia.actividadesSinCalificacion == 0"><b>{{materia.actividadesSinCalificacion}}</b> actividades pedientes de calificación</p> 
+                          <p *ngIf="materia.incompletas == 1"><b>{{actInc}}</b> actividad incompleta</p>
+                          <p *ngIf="materia.incompletas >= 2 || materia.incompletas == 0"><b>{{materia.incompletas}}</b> actividades incompletas</p>
+                          <p *ngIf="materia.actividadesBorrador == 1"><b>{{materia.actividadesBorrador}}</b> actividad en borrador</p> 
+                          <p *ngIf="materia.actividadesBorrador >= 2 || materia.actividadesBorrador == 0"><b>{{materia.actividadesBorrador}}</b> actividades en borrador</p>       
+                        </div>
+                      </div>            
+                  </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab >
+      <ng-template ngbTabTitle ><p>Archivos subidos</p></ng-template>
+        <ng-template ngbTabContent><!---->
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" [(ngModel)]="search" placeholder="{{'SearchInput' | translate}}"
+                aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          <table class="table table-bordered table-striped">
+            <tr >
+              <th>Asignatura</th>
+              <th>Actividad</th>
+              <th>Archivo</th>
+              <th>Fecha</th>
+              <!-- <th></th>
+              <th></th> -->
+            </tr>
+            <tr *ngFor="let archivo of archivos| filter:search; let i = index ">
+              <td>{{archivo.asignatura}}</td>
+              <td>{{archivo.actividad_nombre}}</td>
+              <td class="text-center"><app-archivo class="archivo" *ngIf="archivo.archivo" [urlBase]="archivo.archivo"></app-archivo></td>
+              <!-- <td>{{archivo.archivo}}</td> -->
+              <td class="text-center">{{archivo.fecha_creacion | date: "dd/MM/yyyy"}} {{archivo.fecha_creacion | date: "shortTime"}}</td>
+              <!-- <td></td>
+              <td></td> -->
+            </tr>
+            <tr *ngIf="(archivos | filter: search).length === 0">
+              <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+            </tr>
+          </table>
+          </div>
+        </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

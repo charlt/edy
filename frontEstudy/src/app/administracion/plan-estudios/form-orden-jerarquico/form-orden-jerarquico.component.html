@@ -1,0 +1,26 @@
+<div class="col-md-12  nuevaAsignatura">
+    <form [formGroup]="ordenJerarquicoForm" (ngSubmit)="enviarInformacion()">
+       
+     <div class="row">   
+
+         <div class="col-md-12">
+              <div class="form-group">                               
+                  <label class="control-label  ">{{'NombreOrdenJerarquico' | translate}}:</label>
+                  <input formControlName="ordenJerarquico" class="form-control"  placeholder="{{'NombreOrdenJerarquico' | translate}}" type="text" >
+                  <span class="invalidText" *ngIf="f.ordenJerarquico.invalid && f.ordenJerarquico.touched">
+                      {{'fmErrName' | translate}}
+                  </span>
+          </div>
+              <div class="form-group">                               
+                      <label class="control-label  " for="nombre_asignatura">{{'DescripcionOrdenJerarquico' | translate}}:</label>
+                      <input formControlName="ordenJerarquicoDescripcion" class="form-control"  placeholder="{{'DescripcionOrdenJerarquico' | translate}}" type="text">
+                      <span class="invalidText" *ngIf="f.ordenJerarquicoDescripcion.invalid && f.ordenJerarquicoDescripcion.touched" >
+                              {{'fmErrDescription' | translate}}
+                      </span>
+              </div>
+         </div>
+      </div>                     
+        <button  [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right enviar-datos-asignaturas">{{'fmSave' | translate}}</button>           
+    </form>
+  </div>
+  

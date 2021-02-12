@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>Notas del alumno</h4>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th class="text-center">#</th>
+        <th>Docente</th>
+        <th>Nota</th>
+        <th>Fecha de creación</th>
+        <th>Asignatura</th>
+      </tr>
+      <tr *ngFor="let nota of notas; let i = index">
+        <td class="text-center">{{i+1}}</td>
+        <td>{{nota.nombre}} {{nota.primer_apellido}} {{nota.segundo_apellido}}</td>
+        <td [innerHTML]="nota.texto"></td>
+        <td>{{nota.fecha_creacion | date: "dd/MM/yyyy"}} {{nota.fecha_creacion | date: "shortTime"}}</td>
+        <td>{{nota.asignatura}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

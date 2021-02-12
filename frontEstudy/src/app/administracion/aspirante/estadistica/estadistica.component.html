@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-md-12">
+        <H4>Estadistica Aspirante</H4>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Avance en el sistema</th>
+                    <th scope="col">Carrera</th>
+                    <th scope="col">Numero de Aspirantes</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngFor="let _estadistica of estadistica">
+                    <th scope="row ">{{_estadistica.paso_nombre}}</th>
+                    <th scope="row ">{{_estadistica.carrera}}</th>
+                    <th scope="row ">{{_estadistica.num_aspirantes}}</th>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

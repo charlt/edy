@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row" *ngIf="pasoActual > 3">
+    <div class="col-12 alert alert-success text-center" role="alert">
+      <h1><i class="fa fa-check"></i></h1>
+      <h4>Paso completado exitosamente</h4>
+      <p></p>
+    </div>
+  </div>
+  <div class="row" *ngIf="pasoActual <= 2">
+    <div class="col-12 alert alert-danger text-center" role="alert">
+      Para continuar, debes terminar el bloque anterior.
+    </div>
+  </div>
+  <div  *ngIf="pasoActual == 3" class="row d-flex justify-content-center " >
+    <div class="col-12">
+      <h4>{{title}}</h4>
+      <p>Selecciona la opción de plan de pago</p>
+    </div>
+    <div [hidden]="selectedSuscripcion && selectedSuscripcion.suscripcion_id != _suscripcion.suscripcion_id" class=" text-center col-xs-12 col-sm-12 col-md-6 " *ngFor="let _suscripcion of suscripcion"  >
+      <div class="text-center jumbotron m-7" style="cursor: pointer;" (click)="seleccionaPlan(_suscripcion)">
+          <i class="fa fa-credit-card fa-3x" style="color:#002144" aria-hidden="true"></i><br>
+          <a>{{_suscripcion.nombre_suscripcion}}</a>  
+          <br>
+      </div>
+      <p [innerHTML]="_suscripcion.descripcion_suscripcion"></p>
+      <h6><a *ngIf="selectedSuscripcion" href="javascript:void(0)" (click)="cancelaPlan()">Selecciona otro plan de pago</a></h6>
+
+    </div>
+    
+    <div class="col-xs-12 col-sm-12 col-md-8 text-center" *ngIf="selectedSuscripcion" >
+      <button class="btn btn-success" (click)="confirmaPlan()">Seleccionar plan de pago</button>
+    </div>
+</div>
+
+

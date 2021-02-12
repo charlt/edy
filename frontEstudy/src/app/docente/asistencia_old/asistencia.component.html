@@ -1,0 +1,84 @@
+
+<!-- <div class="row"> -->
+  <div class="col col-xl-12 col-lg-12">
+    <h4 class="top-buffer"></h4>
+    <br>
+    <form [formGroup]="fechaForm" (ngSubmit)="verGrupo(0)">
+      <label for="fechaAsistencia">Fecha: </label>
+      <div class="input-group mb-3">
+        <input formControlName="fechaAsistencia" type="date" class="form-control">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" type="submit">Buscar lista</button> 
+        </div>
+      </div>    
+    </form>      
+    <hr>
+    <div class="input-group mb-3" *ngIf="alumnos">
+      <input [(ngModel)]="search" type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+    <div *ngIf="alumnos">
+      <button class="btn btn-success btn-block" (click)="guardarAsistencia()">Guardar y terminar</button>
+    </div>        
+    <div class="table-responsive mt-3" *ngIf="alumnos">
+      <table class="table  table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>Nombre</th>
+            <th>Presente</th>
+            <th>Ausente</th>
+          </tr>
+        </thead>   
+        <tr *ngIf="(alumnos | filter: search).length === 0">
+          <td colspan="12" class="text-center">No se encontró información en la tabla</td>
+        </tr>                    
+        <tbody *ngFor="let alumno of alumnos | filter:search; let i = index">
+          <tr>
+            <td rowspan="2" class="td-alumno">{{alumno.ap_pat}} {{alumno.ap_mat}} {{alumno.nombre}}</td>
+            <td class="td-radio" [class.alert-info]="alumno.asistencia_a == 1"            >
+              <p>
+                <input type="radio" id="aUno_{{i}}" name="asistenciaUno_{{i}}" (click)="enviaAsistencia('a', 1, alumno.id_asistencia,i)" [checked]="alumno.asistencia_a == 1">
+                <label for="aUno_{{i}}"></label>
+              </p>            
+            </td>
+            <td class="td-radio" [class.alert-info]="alumno.asistencia_a == 0">
+              <p>
+                <input type="radio" id="inUno_{{i}}" name="asistenciaUno_{{i}}" (click)="enviaAsistencia('a', 0, alumno.id_asistencia,i)" [checked]="alumno.asistencia_a == 0">
+                <label for="inUno_{{i}}"></label>
+              </p>                        
+            </td>
+          </tr>
+          <tr >
+            <td  class="td-radio" [class.alert-info]="alumno.asistencia_b == 1">
+              <p>
+                <input type="radio" id="aDos_{{i}}" name="asistenciaDos_{{i}}" (click)="enviaAsistencia('b', 1, alumno.id_asistencia,i)" [checked]="alumno.asistencia_b == 1">
+                <label for="aDos_{{i}}"></label>
+              </p>             
+            </td>
+            <td  class="td-radio" [class.alert-info]="alumno.asistencia_b == 0">
+              <p>
+                <input type="radio" id="inDos_{{i}}" name="asistenciaDos_{{i}}" (click)="enviaAsistencia('b', 0, alumno.id_asistencia,i)" [checked]="alumno.asistencia_b == 0">
+                <label for="inDos_{{i}}"></label>
+              </p>             
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>        
+  </div>
+<!-- </div> -->
+
+<div class="row">
+  <ng-template #content let-c="close" let-d="dismiss">
+
+    <div class="modal-body" style="text-align: center">
+      <p>No se ha encontrado la lista ¿Deseas crear una nueva?</p><br>
+      <div class="col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <button type="button" class="btn btn-success" (click)="creaGrupo()">Crear lista</button>
+      </div>           
+    </div>
+    <br>
+  </ng-template>
+</div>

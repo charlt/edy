@@ -1,0 +1,43 @@
+
+// div{
+//     border-color: red;
+// }
+
+.sticky {
+    // position: fixed;
+    align-content: center;
+    padding: 10px 0px;
+    background: rgba(183, 239, 243, 0.8);
+    // z-index: 1030;
+    margin-top: 20px;
+    cursor: move;
+    
+  }
+  @media (max-width: 768px) {
+    .sticky {
+      position: relative;
+      background: #ffffff;
+    }
+  }
+  
+  .buttons {
+    background: rgba(149, 151, 151, 0.938);
+    color: white;
+    padding: 20px;
+    border: none;
+    cursor:pointer; cursor: hand;
+    border-radius: 5px;
+  }
+  
+  .scroll-to-top {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      opacity: 0;
+      transition: all .2s ease-in-out;
+  }
+  
+  .show-scroll {
+      opacity: 0.7;
+      transition: all .2s ease-in-out;
+  }

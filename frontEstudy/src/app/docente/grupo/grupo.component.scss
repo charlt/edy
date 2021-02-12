@@ -1,0 +1,157 @@
+@import "src/app/app.component.scss";
+@import "src/app/shared/styles/scroll.component.scss";
+
+.alert-sin-contenido{
+    color: #721c24;
+    background-color: #f8d7da;
+}
+.tituloActividad{
+    font-size: 10px;
+    text-align: center;
+}
+.nombreAlumno{
+    font-size: 14px;
+    padding: 0.75rem;
+}
+.icon-incompleto{
+    color: lightgray;   
+}
+
+.tabla-grupo td {
+    padding: 0;
+}
+
+.tabla-grupo td > a.actividad{
+    padding: 0.75rem;
+    display: block;
+
+    
+}
+
+a.actividad-danger{
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+a.actividad-warning{
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+a.actividad-borrador{
+    color: lightblue;
+}
+a.actividad-invalido{
+    color: #bd2130!important;
+}
+
+.notification {
+  background-color: none;
+  text-decoration: none;
+  padding: 15px 26px;
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.notification .badge {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  padding: 2px;
+}
+
+.t{
+    overflow:auto;
+    white-space:initial;
+    text-overflow: ellipsis;
+    word-wrap:break-word;
+}
+
+.btngroup{
+    position: absolute;
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.tabla-grupo table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .static {
+    position: absolute;
+    background-color: white;
+    z-index: 2;
+  }
+  
+  .first-col {
+    padding-left: 270px!important;
+  }
+  
+  .tamT{
+    width: 222px;
+    height: 11.1%;
+    background-color: white;
+    padding: 0.75rem;
+  }
+  .tam{
+    width: 225px;
+    height: 55px;
+    background-color: white;
+  }
+  
+  @media screen and (max-width: 992px) {
+    .in {
+        margin-top: 120px;
+    }
+}
+
+._tooltip {
+  display:inline-block;
+  position:relative;
+}
+
+._tooltip .top {
+  min-width:200px; 
+  top: -13%;
+  left: 50%;
+  transform:translate(-50%, -100%);
+  padding:10px 20px;
+  color:#FFFFFF;
+  background-color:#007bff;
+  font-weight:normal;
+  font-size:13px;
+  border-radius:5px;
+  position:absolute;
+  z-index:10;
+  box-sizing:border-box;
+  border:1px solid #007bff;
+  // box-shadow:0 1px 8px rgba(0,0,0,0.5);
+  // display:none;
+}
+
+
+._tooltip .top i {
+  position:absolute;
+  top:100%;
+  left:50%;
+  margin-left:-12px;
+  width:24px;
+  height:12px;
+  overflow:hidden;
+}
+
+._tooltip .top i::after {
+  content:'';
+  position:absolute;
+  width:12px;
+  height:12px;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(45deg);
+  background-color:#007bff;
+  border:1px solid #007bff;
+  // box-shadow:0 1px 8px rgba(0,0,0,0.5);
+}

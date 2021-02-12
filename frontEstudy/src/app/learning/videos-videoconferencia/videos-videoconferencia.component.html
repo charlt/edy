@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Selecciona una asignatura</label>
+      <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="index" (change)="consulta()">
+        <option value="" selected hidden>Selecciona una opción</option>
+        <option value="{{i}}" *ngFor="let materia of materias; let i = index">{{materia.asignatura}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Url</th>
+        <th>Fecha inicio</th>
+        <th>Fecha fin</th>
+      </tr>
+      <tr *ngFor="let video of videoconferencias">
+        <td>{{video.nombre}}</td>
+        <td>{{video.descripcion}}</td>
+        <td><a href="{{video.url_descarga}}" target="_blank">{{video.url_descarga}}</a></td>
+        <td>{{video.fecha_inicio | date: "dd/MM/yyyy"}}, {{video.fecha_inicio | date: "shortTime"}}</td>
+        <td>{{video.fecha_fin |date: "dd/MM/yyyy"}}, {{video.fecha_fin |date: "shortTime"}}</td>
+      </tr>
+    </table>
+    <div *ngIf="!videoconferencias && index" class="alert alert-danger text-center" role="alert">Sin resultados</div>
+  </div>
+</div>

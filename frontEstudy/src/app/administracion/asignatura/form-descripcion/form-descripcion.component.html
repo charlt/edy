@@ -1,0 +1,14 @@
+
+<form [formGroup]="formEditor"(ngSubmit)="enviarInformacion()">   
+   <div class="form-group">
+        <ckeditor
+        (ready)="comienza($event)"
+        [config]="{
+            allowedContent : true,
+            extraPlugins: 'uploadimage',
+            filebrowserUploadUrl: 'http://plataforma.estudy.com/apiestudy/extras/archivo/carga_ckeditor.php'
+            }"   
+        formControlName="tex"  name="ckeditor"></ckeditor><br>    
+        <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+    </div>
+</form>    

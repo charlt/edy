@@ -1,0 +1,52 @@
+@import "../../app.component.scss";
+.rell{
+    border: 1px solid #d9e2d9f5;
+    border-radius: 0px 0px 10px 10px;
+    padding: 10px 15px;
+}
+
+.semaforo{
+    border-right: 2px solid rgb(57, 53, 65); 
+    border-left: 2px solid rgb(57, 53, 65); 
+    border-radius: 10px; 
+    height: 75px; 
+    padding: 10px 0px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.circulo {
+    width: 30px;
+    height: 30px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.off{
+    background: radial-gradient(rgba(0, 0, 0, 0.5) 5%, #676d73 25%, #818182 70%); 
+}
+.green{
+    background: radial-gradient(rgba(149, 199, 149, 0.9) 5%, #7cc57c 25%, #5cb85c 70%);    
+}
+.red{
+    background: radial-gradient(rgba(224, 134, 131, 0.9) 5%, #de6562 25%, #d9534f 70%);
+}
+.yellow{
+    background: radial-gradient(rgba(226, 193, 145, 0.9) 5%, #efb15a 25%, #f0ad4e 70%);
+}
+
+.btn{
+    width: 30px;
+    height: 30px;
+    background-color: #007bff85;
+    padding: 5px;
+    border-radius: 50px;
+    font-size: 12px;
+    border: 2px solid rgba(153,153,153,0.6);
+}
+.puntos{
+    text-align: center; 
+    border-radius: 8px; 
+    border: 1px solid rgba(53, 144, 158, 0.7);
+}

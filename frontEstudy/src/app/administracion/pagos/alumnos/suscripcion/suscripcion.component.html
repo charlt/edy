@@ -1,0 +1,155 @@
+<div class="row">
+  <div class="col-12">
+    <app-encabezado-persona [idPersona]="idAlumno" 
+    [idRol]="2"></app-encabezado-persona>
+    <h5 class="mt-3">{{title}}</h5>
+    <button class="btn btn-success my-3" (click)="open(content)"><i class="fa fa-plus"></i> Agregar nuevo plan de pago</button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Suscripción</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Reinscripción</th>
+            <th scope="col">Colegiatura</th>
+          
+            <th scope="col">Editar</th>
+            <th scope="col">Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="suscripcion.length == 0">
+            <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+          </tr>
+          <tr *ngFor="let _suscripcion of suscripcion; let i = index">
+            <td>{{_suscripcion.nombre_suscripcion}}</td>
+            <td>{{_suscripcion.descripcion_suscripcion}}</td>
+            <td>$ {{_suscripcion.descuento_reinscripcion}}
+              <span class="badge badge-success" *ngIf="_suscripcion.beca_reinscripcion != 0">
+                Beca
+                <span *ngIf="_suscripcion.valor_beca_reinscripcion == 1"> $ </span>
+                 {{_suscripcion.beca_reinscripcion}}
+                <span *ngIf="_suscripcion.valor_beca_reinscripcion == 2"> % </span>
+              </span>
+
+            </td>
+            <td>$ {{_suscripcion.descuento_colegiatura}}
+              <span class="badge badge-success" *ngIf="_suscripcion.beca_colegiatura != 0">
+                Beca  
+                <span *ngIf="_suscripcion.valor_beca_colegiatura == 1"> $ </span>
+                {{_suscripcion.beca_colegiatura}}
+                <span *ngIf="_suscripcion.valor_beca_colegiatura == 2"> % </span>
+              </span>
+            </td>
+            <td><button class="btn btn-info" (click)="open(content, _suscripcion)"><i class="fa fa-pencil"></i></button></td>
+            <td><button class="btn btn-danger" (click)="eliminar(_suscripcion.alumno_suscripcion_id, i)"><i class="fa fa-times"></i></button></td>
+          </tr>
+          
+        </tbody>
+      </table>
+
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{titulo}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body mx-5 my-2">
+    <form [formGroup]="pagosForm" (ngSubmit)="enviaInformacion()">
+      <div class="form-group mb-2">
+        <label class="control-label">Nombre del plan de pago</label>
+        
+        <select class="form-control" formControlName="id_suscripcion" (change)="cambiaSuscripcion($event)">
+          <option value="" hidden disabled selected>Selecciona una opción</option>
+          <option [value]="suscripcion.suscripcion_id" 
+            *ngFor="let suscripcion of catSuscripciones; let i = index;">
+            {{suscripcion.nombre_suscripcion}}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="selectedSuscripcion" class="row alert alert-secondary">
+        <div class="col-12">
+          <h5>Inscripción/Reinscripción</h5>
+        </div>
+        <div class="col-6 text-center">
+          <label>Monto</label>
+          <h5>$ {{selectedSuscripcion.monto_reinscripcion}}</h5>
+        </div>
+        <div *ngIf="f.becaReinscripcion.value == 1" class="col-6 text-center">
+          <label>Monto con beca</label>
+          <h5>$ {{becaReinscripcion}}</h5>
+        </div>
+        <div class="col-12">
+          <label><input type="checkbox" value="1" formControlName="becaReinscripcion"> ¿Deseas agregar beca al alumno? </label>
+        </div>
+        <div class="col-6"  *ngIf="f.becaReinscripcion.value == 1">
+          <div class="form-group mb-2">
+            <label class="control-label">Descuento de beca</label>
+            <input class="form-control" type="number" formControlName="montoBecaReinscripcion" placeholder="montoBecaReinscripcion" (blur)="calculaBeca(1)">
+          </div>
+        </div>
+        <div class="col-6"  *ngIf="f.becaReinscripcion.value == 1">
+          <div class="form-group mb-2">
+
+            <label class="control-label">Tipo de descuento</label><br>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="monto1" formControlName="tipoBecaReinscripcion"  name="tipoBecaReinscripcion" class="custom-control-input" value="1" >
+              <label class="custom-control-label" for="monto1">Monto</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="porcentaje1" formControlName="tipoBecaReinscripcion"  name="tipoBecaReinscripcion" class="custom-control-input" value="2">
+              <label class="custom-control-label" for="porcentaje1">Porcentaje</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedSuscripcion" class="row alert alert-info">
+        <div class="col-12">
+          <h5>Colegiatura</h5>
+          <div class="row">
+            <div class="col-6 text-center">
+              <label>Monto</label>
+              <h5>$ {{selectedSuscripcion.monto_colegiatura}}</h5>
+            </div>
+            <div *ngIf="f.becaColegiatura.value == 1" class="col-6 text-center">
+              <label>Monto con beca</label>
+              <h5>$ {{becaColegiatura}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <label><input type="checkbox" value="1" formControlName="becaColegiatura"> ¿Deseas agregar beca al alumno? </label>
+        </div>
+        <div class="col-6"  *ngIf="f.becaColegiatura.value == 1">
+          <div class="form-group mb-2">
+            <label class="control-label">Descuento de beca</label>
+            <input class="form-control" type="number" formControlName="montoBecaColegiatura" placeholder="montoBecaColegiatura" (blur)="calculaBeca(2)">
+          </div>
+        </div>
+        <div class="col-6"  *ngIf="f.becaColegiatura.value == 1"> 
+          <div class="form-group mb-2">
+            <label class="control-label">Tipo de descuento</label><br>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="monto2" formControlName="tipoBecaColegiatura" class="custom-control-input" value="1" >
+              <label class="custom-control-label" for="monto2">Monto</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="porcentaje2" formControlName="tipoBecaColegiatura" class="custom-control-input" value="2">
+              <label class="custom-control-label" for="porcentaje2">Porcentaje</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      
+      <button type="submit" class="btn btn-success pull-right mt-3" [disabled]="pagosForm.invalid">Guardar información</button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

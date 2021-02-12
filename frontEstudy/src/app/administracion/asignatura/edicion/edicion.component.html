@@ -1,0 +1,99 @@
+<!-- <div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+</div> -->
+<ngb-tabset>
+  <ngb-tab>
+    <ng-template ngbTabTitle><p>Principal</p></ng-template>
+      <ng-template ngbTabContent><!---->
+        <div class="modal-body">
+          <app-form  [idAsignatura]="idAsignaturaSelected" [tipoForm]="1"></app-form>
+        </div>
+      </ng-template>
+  </ngb-tab>
+  <ngb-tab><!---->
+    <ng-template ngbTabTitle><p>Bienvenida</p></ng-template>
+      <ng-template ngbTabContent>
+        <div class="modal-body">
+          <label class="control-label"><b>Bienvenida</b></label>
+          <form-descripcion [columna] = "1" [idAsignatura]="idAsignaturaSelected"></form-descripcion>
+        </div>
+      </ng-template>
+  </ngb-tab>
+  <ngb-tab><!---->
+    <ng-template ngbTabTitle><p>Objetivos</p></ng-template>
+      <ng-template ngbTabContent>
+        <div class="modal-body">
+          <label class="control-label"><b>Objetivos</b></label>
+          <form-descripcion [columna] = "2" [idAsignatura]="idAsignaturaSelected"></form-descripcion>
+        </div>
+      </ng-template>
+  </ngb-tab>
+  <ngb-tab><!---->
+    <ng-template ngbTabTitle><p>Evaluación</p></ng-template>
+      <ng-template ngbTabContent>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label"><b>Evaluación</b></label>
+            <form-descripcion [columna] = "3" [idAsignatura]="idAsignaturaSelected"></form-descripcion>
+          </div>  
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab><!---->
+      <ng-template ngbTabTitle><p>Bibliografía</p></ng-template>
+        <ng-template ngbTabContent>
+          <div class="modal-body">
+            <label class="control-label" ><b>Bibliografía</b></label>
+            <form-descripcion [columna] = "4" [idAsignatura]="idAsignaturaSelected"></form-descripcion>
+          </div>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab><!---->
+      <ng-template ngbTabTitle><p>Carga de imagen</p></ng-template>
+        <ng-template ngbTabContent>
+          <div class="modal-body">
+                <img src="{{imgURL}}" width="50%">
+                <app-carga-imagen [idAsignaturaSelected]="idAsignaturaSelected" [urlImagen]="urlImagen"[tipoImagen]="'imagen'"></app-carga-imagen>
+          </div>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab><!---->
+      <ng-template ngbTabTitle><p>Carga de imagen previa</p></ng-template>
+        <ng-template ngbTabContent>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-4">
+                <img src="{{imgURLPrevia}}" width="50%">
+              </div>
+              <div class="col-8">
+                <app-carga-imagen [idAsignaturaSelected]="idAsignaturaSelected" [urlImagen]="urlImagen" [tipoImagen]="'previa'"></app-carga-imagen>
+              </div>
+            </div>      
+          </div>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab><!---->
+      <ng-template ngbTabTitle><p>Carga de contenido</p></ng-template>
+        <ng-template ngbTabContent>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <app-file-upload [(ngModel)]="contenidoPdf" (change)="guardarPdf()"></app-file-upload>
+              </div>
+              <div class="col-md-6 text-center">
+                <div class="form-row mt-3">
+                  <div class="col-11">
+                    <app-archivo *ngIf="asignatura.url_contenido" [urlBase]="asignatura.url_contenido"></app-archivo>
+                  </div>
+                  <div class="col-1">
+                    <button *ngIf="asignatura.url_contenido" class="btn btn-danger" (click)="eliminarArchivo(asignatura.url_contenido)"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+          </div> 
+          </div>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>

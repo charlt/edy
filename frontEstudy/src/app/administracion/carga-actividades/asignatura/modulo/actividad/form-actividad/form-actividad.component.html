@@ -1,0 +1,431 @@
+
+<div   class="row alert  alert-actividad" role="alert" >  
+  <div *ngIf="idActividad && actividad" class="col-md-9">
+    
+    <h5 class="text-left text-dark">  
+       {{actividad.actividad_nombre}}</h5>
+    <p>Actividad del tipo {{actividad.tipo_actividad_nombre}}</p> 
+    <button  *ngIf="actividad.tipo_actividad == 2"  class="btn btn-info btn-sm"  (click)="redireccion('preguntas')">
+      <span ><i class="fa fa-plus-square"></i> Mostrar preguntas</span>  
+    </button>
+  </div>
+  <div *ngIf="idActividad && actividad" class="col-md-3">
+    
+
+    <button  *ngIf="idActividad"  [disabled]="disablePreview" (click)="openModulo(modalModulo)" class="btn btn-primary btn-accion" placement="top" ngbTooltip="Cambiar actividad de Bloque"><i class="fa fa-mail-forward"></i></button>
+    <button [disabled]="disablePreview" (click)="redireccion('edita')" class="btn btn-info btn-accion"  placement="top" ngbTooltip="Editar la actividad"><i class="fa fa-pencil"></i></button>
+    <button [disabled]="disablePreview" (click)="redireccion('vista-previa')" class="btn btn-info btn-accion" class="btn btn-warning btn-accion" placement="top" ngbTooltip="Vista previa de la actividad, para poder contestar y editar" ><i class="fa fa-eye"></i></button>
+  </div>
+  <div *ngIf="!idActividad" class="col-md-12">
+    
+    <h4 class="text-left text-dark">{{title}}</h4>
+    
+  </div>
+
+<form  class="col-md-12" [formGroup]="actividadForm" (ngSubmit)="enviarInformacionActividad()">
+<div class="row">
+  <div class="col">
+    <div class="form-group">                               
+      <label class="control-label">{{'nombreActividad' | translate}}:</label>
+      <input formControlName="nombreActividad" class="form-control"  placeholder="{{'nombreActividad' | translate}}" type="text" (blur)="generaClaveAsign()">
+      <span class="invalidText" *ngIf="f.nombreActividad.invalid && f.nombreActividad.touched">
+        {{'fmErrName' | translate}}
+      </span>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group">                               
+      <label class="control-label">{{'claveActividad' | translate}}:</label>
+      <input formControlName="claveActividad" class="form-control"  placeholder="{{'claveActividad' | translate}}" type="text" >
+      <span class="invalidText" *ngIf="f.claveActividad.invalid && f.claveActividad.touched">
+        {{'fmErrKey' | translate}}
+      </span>
+    </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col">
+
+    <!-- <div class="form-group">                               
+      <label class="control-label" >{{'FechaInicio' | translate}}:</label>
+      <input formControlName="fechaInicio" class="form-control"  placeholder="{{'fechaInicio' | translate}}" type="datetime-local" >
+      <span class="invalidText" *ngIf="f.fechaInicio.invalid && f.fechaInicio.touched">
+        {{'fmErrDate' | translate}}
+      </span>
+    </div>  -->
+  <div class="row mt-2 pl-3" >
+    <div class="col-6">
+      <input formControlName="fecha" type="checkbox" class="custom-control-input" id="fecha" name="fecha">
+      <label class="custom-control-label" for="fecha"> {{'Agregar una fecha específica a esta actividad' | translate}}</label>
+    </div>
+    <div class="col-6" [hidden]="!f.fecha.value">
+      <input formControlName="hora" type="checkbox" class="custom-control-input" id="hora" name="hora">
+      <label class="custom-control-label" for="hora"> {{'Agregar una hora específica a esta actividad' | translate}}</label>
+    </div>
+  </div>
+    <div class="row mt-2" [hidden]="!f.fecha.value">
+   
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
+        <label class="control-label">Fecha inicio:</label>
+            <div class="input-group">
+              <input class="form-control" placeholder="AAAA-MM-DD"
+                     name="dp" formControlName="fechaInicio" [footerTemplate]="footerTemplate_1" ngbDatepicker #d_1="ngbDatepicker"
+                     [placement]="'bottom'">
+              <div class="input-group-append">
+                <button #buttonEl class="btn btn-outline-primary calendar" (click)="d_1.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+              </div>
+        </div>
+        <ng-template #footerTemplate_1>
+          <hr class="my-0">
+          <button class="btn btn-primary btn-sm m-2 float-left" (click)="setData(1, today); d_1.close()">Hoy</button>
+          <button class="btn btn-secondary btn-sm m-2 float-right" (click)="d_1.close()">Cerrar</button>
+        </ng-template>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [hidden]="!f.hora.value">
+        <label class="control-label">Hora inicio:</label>
+        <ngb-timepicker formControlName="horaInicio" [meridian]="meridian"></ngb-timepicker>
+      </div>
+    </div>
+
+
+    <div class="row mt-7" [hidden]="!f.fecha.value">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <label class="control-label">Fecha fin:</label>
+      
+            <div class="input-group">
+              <input class="form-control" placeholder="AAAA-MM-DD"
+                     name="dp" formControlName="fechaFin" [footerTemplate]="footerTemplate_2" ngbDatepicker #d_2="ngbDatepicker"
+                     [placement]="'bottom'">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary calendar" (click)="d_2.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+              </div>
+        </div>
+        <ng-template #footerTemplate_2>
+          <hr class="my-0">
+          <button class="btn btn-primary btn-sm m-2 float-left" (click)="setData(2, today); d_2.close()">Hoy</button>
+          <button class="btn btn-secondary btn-sm m-2 float-right" (click)="d_2.close()">Cerrar</button>
+        </ng-template>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" [hidden]="!f.hora.value">
+        <label class="control-label">Hora fin:</label>
+        <ngb-timepicker formControlName="horaFin" [meridian]="meridian"></ngb-timepicker>
+      </div>
+    </div>
+    <!-- <div class="form-group">                               
+      <label class="control-label" >{{'FechaFin' | translate}}:</label>
+      <input formControlName="fechaFin" class="form-control"  placeholder="{{'fechaFin' | translate}}" type="datetime-local" >
+      <span class="invalidText" *ngIf="f.fechaFin.invalid && f.fechaFin.touched">
+        {{'fmErrDate' | translate}}
+      </span>
+    </div> -->
+  </div>
+</div><br>
+    <div  class="row">
+      <div class="col-md-6">
+        <div class="form-group text-center">
+          <label class="control-label" >{{'contenidoPedagogico' | translate}}:</label>
+          <app-file-upload formControlName="contenido" (change)="guardarBorrador()"></app-file-upload>
+          <div class="invalid-feedback" style="display: block">
+            <ng-container *ngIf="hasError('required')">{{'fmErrfileRequired' | translate}}</ng-container>
+            <ng-container *ngIf="hasError('requiredFileType')">{{'fmErrfileDocument' | translate}}</ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row" *ngFor="let _contenidoActividad of contenidoActividad; let i=index;">
+          <div class="col-md-12 alert alert-primary archivo" role="alert">
+            <div class="pull-right">
+              <button *ngIf="_contenidoActividad.visto == 0 || !_contenidoActividad.visto" type="button" class="btn btn-secondary btn-sm" (click)="vistaArchivo(_contenidoActividad.contenido_actividad_id,i,_contenidoActividad.visto)"><i class="fa fa-eye-slash"></i></button>
+              <button *ngIf="_contenidoActividad.visto == 1" type="button" class="btn btn-success btn-sm" (click)="vistaArchivo(_contenidoActividad.contenido_actividad_id,i,_contenidoActividad.visto)"><i class="fa fa-eye"></i></button>
+              <button type="button" class="btn btn-secondary btn-sm" (click)="openModal(content, _contenidoActividad.url_contenido)"><i class="fa fa-code"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="eliminarContenido(_contenidoActividad.contenido_actividad_id,i)"><i class="fa fa-trash"></i></button>
+            </div>
+            <div>
+              <app-archivo *ngIf="_contenidoActividad.url_contenido && !_contenidoActividad.url_contenido" [urlBase]="_contenidoActividad.url_contenido"></app-archivo>                  
+              <app-archivo *ngIf="_contenidoActividad.url_contenido && _contenidoActividad.url_contenido" [urlBase]="_contenidoActividad.url_contenido" [nombre]="_contenidoActividad.nombre"></app-archivo>
+            </div>
+          </div>
+        </div>
+        <p *ngIf="cargando"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i> Cargando archivo, por favor espere...</p>
+      </div>
+    </div>
+      <!-- #### -->
+      <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">Documento</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <textarea name="textarea" rows="5" cols="94"><div class="row text-center">
+            <a class="btn btn-link" href="{{urlArchivo}}"><h2><i class="fa fa-file-o"></i></h2> <p>Descargar contenido académico</p></a>
+            </div></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+        </div>
+      </ng-template>
+      <!--####-->
+  <div class="row mb-3">
+    <div class="col-sm">
+        <div class="form-group">                               
+            <label class="control-label" for="fecha_inicio">{{'instruccion' | translate}}:</label>            
+            <!-- <ckeditor [config]="{allowedContent : true }"  formControlName="instruccion" name="ckeditor"></ckeditor><br> -->
+            <ckeditor [config]="{
+              allowedContent : true,
+              extraPlugins: ['uploadimage','justify'],
+              toolbar: adminEditor,
+              filebrowserUploadUrl: 'http://plataforma.estudy.com/apiestudy/extras/archivo/carga_ckeditor.php'
+              }"
+              formControlName="instruccion" name="ckeditor"
+              (ready)="comienza($event)" (click)="btnSource($event)" (blur)="getData($event)"></ckeditor>
+            <span class="invalidText" *ngIf="f.instruccion.invalid && f.instruccion.touched">
+                {{'fmErrText' | translate}}
+           </span>
+        </div> 
+    </div>
+  </div>
+
+  <!-- ##### -->
+  <div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+      <div class="form-group">         
+        <label class="control-label" for="">{{'tipoActividad' | translate}}:</label>
+        <select  formControlName="tipoActividad"  class="form-control"  >
+          <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+          <option  [value]="_tipoActividad.tipo_actividad_id" *ngFor="let _tipoActividad of tipoActividad">{{_tipoActividad.tipo_actividad_nombre}}</option>
+        </select>
+        <span class="invalidText" *ngIf="f.tipoActividad.invalid && f.tipoActividad.touched">
+                {{'fmErrSelect' | translate}}
+        </span>
+      </div>
+      <!-- #### -->
+      <div>
+        <div *ngIf="f.tipoEvaluacion">
+          <label class="control-label" for="nombre_ciclo">{{'modoCalificacion' | translate}}:</label>
+          <div class="row mt-1">
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio1" name="tipoEvaluacion" formControlName="tipoEvaluacion" value="2" (click)="mostrar_rubrica()">
+                <label class="custom-control-label" for="radio1" >{{'Rubrica' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio2" name="tipoEvaluacion" formControlName="tipoEvaluacion" value="1">
+                <label class="custom-control-label" for="radio2" >{{'PonderacionManual' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio3" name="tipoEvaluacion" formControlName="tipoEvaluacion" value="3">
+                <label class="custom-control-label" for="radio3" >{{'PonderacionAutomatica' | translate}}</label>
+              </div>
+            </div>
+          </div>
+          <span class="invalidText" *ngIf="f.tipoEvaluacion.invalid && f.tipoEvaluacion.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+          <div *ngIf="f.tipoEvaluacion.value == 2" class="form-group alert alert-info" >      
+              <label class="control-label  " for="nombre_ciclo">{{'_seleccionRubrica' | translate}}:</label>
+              <a *ngIf="idRol == 1" [routerLink]="['/admin/rubricas/']"> Crear rúbrica</a>
+            <select   formControlName="idRubrica" class="form-control"  >rubricas
+              <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+              <option  [value]="rubrica.rubrica_id" *ngFor="let rubrica of rubricas">{{rubrica.desc_rubrica}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="f.bullet && idRol == 1">
+          <label class="control-label mt-3" for="nombre_ciclo">{{'SelectFormList' | translate}}: </label>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio4" name="bullet" formControlName="bullet" value="2">
+                <label class="custom-control-label" for="radio4" >{{'letra' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio4.1" name="bullet" formControlName="bullet" value="1">
+                <label class="custom-control-label" for="radio4.1" >{{'numero' | translate}}</label>
+              </div>
+            </div>
+          </div>
+          <span class="invalidText" *ngIf="f.bullet.invalid && f.bullet.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div>
+
+        <div *ngIf="f.aleatorio && idRol == 1">
+          <label class="control-label" for="nombre_ciclo">{{'aleatorio' | translate}}:</label>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio5" name="aleatorio" formControlName="aleatorio" value="1">
+                <label class="custom-control-label" for="radio5" >{{'Si' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio6" name="aleatorio" formControlName="aleatorio" value="0">
+                <label class="custom-control-label" for="radio6" >{{'No' | translate}}</label>
+              </div>
+            </div>
+          </div>
+          <span class="invalidText" *ngIf="f.aleatorio.invalid && f.aleatorio.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div>
+        <div *ngIf="f.numeroIntentos">
+          <div class="form-group">
+            <label class="control-label  " for="nombre_ciclo">{{'numeroIntentos' | translate}}:</label>
+            <input class="form-control" formControlName="numeroIntentos" placeholder="{{'numeroIntentos' | translate}}" type="number" >
+            <span class="invalidText" *ngIf="f.numeroIntentos.invalid && f.numeroIntentos.touched">
+              {{'fmErrNumber' | translate}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group" *ngIf="f.resolucion && idRol == 1">
+          <label class="control-label" for="">{{'resolucion' | translate}}:</label>
+          <select  formControlName="resolucion"  class="form-control"  >
+            <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+            <option  [value]="_resolucion.metodo_resolver_id" *ngFor="let _resolucion of resolucion">{{_resolucion.metodo_resolver}}</option>
+          </select>
+          <span class="invalidText" *ngIf="f.tipoActividad.invalid && f.tipoActividad.touched">
+              {{'fmErrSelect' | translate}}
+          </span>
+        </div>
+        <div class="form-group" *ngIf="f.ponderacion  && f.unica.value == '0' && idRol == 1">
+          <label class="control-label" for="">{{'Ponderación en la asignatura' | translate}} <!--(máx: {{ponderacionMax}}%)-->:</label>
+          <div class="form-group">                               
+            <input  formControlName="ponderacion"  class="form-control"  type="number">    
+            <span class="invalidText" *ngIf="f.tipoActividad.invalid && f.tipoActividad.touched">
+                {{'fmErrSelect' | translate}}
+            </span>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="f.ponderacion && idRol == 1 ">
+          <label><input formControlName="unica" [checked]="f.unica.value =='1' " type="checkbox"> Actividad única en la asignatura</label>
+          <span class="invalidText" *ngIf="f.unica.invalid && f.unica.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div>
+        <div class="form-group" *ngIf="f.dificultad && idRol == 1">
+          <label class="control-label" for="">{{'dificultad' | translate}}:</label>
+          <select  formControlName="dificultad"  class="form-control"  >
+            <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+            <option  [value]="_dificultad.dificultad_id" *ngFor="let _dificultad of dificultad">{{_dificultad.dificultad_nombre}}</option>
+          </select>
+          <span class="invalidText" *ngIf="f.tipoActividad.invalid && f.tipoActividad.touched">
+            {{'fmErrSelect' | translate}}
+          </span> 
+        </div>
+        <div class="form-group mt-2" *ngIf="f.portafolio && idRol == 1">
+          <label class="control-label  " for="nombre_ciclo">{{'Portafolio' | translate}}:</label>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio7" name="portafolio" formControlName="portafolio" value="1">
+                <label class="custom-control-label" for="radio7" >{{'Si' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio8" name="portafolio" formControlName="portafolio" value="0">
+                <label class="custom-control-label" for="radio8" >{{'No' | translate}}</label>
+              </div>
+            </div>
+          </div>
+          <span class="invalidText" *ngIf="f.portafolio.invalid && f.portafolio.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div>
+        <div class="form-group" *ngIf="f.importancia && idRol == 1">
+          <label class="control-label" for="">{{'Importancia' | translate}}:</label>
+          <select  formControlName="importancia"  class="form-control"  >
+            <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+            <option  [value]="_importanciaActividad.importancia_actividad_id" *ngFor="let _importanciaActividad of importanciaActividad">{{_importanciaActividad.importancia_actividad_nombre}}</option>
+          </select>
+          <span class="invalidText" *ngIf="f.importancia.invalid && f.importancia.touched">
+            {{'fmErrSelect' | translate}}
+          </span> 
+        </div>
+
+        <div class="form-group mt-2" *ngIf="f.final && idRol == 1">
+          <label class="control-label  " for="nombre_ciclo">{{'Evaluación de actividad en la asignatura' | translate}}:</label>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio9" formControlName="final" value="0">
+                <label class="custom-control-label" for="radio9" >{{'Normal' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="radio10" formControlName="final" value="1">
+                <label class="custom-control-label" for="radio10" >{{'Final' | translate}}</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="custom-control custom-radio" (click)="alertUnica()">
+                <input type="radio" class="custom-control-input" id="radio11" formControlName="final" value="2">
+                <label class="custom-control-label" for="radio11" >{{'Extraordinario' | translate}}</label>
+              </div>
+            </div>
+          </div>
+          <span class="invalidText" *ngIf="f.final.invalid && f.final.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div>
+
+        <!--div class="form-group" *ngIf="f.totalPreguntas">
+          <label class="control-label" for="nombre_ciclo">{{'Elegir ' | translate}}:</label>
+          <div class="row">
+            <div class="col mt-3">
+              <div class="custom-control custom-checkbox">
+                <input formControlName="totalPreguntas" type="checkbox" class="custom-control-input" id="totalPreguntas" name="totalPreguntas">
+                <label class="custom-control-label" for="totalPreguntas">{{'¿Deseas el cálculo de ponderación automático?' | translate}}</label>
+              </div>
+            </div>
+            <div class="col" *ngIf="f.numeroPreguntas">
+              <div class="form-group">
+                <label class="control-label">{{'Total de preguntas en actividad' | translate}}</label>
+                <input class="form-control" formControlName="numeroPreguntas" type="number" >
+              </div>
+            </div>
+          </div>
+          <span class="invalidText" *ngIf="f.portafolio.invalid && f.portafolio.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div-->
+    </div>
+    <div class="col-12 mt-3" *ngIf="errorFecha">
+      <div class="alert alert-danger">
+        No puedes cargar horas solamente, debes asignar una fecha
+      </div>
+    </div>
+    <div class="col-12 mt-2">
+      <button [hidden]="tipoAdmin == 0" type="submit" class="mt-2 btn btn-primary pull-right guardar-ciclo">{{'fmSave' | translate}}</button>
+    </div>
+  </div>
+</form>
+</div>
+<ng-template #modalModulo let-c="close" let-d="dismiss">
+  <div class="modal-body">
+      <h4>Cambiar actividad de Bloque</h4>
+      <select  [(ngModel)]="idModuloNuevo" class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="modulo.modulo_id" *ngFor="let modulo of modulos">{{modulo.modulo_nombre}}</option>
+      </select>
+
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="c('Close click')">Cerrar</button>
+      <button type="button" class="btn btn-success" (click)="c('Close click'); moverBloque()">Mover de bloque</button>
+  </div>
+</ng-template>

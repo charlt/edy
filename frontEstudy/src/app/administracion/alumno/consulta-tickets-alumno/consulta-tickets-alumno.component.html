@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>Notificaciones y tickets</h4>
+    <app-encabezado-persona [idPersona]="idPersona" [idRol]="'2'"></app-encabezado-persona>
+    <button class="btn btn-success" [routerLink]="['../../ticket/'+ idPersona]"><i class="fa fa-plus" aria-hidden="true"></i> Nueva notificación</button><br><br>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th>Asunto</th>
+          <th>Descripción</th>
+          <th>Fecha envío</th>
+          <th>Tipo de ticket</th>
+          <th>Estatus del ticket</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets; let i = index;">
+          <td>{{ticket.asunto_ticket}}</td>
+          <td>{{ticket.descripcion_ticket}}</td>
+          <td>{{ticket.fecha_creacion | date: "dd/MM/yyyy"}} {{ticket.fecha_creacion | date: "shortTime"}}</td>
+          <td>{{ticket.tipo_ticket}}</td>
+          <td>{{ticket.estatus_ticket}}</td>
+          <td class="text-center"><i (click)="eliminaTicket(ticket, i)" class="fa fa-minus-square fa-2x _hover text-danger" aria-hidden="true"></i></td>
+        </tr>
+        <tr *ngIf="!tickets">
+          <td colspan="7" class="text-center">No se encontraron tickets</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

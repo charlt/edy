@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <button class="btn btn-success" (click)="openModal(content, '');">Inserta horario</button><br><br>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Día</th>
+          <th>Hora inicio</th>
+          <th>Hora fin</th>
+          <th>Edita</th>
+          <th>Elimina</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let horario of horarios; let i = index">
+        <tr *ngIf="horarios">
+          <td>{{horario.dia}}</td>
+          <td>{{horario.hora_inicio}}</td>
+          <td>{{horario.hora_fin}}</td>
+          <td class="text-center"><button class="btn btn-info" (click)="openModal(content, horario.horario_id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button></td>
+          <td class="text-center"><button class="btn btn-danger"(click)="elimina(horario.horario_id, i);"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+        </tr>
+        <tr *ngIf="!horarios"></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <form [formGroup]="horarioForm" (ngSubmit)="enviarInformacion()">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group " rel="1">
+                <label class="control-label" for="">Seleccione un día</label>
+                <select formControlName="dia" class="form-control">
+                  <option hidden value="" disabled selected>Selecciona una opción</option>
+                  <option value="1">Lunes</option>
+                  <option value="2">Martes</option>
+                  <option value="3">Miércoles</option>
+                  <option value="4">Jueves</option>
+                  <option value="5">Viernes</option>
+                  <option value="6">Sábado</option>
+                  <option value="7">Domingo</option>
+                </select>
+                <span class="invalidText" *ngIf="f.dia.invalid && f.dia.touched">
+                  Selecciona una opción
+                </span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-primary" role="alert">
+                <div class="form-group">
+                  <label class="control-label" for="fecha_cierre"><i class="fa  fa-clock-o"></i> Hora inicio</label>
+                  <input formControlName="horaIni" class="form-control" id="fecha_cierre" type="time">
+                  <span class="invalidText" *ngIf="f.horaIni.invalid && f.horaIni.touched">
+                    Ingresa una hora de incio
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-primary" role="alert">
+                <div class="form-group">
+                  <label class="control-label" for="fecha_cierre"><i class="fa  fa-clock-o"></i> Hora fin</label>
+                  <input formControlName="horaFin" class="form-control" id="fecha_cierre" type="time">
+                  <span class="invalidText" *ngIf="f.horaFin.invalid && f.horaFin.touched">
+                    Ingresa una hora de fin.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Guardar</button>
+      <button type="button" id="_modal" class="btn btn-outline-dark" (click)="close()">Salir</button>
+    </div>
+  </form>
+</ng-template>

@@ -1,0 +1,159 @@
+<div [hidden]="!show">
+  <div class="col-md-12">
+    <h5>Foro</h5>
+    <div>
+      <button *ngIf="tipoResp && rol.rol_id == 3" class="btn btn-primary btnResp" (click)="cambiaResp(0)"><i class="fa fa-users" aria-hidden="true"></i> Ver todas las respuestas del foro</button>
+      <button *ngIf="!tipoResp && rol.rol_id == 3" class="btn btn-primary btnResp" (click)="cambiaResp(1)"><i class="fa fa-user" aria-hidden="true"></i> Ver respuestas del alumno</button>
+    </div><br>
+     <div *ngIf="rol.rol_id != 3"><!-- condición -->
+      <ckeditor [(ngModel)]="respuestaInicial"
+      [config]="{allowedContent : true , toolbar: simpleEditor, extraPlugins: 'justify' }"
+      (ready)="editorCargado($event)" name="ckeditor"></ckeditor><br>
+    <form [formGroup]="foroForm">
+      <div class="custom-control custom-checkbox; let k = index">
+        <input type="checkbox" class="custom-control-input" id="checkbox_{{idPregunta}}" (click)="toggle(0)">
+        <label class="custom-control-label" for="checkbox_{{idPregunta}}">¿Deseas subir un archivo adjunto?</label>
+        <div [hidden]="buttonName1"><br>
+          <app-file-upload formControlName="contenido"></app-file-upload><br>
+        </div>
+      </div>
+      <div *ngIf="rol.rol_id != 3 && idEstatusActividad != 1 " class="custom-control custom-checkbox; let k = index">
+        <input formControlName="solicitaRevision" type="checkbox" class="custom-control-input" id="checkboxRevision{{idPregunta}}">
+        <label class="custom-control-label" for="checkboxRevision{{idPregunta}}">Solicitar revisión del docente</label>
+      </div>
+    </form>
+    <div class="col ">
+      <button class="btn btn-success pull-right" (click)="enviarInformacion(0)"> Enviar respuesta</button>
+      <!-- respuesta -->
+    </div>
+    </div><br>
+    <hr>
+  </div>
+  <div class="row">
+    <div class="col-md-12" *ngFor="let _respuesta of respuestas; let i = index; ">
+      <ul>
+        <li class="row m-3 alert"
+          [ngClass]=" _respuesta.flg_moderador == 1 ? 'alert-warning': (persona_id == _respuesta.persona_id && _respuesta.flg_moderador != 1 ? 'alert-info' : '')">
+          <div class="col-5">
+            <div class="row" *ngIf="_respuesta.flg_moderador == 1">
+              <app-logotipo-usuario [iniciales]="_respuesta.nombre" [ancho]="ancho" [alto]="alto"
+                [color]="_respuesta.color"></app-logotipo-usuario><b class="nombre"
+                [innerHTML]="_respuesta.nombre "></b><b class="nombre"> (Moderador)</b> <span class="time"> -
+                {{horaPregunta(_respuesta.fecha_creacion)}}</span>
+            </div>
+            <div class="row" *ngIf="_respuesta.flg_moderador != 1">
+              <app-logotipo-usuario [iniciales]="_respuesta.nombre" [ancho]="ancho" [alto]="alto"
+                [color]="_respuesta.color"></app-logotipo-usuario><b class="nombre"
+                [innerHTML]="_respuesta.nombre "></b><span class="time"> -
+                {{horaPregunta(_respuesta.fecha_creacion)}}</span>
+            </div>
+          </div>
+          <div class="col-7 ">
+            <button class="btn btn-primary pull-right responder" (click)="btnDesplegar(i)"><i
+                class="fa fa-reply-all"></i></button>
+            <button *ngIf="persona_id == _respuesta.persona_id" class="btn btn-warning pull-right responder"
+              (click)="btnEditar(i)"><i class="fa fa-pencil"></i></button>
+          </div>
+          <div class="col-12" *ngIf="!_respuesta.statusTextEdita && _respuesta.statusTextEdita !=1">
+            <p class="respuesta" id="respuesta" [innerHTML]="_respuesta.respuesta"></p>
+            <app-archivo class="archivo" *ngIf="_respuesta.contenido" [urlBase]="_respuesta.contenido"></app-archivo>
+          </div>
+          <div class="col-12" *ngIf="_respuesta.statusTextEdita">
+            <ckeditor [(ngModel)]="respuesta"
+              [config]="{allowedContent : true , toolbar: simpleEditor, extraPlugins: 'justify' }" name="ckeditor">
+            </ckeditor><br>
+            <form [formGroup]="foroForm">
+              <!-- <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="defaultUnchecked1{{idPregunta}}"
+                  (click)="toggle(1)">
+                <label class="custom-control-label" for="defaultUnchecked1{{idPregunta}}">¿Deseas subir un archivo adjunto?</label>
+                <div [hidden]="buttonName2 "><br> 
+                  <app-file-upload formControlName="contenido"></app-file-upload><br>
+                </div>
+              </div> -->
+            </form>
+            <button class="btn btn-success pull-right" (click)="enviarInformacion(1)" tooltip="hola">Enviar respuesta</button><br><!-- sub -->
+          </div>
+        </li>
+        <span style="visibility: hidden;" id="{{_respuesta.respuesta_id}}">.</span>
+        <div class="row ml-5">
+          <div class="col" *ngIf="_respuesta.statusTextArea">
+            <ckeditor [(ngModel)]="respuesta"
+              [config]="{allowedContent : true , toolbar: simpleEditor, extraPlugins: 'justify' }" name="ckeditor">
+            </ckeditor><br>
+            <form [formGroup]="foroForm">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="defaultUnchecked2{{idPregunta}}"
+                  (click)="toggle(2)">
+                <label class="custom-control-label" for="defaultUnchecked2{{idPregunta}}">¿Deseas subir un archivo adjunto?</label>
+                <div [hidden]="buttonName3"><br>
+                  <app-file-upload formControlName="contenido"></app-file-upload><br>
+                </div>
+              </div>
+              <div *ngIf="rol.rol_id != 3" class="custom-control custom-checkbox">
+                <input formControlName="solicitaRevision" type="checkbox" class="custom-control-input" id="checkboxRevision{{_respuesta.respuesta_id}}">
+                <label class="custom-control-label" for="checkboxRevision{{_respuesta.respuesta_id}}">Solicitar revisión del docente</label>
+              </div>
+            </form>
+            <button class="btn btn-success pull-right responder" (click)="enviarInformacion(1)">Enviar
+              respuesta</button><br>
+          </div>
+        </div>
+        <div class="row mx-4" *ngFor="let sub_respuesta of _respuesta.sub_respuesta; let j = index ">
+          <div class="col">
+            <ul>
+              <li class="row ml-3 borde alert"
+                [ngClass]="sub_respuesta.flg_moderador == 1 ? 'alert-warning':(persona_id == sub_respuesta.persona_id && sub_respuesta.flg_moderador != 1 ? 'alert-info': '')  ">
+                <div class="col-6">
+                  <div class="row" *ngIf="sub_respuesta.flg_moderador == 1">
+                    <app-logotipo-usuario [iniciales]="sub_respuesta.nombre" [ancho]="ancho + 'px'" [alto]="alto + 'px'"
+                      [color]="sub_respuesta.color"></app-logotipo-usuario><b class="nombre"
+                      [innerHTML]="sub_respuesta.nombre"></b><span class="time"> (Moderador) -
+                      {{horaPregunta(sub_respuesta.fecha_creacion)}}</span>
+                  </div>
+                  <div class="row" *ngIf="sub_respuesta.flg_moderador != 1">
+                    <app-logotipo-usuario [iniciales]="sub_respuesta.nombre" [ancho]="ancho + 'px'" [alto]="alto + 'px'"
+                      [color]="sub_respuesta.color"></app-logotipo-usuario><b class="nombre"
+                      [innerHTML]="sub_respuesta.nombre"></b><span class="time"> -
+                      {{horaPregunta(sub_respuesta.fecha_creacion)}}</span>
+                  </div>
+                </div>
+                <div *ngIf="persona_id == sub_respuesta.persona_id" class="col-6">
+                  <button class="btn btn-warning pull-right responder" (click)="btnEditarSub(i, j)"><i
+                      class="fa fa-pencil"></i></button>
+                </div>
+                <div class="col-12" *ngIf="!sub_respuesta.statusTextEdita">
+                  <p [innerHTML]="sub_respuesta.respuesta"></p>
+                  <app-archivo class=" archivo" *ngIf="sub_respuesta.contenido && sub_respuesta.statusTextEdita != 1"
+                    [urlBase]="sub_respuesta.contenido"></app-archivo>
+                </div>
+              </li>
+              <div *ngIf="sub_respuesta.statusTextEdita">
+                <!-- Sub respuesta -->
+                <ckeditor [(ngModel)]="respuesta"
+                  [config]="{allowedContent : true , toolbar: simpleEditor, extraPlugins: 'justify' }" name="ckeditor">
+                </ckeditor><br>
+                <form [formGroup]="foroForm">
+                  <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked3{{idPregunta}}"
+                      (click)="toggle(3)">
+                    <label class="custom-control-label" for="defaultUnchecked3{{idPregunta}}">¿Deseas subir un adjunto?</label>
+                    <div [hidden]="buttonName4"><br>
+                      <app-file-upload formControlName="contenido" class="archivo"></app-file-upload><br>
+                    </div>
+                  </div> -->
+                  <div *ngIf="rol.rol_id != 3" class="custom-control custom-checkbox">
+                    <input formControlName="solicitaRevision" type="checkbox" class="custom-control-input" id="checkboxRevision{{sub_respuesta.respuesta_id}}">
+                    <label class="custom-control-label" for="checkboxRevision{{sub_respuesta.respuesta_id}}">Solicitar revisión del docente</label>
+                  </div>
+                </form>
+                <button class="btn btn-success pull-right" (click)="enviarInformacion(1)">Enviar respuesta</button><br>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </ul>
+      <hr>
+    </div>
+  </div>
+</div>

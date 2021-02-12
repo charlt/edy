@@ -1,0 +1,52 @@
+  <div class="container mt-3">
+    <div class="row">
+    <div class="col-12">
+      <h4>{{title}}</h4>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" [ngClass]="nuevo == 1 ? 'active':''" (click)="consultaAvisos(1)" class="btn btn-info">Vigentes</button>
+        <button type="button" [ngClass]="nuevo == 2 ? 'active':''" (click)="consultaAvisos(2)"   class="btn btn-info">Otros</button>
+      </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="cargandoAvisos">
+      <div class="col-12 mt-5">
+        <p><i class="fa fa-spin fa-spinner"></i> Cargando información</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="!avisos">
+      <div class="col-12 mt-5">
+        <p>No se encontraron avisos</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="!cargandoAvisos">
+      <div class="col-12">
+        <div class="card  mt-5" *ngFor="let aviso of avisos; let i = index">
+          <div class="card-header " [ngClass]="!aviso.visto ? 'alert-success' : ''">
+            <p>{{aviso.tipo_descripcion}} <strong>{{aviso.nombre_materia}}</strong></p>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <h5>{{aviso.titulo}}</h5>
+              </div>
+              <div class="col-6">
+                <label class="form-check-label float-right" >
+                  <input (change)="marcarAviso(aviso)" class="form-check-input" type="checkbox"  [checked]="aviso.visto == 1">
+                  Marcar como visto
+                </label>
+              </div>  
+                <div class="col-12">
+                  <app-archivo class="archivo" *ngIf="aviso.adjunto" [urlBase]="aviso.adjunto"></app-archivo>
+                  <p [innerHTML]="aviso.mensaje_html" ></p>
+                </div>
+            </div>
+          </div>
+          <div class="card-footer text-muted text-center">
+            {{aviso.fecha_inicio  | date: "dd/MM/yyyy"}} - {{aviso.fecha_fin  | date: "dd/MM/yyyy"}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div>      
+      

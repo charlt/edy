@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-12">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-info" [ngClass]="ident == 0 ? 'active':''" (click)="consultaRetros(0)">Todos</button>
+      <button type="button" class="btn btn-info" [ngClass]="ident == 1 ? 'active':''" (click)="consultaRetros(1)">Nuevos</button>      
+    </div><br><br>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Asignatura</th>
+          <th>Actividad</th>
+          <th>Docente</th>
+          <th>Fecha del último envio</th>
+          <th>Número de mensajes</th>
+          <th>Ir a la actividad</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="retroalimentaciones">
+        <tr *ngFor = "let retro of retroalimentaciones">
+          <td>{{retro.asignatura}}</td>
+          <td>{{retro.actividad}}</td>
+          <td>{{retro.docente.nombre}} {{retro.docente.primer_apellido}} {{retro.docente.segundo_apellido}}</td>
+          <td class="text-center">{{retro.ultimo_mensaje | date: "dd/MM/yyyy"}} {{retro.ultimo_mensaje |date:"shortTime" }}</td>
+          <td class="text-center">{{retro.total_mensajes}}</td>
+          <td class="text-center">
+            <button [disabled]="cargandoRedireccion" type="button" class="btn btn-primary" (click)="nuevoLink(retro.actividad_id, retro.materia_id);">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!retroalimentaciones">
+        <tr >
+          <td colspan="20" class="text-center p-3">
+            <span>No se encontraron retroalimentaciones</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

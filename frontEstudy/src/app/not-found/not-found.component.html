@@ -1,0 +1,54 @@
+
+<body class="bg-img-hero-fixed" style="background-image: url(assets/svg/error/error-404.svg); height: 100%">
+  <!-- ========== HEADER ========== -->
+  <header id="header" class="u-header u-header--bg-transparent u-header--abs-top">
+    <br>
+    <div class="u-header__section">
+      <div id="logoAndNav" class="container">
+        <!-- Nav -->
+        <nav class="navbar navbar-expand u-header__navbar">
+          <!-- Logo -->
+          <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-center" href="#">
+            <img class="logo" [src]="universidad.logo" width="330px" style="padding: 0px 0px 0px 60px;"/>
+          </a>
+          <!-- End Logo -->
+        </nav>
+        <!-- End Nav -->
+      </div>
+    </div>
+  </header>
+  <!-- ========== END HEADER ========== -->
+
+  <!-- ========== MAIN ========== -->
+  <main id="content" role="main">
+    <!-- Hero Section -->
+    <div class="d-lg-flex">
+      <div class="container d-lg-flex align-items-lg-center min-height-lg-100vh space-4">
+        <div class="w-lg-60 w-xl-50">
+          <!-- Title -->
+          <div class="mb-5">
+            <h1 class="text-primary font-weight-normal">Página no <span class="font-weight-semi-bold">encontrada</span></h1>
+            <p class="mb-0">Oops! Lo sentimos, la página no se encuentra disponible</p>
+            <p>Si el problema persiste <a href="https://estudy.com.mx/web/" target="_blank">contáctanos</a>.</p>
+          
+            <a [routerLink]="['/login']" style="color:blue; cursor:pointer" ><h2>Regresar</h2></a>
+          </div>
+          <!-- End Title -->
+
+           <div class="col-md-5 align-self-md-end d-none d-md-inline-block">
+            <!-- SVG Icon -->
+            <figure class="ie-knowledgebase-community mb-n3">
+              <img class="js-svg-injector" src="assets/svg/error/knowledgebase-community.svg" alt="Image Description"
+                   data-parent="#SVGknowledgebaseCommunity" >
+            </figure>
+            <!-- End SVG Icon -->
+           </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- End Hero Section -->
+  </main>
+
+  
+</body>

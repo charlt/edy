@@ -1,0 +1,194 @@
+<div class="row" [ngStyle]="{'height': dateChecked? 'auto': '600px'}">  
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <form [formGroup]="videoForm" (ngSubmit)="enviarInformacion()" *ngIf="bandera">
+      <div class="form-group" *ngFor="let item of Items">
+        <label *ngIf="!item.hidden" class="control-label">{{item.label}}</label>
+        <input *ngIf="item.type != 'textarea'" [formControlName]="item.control" class="form-control" [type]="item.type">
+        <textarea *ngIf="item.type == 'textarea' && !item.hidden" [formControlName]="item.control" class="form-control" rows="5" maxlength="255"></textarea>
+        <span class="invalidText" *ngIf="vF[item.control].touched && vF[item.control].invalid">
+          {{'fmErrText' | translate}}
+        </span>                 
+      </div>
+      <div class="form-check mt-2">
+        <input [checked]="checked" type="checkbox" class="form-check-input" id="url_meet" (click)="setUrl($event)">
+        <label class="form-check-label" for="url_meet">Agregar url para videoconferencia</label>
+      </div>
+      <div class="form-group" *ngIf="vF.url">
+        <!-- <label class="control-label">Url de la videoconferencia</label> -->
+        <input formControlName="url" class="form-control" type="text">             
+      </div>
+      <div class="form-check mt-2" *ngIf="!idVideoconferencia">
+        <input type="checkbox" class="form-check-input" id="add_date" (click)="setDateChecked($event)">
+        <label class="form-check-label" for="add_date">Agregar más fechas</label>
+      </div>
+      <div class="row mt-2" *ngIf="vF.arregloFechas && !idVideoconferencia">
+        <div class="col-12">
+          <label class="control-label">Selecciona los meses <small>(agregar o quitar un mes borrará las selecciones de días hechas)</small></label>
+        </div>
+        <div class="col-12">
+          <div class="container border rounded py-2">
+          <ul class="list-inline">
+            <li class="list-inline-item border px-4 py-2 mx-0 mb-2" *ngFor="let month of arrayMonths; let i = index;"
+              [ngClass]="[i == 0? 'rounded-left': i < arrayMonths.length - 1? '': 'rounded-right',
+                month.checked? 'seleccionado': '']"
+              (click)="setMonth(i)"
+            >{{month.text}}</li>
+         </ul>
+         <app-calendario-component *ngIf="selectedMonths" (Fechas)="getDates($event)" [tipoCalendario]="1" [Meses]="selectedMonths"></app-calendario-component>
+        </div>
+        </div>       
+      </div>  
+      <div class="row mt-3">
+        <div *ngIf="!vF.arregloFechas" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+          <label class="control-label">Fecha inicio</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="AAAA-MM-DD"
+                       name="dp" formControlName="fechaInicio" [footerTemplate]="footerTemplate_1" ngbDatepicker #d_1="ngbDatepicker"
+                       [placement]="'bottom'">
+                <div class="input-group-append">
+                  <button #buttonEl class="btn btn-outline-primary calendar" (click)="d_1.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+                </div>
+          </div>
+          <ng-template #footerTemplate_1>
+            <hr class="my-0">
+            <button class="btn btn-primary btn-sm m-2 float-left" (click)="setData(1, today); d_1.close()">Hoy</button>
+            <button class="btn btn-secondary btn-sm m-2 float-right" (click)="d_1.close()">Cerrar</button>
+          </ng-template>
+        </div>
+        <div [ngClass]="vF.fechaInicio? 'col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12': 'col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12'">
+          <div class="form-row alert alert-info">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> 
+              <div class="form-group">
+                <label class="control-label">Hora inicio</label>
+                <select class="form-control" formControlName="horaInicio">
+                  <option value="" selected disabled hidden>Hora</option>
+                  <option [value]="i+6" *ngFor="let hora of [].constructor(15); let i= index;">
+                    <span *ngIf="i+6 < 12"><p class="m-0 p-0" *ngIf="i+6 < 10">0</p>{{i+6}} A.M</span>
+                    <span *ngIf="i+6 == 12">{{i+6}} P.M</span>
+                    <span *ngIf="i+6 > 12">0{{i-6}} P.M</span>
+                  </option>
+                </select>
+              </div>
+    
+              <!-- <ngb-timepicker formControlName="horaInicio" [meridian]="meridian"></ngb-timepicker> -->
+            </div>
+    
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> 
+              <div class="form-group">
+                <label class="control-label">Minutos inicio</label>
+                <select class="form-control" formControlName="minutosInicio">
+                  <option value="" selected disabled hidden>Minutos</option>
+                  <option [value]="i * 5" *ngFor="let hora of [].constructor(12); let i= index;">
+                    {{i*5}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div  [ngClass]="!vF.arregloFechas? 'col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12': 'col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12'">
+          <div class="form-row alert alert-info">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> 
+              <div class="form-group">
+                <label class="control-label">Duración (Horas)</label>
+                <select  formControlName="horas" class="form-control" >
+                  <option value="" disabled selected hidden>Selecciona una opción</option>
+                  <option [value]="i" *ngFor="let hora of [].constructor(11); let i = index;">{{i}}  
+                    <span *ngIf="i == 1">hora</span>
+                    <span *ngIf="i != 1">horas</span>
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> 
+              <div class="form-group">
+                <label class="control-label">Duración (Minutos)</label>
+                <select formControlName="minutos" class="form-control">
+                  <option value="" disabled selected hidden>Selecciona una opción</option>
+                  <option [value]="minuto" *ngFor="let minuto of minutos; let i = index;">{{minuto}} minutos</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+  
+        <!-- <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 col-12">
+          <div class="form-group pull-right">
+          <label class="control-label">Duración (hrs) </label> 
+              <div class="input-group">
+                <input class="form-control" type="number" placeholder="Duración de la clase" formControlName="duracion" >
+              </div>
+            </div>
+        </div> -->
+      </div>
+        <!--div class="col-12 mt-3">
+          <label class="control-label">Duración</label>
+        </div-->
+
+      <!-- <div class="form-row mt-3">
+        <div class="form-group col-4">
+          <label class="control-label">Fecha inicio </label>
+          <input formControlName="fechaInicio" type="date" class="form-control">
+          <span class="invalidText" *ngIf="vF.fechaInicio.touched && vF.fechaInicio.invalid">
+            {{'fmErrDate' | translate}}
+          </span>  
+        </div>
+        <div class="form-group col-2">
+          <label class="control-label">Hora inicio
+            <div class="_tooltip"><i class="fa fa-info-circle fa-lg text-info"></i>
+              <span class="tooltiptext p-2">Ejemplo: 11:30 a.m.</span>
+            </div>
+          </label>
+          <input type="time" class="form-control">
+          <span class="invalidText" *ngIf="vF.fechaInicio.touched && vF.fechaInicio.invalid">
+            {{'fmErrTime' | translate}}
+          </span> 
+        </div>
+        <div class="form-group col-4">
+          <label class="control-label">Fecha fin </label>
+          <input formControlName="fechaFin" type="date" class="form-control">
+          <span class="invalidText" *ngIf="vF.fechaFin.touched && vF.fechaFin.invalid">
+            {{'fmErrDate' | translate}}
+          </span>    
+        </div>
+        <div class="form-group col-2">
+          <label class="control-label">Hora fin</label>
+          <input type="time" class="form-control">
+          <span class="invalidText" *ngIf="vF.fechaInicio.touched && vF.fechaInicio.invalid">
+            {{'fmErrTime' | translate}}
+          </span> 
+        </div>
+      </div> -->
+          <!-- <div class="form-group mt-3">
+        <label class="control-label">Fecha inicio 
+          <div class="_tooltip"><i class="fa fa-info-circle fa-lg text-info"></i>
+            <span class="tooltiptext p-2">Ejemplo: 27/02/2020 11:30 a.m.</span>
+          </div>
+        </label>
+        <input formControlName="fechaInicio" class="form-control" type="datetime-local">
+        <span class="invalidText" *ngIf="vF.fechaInicio.touched && vF.fechaInicio.invalid">
+          {{'fmErrDateTime' | translate}}
+        </span>                 
+      </div>      
+      <div class="form-group mt-3">
+        <label class="control-label">Fecha fin 
+          <div class="_tooltip"><i class="fa fa-info-circle fa-lg text-info"></i>
+            <span class="tooltiptext p-2">Ejemplo: 27/02/2020 12:30 p.m.</span>
+          </div>
+        </label>
+        <input formControlName="fechaFin" class="form-control" type="datetime-local">
+        <span class="invalidText" *ngIf="vF.fechaFin.touched && vF.fechaFin.invalid">
+          {{'fmErrDateTime' | translate}}
+        </span>           
+      </div> -->
+      <div *ngIf="error" class="alert alert-danger mt-3">
+        {{error}}
+      </div>      
+      <div class="form-group mt-3">  
+        <button type="submit" class="btn btn-success pull-right" [disabled]="videoForm.invalid || bloqueoBoton == true">{{'fmSave' | translate}}</button>
+      </div>  
+    </form>
+
+  </div>      
+</div>

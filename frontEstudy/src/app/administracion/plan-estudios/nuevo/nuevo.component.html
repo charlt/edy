@@ -1,0 +1,120 @@
+<div class="col-md-12 plan-estudios  ">
+<form [formGroup]="planEstudiosForm" (ngSubmit)="enviarInformacion()" >
+  <h4 class="top-buffer">{{title}}</h4>
+ <div class="row"> 
+  <div class="col-md 6">
+  <div class="form-group">
+    <label class="control-label" for="clave_plan_estudios">{{'KeySyllabus' | translate}}:</label>
+    <input  formControlName="clavePlan" class="form-control" id="clave_plan_estudios" placeholder="{{'KeySyllabus' | translate}}" type="text" required>
+    <span class="invalidText" *ngIf="f.clavePlan.invalid && f.clavePlan.touched">
+        {{'fmErrKey' | translate}}
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="nombre_plan_estudios">{{'NameSyllabus' | translate}}</label>
+    <input  formControlName="nombrePlan" class="form-control" id="nombre_plan_estudios" placeholder="{{'NameSyllabus' | translate}}" type="text" required>
+    <span class="invalidText" *ngIf="f.nombrePlan.invalid && f.nombrePlan.touched">
+        {{'fmErrName' | translate}}
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="periodos_plan_estudios">{{'PeriodSyllabus' | translate}}</label>
+    <input  formControlName="periodosEstudios" class="form-control" id="periodos_plan_estudios" placeholder="{{'PeriodSyllabus' | translate}}" type="number" required>
+    <span class="invalidText" *ngIf="f.periodosEstudios.invalid && f.periodosEstudios.touched">
+        {{'fmErrField' | translate}}
+    </span>
+  </div>
+  <div class="form-group cat_tipo_periodos">
+    <label class="control-label" for="tipo_periodos">{{'TypePeriod' | translate}}</label>   
+    <select   formControlName="catPeriodos"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="periodo.tipo_periodo_id" *ngFor="let periodo of periodos">{{periodo.periodo}}</option>
+    </select>
+    <span class="invalidText" *ngIf="f.catPeriodos.invalid && f.catPeriodos.touched">
+      {{'fmErrSelect' | translate}}
+    </span>
+  </div>
+  <div class="form-group cat_tipo_periodos">
+    <label class="control-label" for="tipo_periodos">{{'TypeSyllabus' | translate}}</label>   
+    <select   formControlName="catTipoPlan"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="catTipoPlan.tipo_plan_estudio_id" *ngFor="let catTipoPlan of tipoPlan">{{catTipoPlan.tipo_plan_estudio}}</option>
+    </select>
+    <span class="invalidText" *ngIf="f.catTipoPlan.invalid && f.catTipoPlan.touched">
+      {{'fmErrSelect' | translate}}
+    </span>
+  </div>
+  <div class="form-group repo_carrera">
+    <label class="control-label" for="consulta_carrera">{{'SelectCareerSyllabus' | translate}}</label>
+    <select   formControlName="catCarreras"  class="form-control" >
+      <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+      <option  [value]="carrera.carrera_id" *ngFor="let carrera of carreras">{{carrera.carrera}}</option>
+    </select>
+    <span class="invalidText" *ngIf="f.catCarreras.invalid && f.catCarreras.touched">
+        {{'fmErrSelect' | translate}}
+    </span>
+  </div>                             
+</div>
+<div class="col-md 6">
+  <!--div class="form-group">
+    <label class="control-label" for="nRVOE">{{'NumberRVOE' | translate}}</label>
+    <input  min="0" class="form-control" formControlName="nRVOE" placeholder="{{'NumberRVOE' | translate}}" type="number">
+    <span class="invalidText" *ngIf="f.nRVOE.invalid && f.nRVOE.touched">
+        {{'fmErrField' | translate}}
+    </span>
+  </div-->
+  <div class="form-group">
+    <label class="control-label" for="RVOE">{{'RVOE' | translate}}</label>
+    <input class="form-control" formControlName="RVOE" placeholder="{{'RVOE' | translate}}" type="text">
+    <!-- <span class="invalidText" *ngIf="f.RVOE.invalid && f.RVOE.touched">
+        {{'fmErrField' | translate}}
+    </span> -->
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="CMin">{{'MinScore' | translate}}</label>
+    <input min="0" max="10" class="form-control" formControlName="cMin" placeholder="{{'MinScore' | translate}}" type="number" required>
+    <span class="invalidText" *ngIf="f.cMin.invalid && f.cMin.touched">
+        {{'fmErrNumber' | translate}}
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="CMax">{{'MinCredits' | translate}}</label>
+    <input  min="0" max="10"  class="form-control" formControlName="minCredits" placeholder="{{'MaxScore' | translate}}" type="number" required>
+    <span class="invalidText" *ngIf="f.minCredits.invalid && f.minCredits.touched">
+        {{'fmErrNumber' | translate}}
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="CMax">{{'MaxCredits' | translate}}</label>
+    <input  min="0" max="10"  class="form-control" formControlName="totalCredits" placeholder="{{'MaxScore' | translate}}" type="number" required>
+    <span class="invalidText" *ngIf="f.totalCredits.invalid && f.totalCredits.touched">
+        {{'fmErrNumber' | translate}}
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="CURP">{{'ResponsibleCURP' | translate}}</label>
+    <input  pattern="^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$"
+    type="text"  class="form-control" formControlName="CURP" placeholder="{{'ResponsibleCURP' | translate}}">
+    <span class="invalidText" *ngIf="f.CURP.invalid && f.CURP.touched">
+        {{'fmErrCURP' | translate}}
+    </span>
+    <div class="resultado-curp"></div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label" for="minimoMateriasGrado">Ingresa el mínimo de materias para pasar al siguiente grado</label>
+    <input type="number"  class="form-control" formControlName="minimoMateriasGrado" placeholder="Ingresa un número">
+    <span class="invalidText" *ngIf="f.minimoMateriasGrado.invalid && f.minimoMateriasGrado.touched">
+        {{'fmErrNumber' | translate}}
+    </span>
+  </div> 
+  <br>
+  <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right guardar-plan-estudios">{{'fmSave' | translate}}</button>
+</div>              
+  <div class="col-md-12">                  
+  <div class="resultados_plan_estudios margin-top"></div>
+</div>
+</div>
+</form>
+
+</div>

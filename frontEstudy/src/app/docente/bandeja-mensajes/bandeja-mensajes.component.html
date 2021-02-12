@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>Consulta de mensajes</h4>
+  </div>
+  <div class="col-md-12">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-info" [ngClass]="ident == 0 ? 'active':''" (click)="consultaMensajes(0)">Todos</button>
+      <button type="button" class="btn btn-info" [ngClass]="ident == 1 ? 'active':''" (click)="consultaMensajes(1)">Nuevos</button>      
+    </div><br><br>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Asignatura</th>
+          <th>Alumno</th>
+          <th>Fecha del último envio</th>
+          <th>Número de mensajes</th>
+          <th>Ver conversación</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="mensajes">
+        <tr *ngFor = "let mensaje of mensajes">
+          <td>{{mensaje.nombre_asignatura}}</td>
+          <td>{{mensaje.alumno.nombre}} {{mensaje.alumno.primer_apellido}} {{mensaje.alumno.segundo_apellido}}</td>
+          <td class="text-center">{{mensaje.ultimo_mensaje | date: "dd/MM/yyyy"}} {{mensaje.ultimo_mensaje |date:"shortTime" }}</td>
+          <td class="text-center">{{mensaje.numero_mensajes}}</td>
+          <td class="text-center">
+            <button type="button" class="btn btn-primary" (click)="openModal(modalMensajeria, mensaje.materia_id);"><i class="fa fa-envelope-open" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr *ngIf="!mensajes">
+          <td colspan="20" class="text-center p-3">
+            <span>No se encontraron mensajes</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #modalMensajeria let-c="close" let-d="dismiss">
+  <div class="modal-body">
+      <div class="row">
+          <div class="col" >
+              <app-mensajeria [activo]="0" [idMateria]="idMateria"></app-mensajeria>
+          </div>
+        </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+  </div>
+</ng-template>

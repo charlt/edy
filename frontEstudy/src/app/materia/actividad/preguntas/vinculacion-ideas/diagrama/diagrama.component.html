@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-12 col-xl-12 col-lg-12 col-md-12">
+    <div class="container" id="tablaMC_{{idRespuesta}}">
+      <!-- <div> -->
+      <br>
+      <div class="row mb-2 mt-3">
+        <div class="col-12">
+          <h4>{{respuesta.mapa_cognitivo_desc}}</h4>
+        </div>
+        <div class="col-md-8">
+          <ol>
+              <li class="mb-2" *ngFor="let categoria of categorias; let i = index">
+                {{categoria.categoria_desc}}
+              </li>
+            </ol>
+        </div>
+        <div class="col-md-4">
+          <div class="mr-4">
+            <img class="pull-right" style="display: none" *ngIf="imgURL" [src]="imgURL" width="50%" id="urlMC_{{idRespuesta}}">
+          </div>
+        </div>
+      </div>
+      <div class="contenedor" *ngIf="categorias">
+        <div class="circulo azul mt-4">
+          <p class="text">{{elementos[0].elemento_desc}}</p>
+          <div *ngFor="let categoria of categorias; let i = index">
+            <!--[maxLength]="text[i]"-->
+            <textarea *ngIf="edicion == 1"  class="borde-azul" (blur)="enviarRespuestas(0, categoria.categoria_id, $event)" 
+            [ngStyle]="getBluePosition(0, i, 'textarea')" [attr.rows]="rows" [attr.cols]="cols[i]">{{getRespuesta(elementos[0].elemento_id, categoria.categoria_id).respuesta}}</textarea>
+            <div *ngIf="edicion == 0" class="borde-azul respuesta" [ngStyle]="getBluePosition(0, i, 'div')">
+              {{getRespuesta(elementos[0].elemento_id, categoria.categoria_id).respuesta}}
+            </div>
+            <div [ngStyle]="getBluePosition(1, i, '')"><b>{{i + 1}}.</b></div>
+          </div>
+        </div>
+        <div class="circulo verde mt-4">
+          <p class="text">{{elementos[1].elemento_desc}}</p>
+          <div *ngFor="let categoria of categorias; let i = index">
+            <!--[maxLength]="text[i]"-->
+            <textarea *ngIf="edicion == 1"  class="borde-verde" (blur)="enviarRespuestas(1, categoria.categoria_id, $event)" 
+            [ngStyle]="getGreenPosition(0, i, 'textarea')" [attr.rows]="rows" [attr.cols]="cols[i]">{{getRespuesta(elementos[1].elemento_id, categoria.categoria_id).respuesta}}</textarea>
+            <div *ngIf="edicion == 0" class="borde-verde respuesta" [ngStyle]="getGreenPosition(0, i, 'div')">
+              {{getRespuesta(elementos[1].elemento_id, categoria.categoria_id).respuesta}}
+            </div>
+            <!-- <textarea class="form-control borde-neutro" style="position: absolute; top: 170px; left: 55px;" rows="3"></textarea> -->
+            <div [ngStyle]="getGreenPosition(1, i, '')"><b>{{i + 1}}.</b></div>
+          </div>  
+          <textarea *ngIf=" edicion == 1"  class="borde-neutro" (blur)="enviarAspectoComun($event)"
+          style="position: absolute; top: 147px; left: 20px;" rows="13" cols="21">{{aspectoComun}}</textarea>          
+          <div *ngIf="edicion == 0" class="borde-neutro respuesta" 
+          style="position: absolute; top: 147px;  overflow-y: scroll; left: 20px; width: 131px; height: 199px">
+            {{aspectoComun}}
+          </div>
+        </div>
+        <!-- <div class="circulo rojo">
+          <p class="text">Elemento 3</p>
+          <div class="col-2">
+            <textarea *ngFor="let num of arreglo; let i = index" class="form-control borde-rojo" [ngStyle]="getRedPosition(i)" rows="3"></textarea>
+            <textarea class="form-control borde-neutro" style="position: absolute; top: 100px; left: 80px;" rows="3"></textarea>
+            <textarea class="form-control borde-neutro" style="position: absolute; top: 25px; left: 205px;" rows="3"></textarea>
+            <textarea class="form-control borde-neutro" style="position: absolute; top: 100px; left: 330px;" rows="3"></textarea>
+          </div>  
+        </div> -->
+      </div>
+    <!-- </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col pb-3">
+        <button *ngIf="edicion == 0" class="btn btn-primary pull-right" (click)="descargaImagen()"><i class="fa fa-file-image-o"></i> Descargar</button>
+        <button *ngIf="edicion == 1" class="btn btn-danger btn-sm" (click)="eliminarRespuesta()">Eliminar mapa cognitivo</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+
+
+<!--h3 class=" text-center">Retroalimentacion de {{actividad.actividad_nombre}}</h3-->
+<div class="messaging" >
+      <div class="inbox_msg">
+        <div *ngIf="idRol==3" class="mesgs">
+          <h5 class="text-center p-3" *ngIf="!mensaje || mensaje.length==0">No hay Mensajes de retroalimentacion</h5>
+          <div class="msg_history" *ngFor="let men of mensaje">
+            <div class="incoming_msg"  *ngIf="men.origen==2">
+              <div class="incoming_msg_img"> <img src="https://cdn1.iconfinder.com/data/icons/mix-color-4/502/Untitled-1-512.png" alt="sunil"> </div>
+              <div class="received_msg">
+                <div class="received_withd_msg1">
+                  <p *ngIf="men.texto != ''">{{men.texto}}</p>
+                  <div class="archivo" *ngIf="men.url_imagen && men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                  <div *ngIf="men.url_imagen && !men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                  <span class="time_date"> {{men.fecha_creacion | date: 'dd/MM/yy (hh:mm:ss)'}} </span></div>
+              </div>
+            </div>
+            <div class="outgoing_msg" *ngIf="men.origen==3">
+              <div class="sent_msg1">
+                <p *ngIf="men.texto != ''">{{men.texto}}</p>
+                <div class="archivo" *ngIf="men.url_imagen && men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                <div *ngIf="men.url_imagen && !men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                <span class="time_date"> {{men.fecha_creacion | date: 'dd/MM/yy (hh:mm:ss)'}} <i *ngIf="men.origen==3 && men.visto==1" class="fa fa-check" aria-hidden="true"></i> </span> </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div *ngIf="idRol==3" class="type_msg">
+          <div class="input_msg_write row">
+            <input class="write_msg" id="mensaje" name="mensaje" [(ngModel)]="texto" placeholder="Escribe un mensaje" />
+            <button class="msg_send_btn" type="button" (click)="enviar(texto)"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+          </div>
+        </div> -->
+        <div *ngIf="idRol==2" class="mesgs">
+            <h3 *ngIf="!mensaje || mensaje.length==0">No hay Mensajes</h3>
+            <div class="msg_history" *ngFor="let men of mensaje">
+              <div class="incoming_msg"  *ngIf="men.origen==2">
+                <div class="incoming_msg_img"> <img src="https://cdn1.iconfinder.com/data/icons/mix-color-4/502/Untitled-1-512.png" alt="sunil"> </div>
+                <div class="received_msg">
+                  <div class="received_withd_msg">
+                    <p *ngIf="men.texto != ''">{{men.texto}}</p>
+                    <div class="archivo" *ngIf="men.url_imagen && men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                    <div *ngIf="men.url_imagen && !men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                    <span class="time_date"> {{men.fecha_creacion | date: 'dd/MM/yyyy (hh:mm:ss)'}} <i *ngIf="men.origen==2 && men.visto==1" class="fa fa-check" aria-hidden="true"></i></span></div>
+                </div>
+              </div>
+              <div class="outgoing_msg" *ngIf="men.origen==3">
+                <div class="sent_msg">
+                  <p *ngIf="men.texto != ''">{{men.texto}}</p>
+                  <div class="archivo" *ngIf="men.url_imagen && men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                  <div  *ngIf="men.url_imagen && !men.fondo" ><app-archivo  [urlBase]="men.url_imagen"></app-archivo></div>
+                  <span class="time_date"> {{men.fecha_creacion | date: 'dd/MM/yyyy (hh:mm:ss)'}}</span> </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div *ngIf="idRol==2" class="type_msg">
+            <div class="input_msg_write">
+              <input class="write_msg" id="mensaje" name="mensaje" [(ngModel)]="texto" placeholder="Escribe un mensaje" />
+              <button class="msg_send_btn" type="button" (click)="enviar(texto)"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+            </div>
+          </div> -->
+      </div>
+      <div class="type_msg">
+        <textarea class="write_msg" autosize [minRows]="1" [maxRows]="5" [(ngModel)]="texto" placeholder="Escribe un mensaje"></textarea>
+        <button *ngIf="!cargando" class="msg_send_btn text-center" type="button" (click)="enviar(texto)" [disabled]="cargando"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        <button *ngIf="cargando" class="msg_send_btn text-center" type="button" (click)="enviar(texto)" [disabled]="cargando"><i class="fa fa-spin fa-spinner" aria-hidden="true"></i></button>
+        <button class="archivo_btn text-center" type="button" (click)="abreArchivo()"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
+      </div>
+      <form *ngIf="openFile" [formGroup]="contForm">
+        <app-file-upload formControlName="contenido"></app-file-upload>
+      </form>
+      <div class="custom-control custom-checkbox" [hidden]="!muestraCheckbox">
+        <input type="checkbox" class="custom-control-input" id="visto" [(ngModel)]="visto" [checked]="visto" (change)="cambiaVistoMensaje()">
+        <label class="custom-control-label" for="visto">Marcar como visto</label>
+      </div>
+    </div>

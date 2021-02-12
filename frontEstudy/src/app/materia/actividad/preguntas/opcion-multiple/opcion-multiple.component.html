@@ -1,0 +1,106 @@
+<div>
+    <div class="row justify-content-center">
+        <div class="col-8 " >
+            <img class="img-fluid" *ngIf="urlImagen"  [src]="url + urlImagen">
+        </div>
+    </div>
+    <div class="row" *ngIf="edicion">
+        <div class="col-12 styled-input-container styled-input--square" *ngFor="let reactivo of reactivos; let i = index">
+            <div *ngIf="!reactivo.contenido_reactivo">
+                <div class="styled-input-single"  (click)="seleccionaElemento(i)">
+                    <input [checked]="reactivo.checked" type="checkbox" name="respuesta">
+                    <label [ngClass]="[edicion? 'cursor': '', reactivo.checked? 'font-weight-bold': '']" [innerHTML]="reactivo.html_reactivo" ></label>
+                </div>   
+            </div>   
+        </div>
+    </div>
+    <div class="row" *ngIf="edicion">
+        <div class="col-md-6 " *ngFor="let reactivo of reactivos; let i = index;">
+            <div  class="row" *ngIf="reactivo.contenido_reactivo" >
+                    <div class="parent col " (click)="seleccionaElemento(i)">
+                        <div class="child" [class.seleccionado]="reactivo.checked" [style.background-image]="'url('+ url + reactivos[i].contenido_reactivo + ')'">
+                            <a href="javascript:void(0)"><i class="fa fa-circle fa-2x"></i></a>
+                        </div>
+                    </div>
+                <!--div class="col col-imagen m-4"  >
+                    <div class="custom-control custom-checkbox scale">
+                        <input [(ngModel)]="checked[i].check" (change)="isChecked($event, i)" type="checkbox" name="respuesta" id="{{reactivos[i].reactivo_id}}" class="custom-control-input">
+                        <label class="custom-control-label" for="{{reactivos[i].reactivo_id}}"></label>
+                    </div>   
+                </div-->
+            </div>                                                       
+        </div>
+    </div>
+
+    <!-- <div class="row" *ngIf="!edicion">
+        <div class="col-12"> -->
+            <!-- <div *ngIf="resAlumno && !correcta && !resAlumno.contenido_reactivo" class="alert alert-secondary">
+                {{resAlumno.reactivo}}
+                <div class="alert border-white bg-white text-dark mt-3">{{resAlumno.retroalimentacion}}</div>
+            </div> -->
+            <!-- <div *ngIf="respuesta && !respuesta.contenido_reactivo" class="alert" [ngClass]="correcta ? 'alert-success': 'alert-secondary'">
+                {{respuesta.reactivo}}
+                <div class="alert border-white bg-white text-dark mt-3" *ngIf="respuesta.retroalimentacion">
+                    {{respuesta.retroalimentacion}}
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div *ngIf="!edicion">
+        <div class="row" *ngFor="let _respuesta of respuestas">
+            <div *ngIf="_respuesta && _respuesta.contenido_reactivo" class="col-md-6">
+                <div class="parent_respuesta col">
+                    <div class="child" [ngClass]="_respuesta.correcta ? 'correcto': 'incorrecto'" [style.background-image]="'url('+ url + _respuesta.contenido_reactivo + ')'">
+                        <a><i class="fa fa-2x" [ngClass]="_respuesta.correcta ? 'fa-check-circle': 'fa-times'"></i></a>
+                    </div>
+                </div>
+                <div *ngIf="_respuesta.retroalimentacion" class="alert ml-5" [ngClass]="_respuesta.correcta ? 'alert-success': 'alert-secondary'">
+                    {{_respuesta.retroalimentacion}}
+                </div>
+            </div>
+            <!-- <div *ngIf="_respuesta && !_respuesta.contenido_reactivo" class="alert col-md-12" [ngClass]="_respuesta.correcta ? 'alert-success': 'alert-secondary'">
+                <b *ngIf="_respuesta.correcta">Mi respuesta: </b>
+                <b *ngIf="!_respuesta.correcta">Mi respuesta:</b>
+                <p>{{_respuesta.reactivo}}</p>
+                <div class="alert border-white bg-white text-dark mt-3" *ngIf="_respuesta.retroalimentacion">
+                    {{_respuesta.retroalimentacion}}
+                </div>
+            </div> -->
+            <div *ngIf="_respuesta && !_respuesta.contenido_reactivo" class="alert col-12" role="alert" [ngClass]="_respuesta.correcta ? 'border-success': 'border-secondary'">
+                <b *ngIf="_respuesta.correcta" class="alert-heading">Mi respuesta <i class="fa fa-check text-success"></i></b>
+                <b *ngIf="!_respuesta.correcta" class="alert-heading">Mi respuesta <i class="fa fa-times text-danger"></i></b>
+                <hr [ngClass]="_respuesta.correcta ? 'border-success': 'border-secondary'">
+                <blockquote class="blockquote mb-0">
+                    <p [innerHTML]="_respuesta.html_reactivo"></p>
+                    <footer class="blockquote-footer ml-4 mb-2">{{_respuesta.retroalimentacion}}</footer>
+                </blockquote>
+            </div>
+        </div>
+
+        <div *ngIf="resCorrecta && resCorrecta.length > 0">
+            <div *ngFor="let correcta of resCorrecta" class="row">
+                <div *ngIf="!correcta.contenido_reactivo" class="alert border-success col-12" role="alert">
+                    <b class="alert-heading">Respuesta correcta: <i class="fa fa-check text-success"></i></b>
+                    <hr class="border-success">
+                    <blockquote class="blockquote mb-0">
+                        <p [innerHTML]="correcta.html_reactivo"></p>
+                        <footer class="blockquote-footer ml-4 mb-2">{{correcta.retroalimentacion}}</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="!edicion && (!respuestas || !respuestas.length)">
+        <div class="col-12">
+            <div class="alert alert-secondary">No se puede responder la pregunta.</div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="reactivos.length == 0">
+        <div class="col-12">
+            <div class="alert alert-danger">No se han cargado reactivos en la pregunta</div>
+        </div>
+    </div>
+</div>

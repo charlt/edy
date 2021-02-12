@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-12  editar-privilegio">
+    <form [formGroup]="privilegioForm" (ngSubmit)="enviarInformacion()">
+      <div class="col-md-6"><br>
+        <div class="form-group">                               
+          <label class="control-label">{{'cvPrivilegio' | translate}}</label>
+          <input formControlName="cvPrivilegio" class="form-control" id="Privilegio" placeholder="{{'cvPrivilegio' | translate}}" type="text" required>
+          <span class="invalidText" *ngIf="f.cvPrivilegio.invalid && f.cvPrivilegio.touched">
+              {{'fmrErrCvPrivilegio' | translate}}
+          </span>
+        </div>
+        <div class="form-group">                               
+          <label class="control-label">{{'tbPrivilegio' | translate}}</label>
+          <input formControlName="privilegio" class="form-control" id="Privilegio" placeholder="{{'tbPrivilegio' | translate}}" type="text" required>
+          <span class="invalidText" *ngIf="f.privilegio.invalid && f.privilegio.touched">
+              {{'fmErrPrivilegio' | translate}}
+          </span>
+        </div><br>
+        <div class="form-group">
+          <label class="control-label">Selección de tipo privilegio</label>
+          <div class="row">  
+            <div class="col col-sm-4">
+              <div class="custom-control custom-radio">
+                <input  formControlName="tipoPrivilegio" (click)="limpiar(1)" value="1" type="radio" id="customRadio1"  name="tipoPrivilegio" class="custom-control-input" [checked]="radio == 0">
+                <label class="custom-control-label" for="customRadio1">Privilegio</label>
+                </div>
+            </div>
+            <div class="col col-sm-4">
+                <div class="custom-control custom-radio">
+                    <input formControlName="tipoPrivilegio" (click)="limpiar(2)" value="2" type="radio" id="customRadio2" name="tipoPrivilegio" class="custom-control-input" [checked]=" radio == 1 ">
+                    <label class="custom-control-label" for="customRadio2">Subprivilegio</label>
+                </div>    
+            </div>
+          </div>  
+          </div>
+      <div [hidden]="f.tipoPrivilegio.value == 1 && radio == 0 ">        
+        <div class="form-group">                               
+          <label class="control-label">{{'tbIcono' | translate}}</label>
+          <input formControlName="icono" class="form-control" id="icono" placeholder="{{'tbIcono' | translate}}" type="text" >
+          <span class="invalidText" *ngIf="f.tipoPrivilegio.value == 1 && f.icono.invalid && f.icono.touched">
+              {{'fmErrIcono' | translate}}
+          </span>
+        </div>
+        <div class="form-group">                               
+          <label class="control-label">{{'tbUrl' | translate}}</label>
+          <input formControlName="url" class="form-control" placeholder="{{'tbUrl' | translate}}" type="text" >
+          <span class="invalidText" *ngIf="f.tipoPrivilegio.value == 1 && f.url.invalid && f.url.touched">
+              {{'fmErrUrl' | translate}}
+          </span>
+        </div>
+            <label class="control-label">{{'fmPrivilegios' | translate}}</label>
+            <select formControlName="idPadre" class="form-control form-control-md" >
+              <option hidden value="" disabled  selected>selecciona</option>
+              <option [value] ="_privilegio.privilegio_id" *ngFor="let _privilegio of privilegio">{{_privilegio.privilegio}}</option>
+            </select>
+      </div><br>
+        <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right guardar-privilegio">{{'fmSave' | translate}}</button>       
+      </div>
+    </form>
+  </div>
+</div>

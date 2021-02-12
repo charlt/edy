@@ -1,0 +1,14 @@
+<div class="row" >
+  <div class="col-12">
+      <label *ngIf="idMateriaFechaActividad!=5"><b>Por favor, envia una retroalimentación explicando el motivo.</b></label>
+      <textarea *ngIf="tipo==5" rows="3" class="form-control" id="mensaje" name="mensaje" [(ngModel)]="texto" placeholder="Explica el motivo de la corrección" ></textarea>
+      <textarea *ngIf="tipo==6" rows="3" class="form-control" id="mensaje" name="mensaje" [(ngModel)]="texto" placeholder="Explica el motivo de la invalidacion" ></textarea>
+  </div>
+  <div class="col-12">
+      <button *ngIf="tipo==5" class="btn btn-success pull-right" type="button" [disabled]="bloquea" (click)="enviar(texto)">Solicitar corrección</button>
+      <button *ngIf="tipo==6" class="btn btn-success pull-right" type="button" (click)="enviarIn(texto)">Solicitar invalidacion</button>
+
+  </div>
+
+</div>
+      

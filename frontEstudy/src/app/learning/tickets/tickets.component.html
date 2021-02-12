@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>Notificaciones y tickets</h4>
+    <!-- <app-encabezado-persona [idPersona]="idPersona" [idRol]="'2'"></app-encabezado-persona> -->
+    <a *ngIf="idRol != 4" class="btn btn-success" [routerLink]="['./nuevo']"><i class="fa fa-plus" aria-hidden="true"></i> Crear ticket</a>
+    <br *ngIf="idRol != 4"><br>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th>Asunto</th>
+          <th>Descripción</th>
+          <th>Fecha envío</th>
+          <th>Tipo ticket</th>
+          <!--th>Estatus ticket</th-->
+          <th>Responder</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets; let i = index;">
+          <td>{{ticket.asunto_ticket}}</td>
+          <td>{{ticket.descripcion_ticket}}</td>
+          <td>{{ticket.fecha_creacion | date: "dd/MM/yyyy"}} {{ticket.fecha_creacion | date: "shortTime"}}</td>
+          <td>{{ticket.tipo_ticket}}</td>
+          <!--td>{{ticket.estatus_ticket}}</td-->
+          <td class="text-center">
+            <button *ngIf="ticket.estatus_ticket_id != 4" class="btn btn-primary" (click)="open(content, ticket)">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-body p-3">
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+      <app-tickets-component *ngIf="seleccionado" [idTicket]="seleccionado.ticket_id"></app-tickets-component>
+    </div>
+  </ng-template>

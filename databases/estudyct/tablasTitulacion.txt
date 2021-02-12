@@ -1,0 +1,35 @@
+Introducir MET:
+usuario, contraseña
+(prueba o producción) 
+
+Fiel:
+cer,key,pass
+
+
+CREATE TABLE `cat_ambiente` (
+	`ambiente_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`ambiente_descripcion` VARCHAR(50) NOT NULL,
+	`fecha_creacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`fecha_actualiza` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ambiente_id`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT=2
+;
+
+ALTER TABLE `inter_instituciones_usuarios`
+	ADD COLUMN `ambiente_id` INT NOT NULL AFTER `estatus`,
+	ADD CONSTRAINT `FK4_ambiente` FOREIGN KEY (`ambiente_id`) REFERENCES `cat_ambiente` (`ambiente_id`);
+
+CREATE TABLE `tr_fiel` (
+	`fiel_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`institucion_id` INT(11) NOT NULL,
+	`fiel_cer` VARCHAR(100) NOT NULL,
+	`fiel_key` VARCHAR(100) NOT NULL,
+	`fiel_pass` VARCHAR(100) NOT NULL,
+	PRIMARY KEY (`fiel_id`),
+	INDEX `FK1_institucion_fiel` (`institucion_id`),
+	CONSTRAINT `FK1_institucion_fiel` FOREIGN KEY (`institucion_id`) REFERENCES `inter_instituciones_usuarios` (`institucion_id`)
+)
+ENGINE=InnoDB
+;

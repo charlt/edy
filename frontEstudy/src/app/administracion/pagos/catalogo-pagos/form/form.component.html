@@ -1,0 +1,62 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-12 editar-ciclo"> 
+    <form [formGroup]="alumnoForm" (ngSubmit)="enviarInformacion()">
+  
+  <!--<div class="col-md-6">              
+    <div class="form-group ">         
+      <label class="control-label" for="">{{'Level' | translate}}:</label>
+      <select  formControlName="nivelCiclo"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmErrSelect' | translate}} </option>
+        <option  [value]="nivelEstudio.nivel_estudios_id" *ngFor="let nivelEstudio of nivelEstudios">{{nivelEstudio.nivel_estudios}}</option>
+      </select>
+    </div>                                           
+  </div>-->
+  <div class="col-md-6">              
+    <div class="form-group">                               
+      <label class="control-label" for="beca">Nombre del pago:</label>
+      <input formControlName="nombrePago" class="form-control" id="beca" placeholder="Ingresa el nombre del pago" type="text" required>
+      <span class="invalidText" *ngIf="f.nombrePago.invalid && f.nombrePago.touched">
+        {{'fmErrNumber' | translate}}
+      </span>
+    </div>                                                                   
+    <div class="form-group">                               
+      <label class="control-label" for="fecha_inicio">Descripción del pago:</label>
+      <textarea formControlName="descripcionPago" class="form-control" id="fecha_inicio" placeholder="Ingresa la descripción del pago"></textarea>
+    </div>    
+    <div class="form-group">                               
+      <label class="control-label" for="beca">Monto:</label>
+      <input formControlName="monto" class="form-control" id="monto" placeholder="Ingresa el monto del pago" type="text" required>
+      <span class="invalidText" *ngIf="f.monto.invalid && f.monto.touched">
+        {{'fmErrNumber' | translate}}
+      </span>
+    </div>                                                                                              
+    <div class="form-group " rel="1">
+      <label class="control-label" for="">Tipo de pago:</label>
+      <select  formControlName="idTipoPago"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="tipoPago.tipo_pago_id" *ngFor="let tipoPago of tipoPagos">{{tipoPago.descripcion_pago}}</option>
+      </select>
+      <span class="invalidText" *ngIf="f.idTipoPago.invalid && f.idTipoPago.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+    <div class="form-group " rel="1">
+      <label class="control-label" for="">Estatus del pago:</label>
+      <select  formControlName="idEstatusPago"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="_estatusPago.estatus_pago_id" *ngFor="let _estatusPago of estatusPago">{{_estatusPago.descripcion}}</option>
+      </select>
+      <span class="invalidText" *ngIf="f.idEstatusPago.invalid && f.idEstatusPago.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+    <button  type="submit" class="btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+    <div class="resultado-datos-ciclo margin-top" ></div>      
+  </div>  
+  </form>
+  </div>
+  </div>

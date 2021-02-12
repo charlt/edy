@@ -1,0 +1,51 @@
+<div class="col-12 my-4">
+  <h4>Selección del asesor</h4>
+  <p class="text-justify">En {{universidad.nombre}} todos los estudiantes tendrán asignado un
+    Coordinador(a) (presencial o virtual), quien será responsable de acompañarte durante tu 
+    trayecto formativo, apoyándote desde el proceso de inscripción hasta tu egreso. Algunas 
+    actividades en las que te podrá brindar ayuda son, por ejemplo: aprender a usar la plataforma 
+    de estudio, servir de vínculo adicional con la Universidad y sus maestros; la resolución de 
+    dudas respecto a pagos, etc. En otras palabras, podrás encontrar en esta figura a un asesor 
+    comprometido en conseguir tu éxito académico.
+  </p>
+  <br>
+  <form class="row" [formGroup]="asesorForm" (ngSubmit)="enviarInformacion()">
+    <div class="col-12">
+      <label class="control-label">¿Conoces al asesor?</label>
+      <div class="form-check form-check-inline ml-2">
+        <input class="form-check-input" type="radio" formControlName="asesor" id="radio_asesor_1" value="1">
+        <label class="form-check-label" for="radio_asesor_1">Si</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="asesor" id="radio_asesor_2" value="0">
+        <label class="form-check-label" for="radio_asesor_2">No</label>
+      </div>
+    </div>
+    <div class="col-12 mt-2" *ngIf="aF.busqueda || (infoAsesor && infoAsesor.asesor_id)">
+      <div class="form-group">
+        <label class="control-label">Ingresa el nombre del asesor</label>
+        <app-buscador-persona *ngIf="aF.busqueda" [idRol]="5" (consultaExitosa)="asesorSeleccionado($event)"></app-buscador-persona>
+        <div class="col-12" *ngIf="asesor">
+          <div class="row">
+            <div class="col-3 border rounded-left text-center p-3 bg-primary">
+              <div class="container border rounded p-2 bg-light">
+                <i class="fa fa-user fa-4x text-primary"></i>
+              </div>
+            </div>
+            <div class="col-9 border rounded-right p-3 bg-light">
+              <a href="javascript:void(0)" >
+                <h4>{{asesor.primer_apellido}} {{asesor.segundo_apellido}} {{asesor.nombre}}</h4>
+                <p *ngIf="asesor.clave_asesor">Clave: {{asesor.clave_asesor}}</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-success pull-right mt-2" 
+        [disabled]="asesorForm.invalid || (!asesor && aF.busqueda) || infoAsesor">Guardar información</button>
+    </div>
+    <br>
+  </form>
+</div>

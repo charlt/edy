@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Descripción pago</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Fecha de pago</th>
+          <th scope="col">Descuentos</th>
+          <th scope="col">Total a pagar</th>
+          <th scope="col">Estatus del pago</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="pagos.length == 0">
+          <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+        </tr>
+        <tr *ngFor="let pago of pagos; let i = index">
+          <td>{{pago.nombre_pago}}</td>
+          <td>{{pago.monto}}</td>
+          
+          <td><span *ngIf="pago.fecha_pago && pago.fecha_pago != '0000-00-00 00:00:00'">{{pago.fecha_pago | date:"dd/MM/yyy hh:mm:a"}}</span></td>
+          <td>
+            <span class="badge badge-success m-1" *ngIf="pago.beca > 0 ">Beca (${{pago.beca}})</span><br>
+            <span class="badge badge-success m-1" *ngIf="pago.descuento_id">
+              {{pago.desc_descuento}}
+              (<span *ngIf="pago.valor == 1"> $ </span>
+              {{pago.descuento}}
+              <span *ngIf="pago.valor == 2"> % </span>)
+            </span>
+            
+            <span class="badge m-1" [ngClass]="pago.porcentaje < 0 ? 'badge-danger' : 'badge-success'" *ngIf="pago.porcentaje != 0 ">
+              <span  *ngIf="pago.porcentaje < 0">Recargo ${{pago.porcentaje * -1}} </span>
+              <span *ngIf="pago.porcentaje > 0">Pronto pago ${{pago.porcentaje}} </span>
+            </span>       
+          </td>
+          
+          <td>{{pago.monto_final}}</td>
+          <td class="text-center">
+            <span [ngClass]="{'text-success': pago.estatus_solicitud_pago_id == 3,'text-warning': pago.estatus_solicitud_pago_id == 2 ,'text-danger': pago.estatus_solicitud_pago_id == 1}">{{pago.desc_estatus_solicitud_pago}}</span>
+            <br>
+            <a *ngIf="pago.boton_pago == 1 && pago.estatus_solicitud_pago_id == 1" class="btn btn-success" [routerLink]="['/learning/realizar-pago/'+pago.solicitud_pago_id]">
+              Pagar
+            </a>
+              
+          </td>
+          <!--td><a [href]="url +'pagos/docs/ficha.php?id_solicitud_pago='+pago.solicitud_pago_id "  target="_blank" class="btn btn-success"><i class="fa fa-file-pdf-o"></i></a></td-->          
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+

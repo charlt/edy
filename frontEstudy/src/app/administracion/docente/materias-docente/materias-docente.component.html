@@ -1,0 +1,95 @@
+<div *ngIf="!cargando && alert" class="alert alert-danger text-center" role="alert">
+  Aún no cuentas con una materia asignada.
+</div>
+<app-encabezado-persona [idPersona]="id_docente" [idRol]="'3'"></app-encabezado-persona>
+<button class="btn btn-success mb-3" (click)="agregarMateria(content)">Agregar asignatura</button>
+<div *ngIf="cargando && !alert">
+  <div><i class="fa fa-spin fa-spinner" style="margin-left: 45%; margin-top: 20%;"></i><h5 style="margin-left: 28%;">{{'TiempoEspera' | translate}}</h5></div>
+</div>
+<table *ngIf="!cargando && !alert" class="table table-bordered" >
+  <thead>
+    <tr>
+      <th scope="col">Grado</th>
+      <th scope="col">Asignatura</th>
+      <th scope="col">Clave grupo</th>
+      <th scope="col">Nombre del grupo</th>
+      <th scope="col">Act. pendientes</th>
+      <!-- <th scope="col">Mensajes</th>
+      <th scope="col">Retroalimentaciones</th> -->
+      <th scope="col">Estado de la materia</th>
+      <th scope="col">Actividad más antigua</th>
+      <th>Eliminar</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let _asignaturaGrupo of asignaturaGrupo; let i = index;">
+    <tr>
+      <td>{{_asignaturaGrupo.orden_jerarquico_descripcion}}</td>
+      <td><a href="javascript:void()" [routerLink]="['../../../../admin/grupo/calificaciones/'+_asignaturaGrupo.asignatura_grupo_id]">{{_asignaturaGrupo.asignatura}}</a></td>
+      <td>{{_asignaturaGrupo.grupo}}</td>
+      <td>{{_asignaturaGrupo.nombre_grupo}}</td>
+      <td class="text-center"><i class="fa fa-thumbs-o-up"></i> {{_asignaturaGrupo.actividades_pendientes}} </td>
+      <!-- <td><button type="button" class="btn btn-primary" [routerLink]="['/docente/bandeja-mensajes/'+_asignaturaGrupo.asignatura_grupo_id]"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{_asignaturaGrupo.mensaje}}</button></td>
+      <td><button type="button" class="btn btn-primary" [routerLink]="['/docente/bandeja-retro/'+_asignaturaGrupo.asignatura_grupo_id]"><i class="fa fa-comments"></i>  {{_asignaturaGrupo.retroalimentacion}}</button></td> -->
+      <td>
+        <small  *ngIf="_asignaturaGrupo.activa == 1">
+          <span *ngIf="_asignaturaGrupo.estado == 1" > Cierra el  {{_asignaturaGrupo.fecha_fin | date: "dd/MM/yyyy"}} </span>   
+          <span *ngIf="_asignaturaGrupo.estado == 0" > Sin fecha de cierre </span>
+        </small>
+        <small *ngIf="_asignaturaGrupo.activa == 0">
+          <span  *ngIf="_asignaturaGrupo.estado == 2"> Abre el  {{_asignaturaGrupo.fecha_inicio | date: "dd/MM/yyyy"}} </span>   
+          <span *ngIf="_asignaturaGrupo.estado == 3" > Cerró el  {{_asignaturaGrupo.fecha_fin | date: "dd/MM/yyyy"}} </span>
+        </small>   
+      </td>
+      <td>
+        <span *ngIf="_asignaturaGrupo.actividad_antigua" >
+        <a href="javascript:void()" [routerLink]="['/docente/actividad/'+_asignaturaGrupo.actividad_antigua.actividad_id+'/'+_asignaturaGrupo.actividad_antigua.materia_id]" >{{_asignaturaGrupo.actividad_antigua.fecha_actividad | date: 'dd/MM/yyyy'}} </a>
+        </span>
+        <span *ngIf="!_asignaturaGrupo.actividad_antigua" >
+          Sin pendientes
+        </span>
+      </td>
+      <td><button class="btn btn-danger" (click)="eliminar(_asignaturaGrupo, i)"><i class="fa fa-trash"></i></button></td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #modalEncuesta let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Encuesta</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body my-3 mx-2 text-center">
+      <p>Antes de continuar, ayúdanos a contestar el siguiente cuestionario</p>
+      <a class="btn btn-lg btn-primary mb-3" [routerLink]="['encuesta/'+ idEncuesta]">Ir al cuestionario</a>
+      <router-outlet></router-outlet> 
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body mx-4">
+    <app-consulta-asignatura [nivel]="4" [tipo]="'small'" (sucessEvent)="obtieneAsignatura($event)">
+    </app-consulta-asignatura>
+    <div class="form-group" *ngIf="grupos">
+      <label class="control-label" for="grupo">5. Grupo</label>
+      <select class="form-control" (change)="setGrupo($event)">
+        <option hidden value="" disabled selected>{{'fmOptSelect' | translate}}</option>
+        <option [value]="grupo.asignatura_grupo_id" *ngFor="let grupo of grupos">{{grupo.grupo}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button [disabled]="!asignatura_grupo_id" type="button" class="btn btn-success"
+          (click)="guardarAsignatura()">Guardar</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Salir</button>
+  </div>
+</ng-template>

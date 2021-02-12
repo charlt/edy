@@ -1,0 +1,313 @@
+<div class="container">
+  
+<div class="row">
+  <div class="col-md-12 col-xs-12">
+    <h3 class="text-center">¡Bienvenido a {{universidad.nombre}}!</h3>
+    <p class="text-center">Estás a un paso de comenzar tus estudios en {{universidad.nombre}}.
+      Sigue los pasos en el orden que se marca para completar tu inscripción:</p>
+  </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-2 col-md-12 col-xs-12 text-center">
+      <h4 *ngIf="pasoActual == 0"><strong>1.</strong> Información de inscripción</h4>
+      <h4 *ngIf="pasoActual == 1"><strong>2.</strong> Acepta los términos</h4>
+      <h4 *ngIf="pasoActual == 2"><strong>3.</strong> Sube tus documentos</h4>
+      <h4 *ngIf="pasoActual == 3"><strong>4.</strong> Pago en línea</h4>
+      <h4 *ngIf="pasoActual == 4"><i class="fa fa-check fa-2x" style="color:green"></i><br> Registro exitoso</h4>
+    </div>
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" [routerLink]="['/inscripcion/solicitud']">
+
+      <div class="row">
+        <div class="col-lg-3 col-md-3 arrow-container">
+          <div class="arrow-4"></div>    
+        </div>
+          <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 d-flex justify-content-center cursor">
+            <p *ngIf="pasoActual" class="pasos " >
+              <span >{{paso1.completados}} de {{paso1.totales}}</span>
+            </p>
+              <round-progress class="grafica"
+              [current]= "porcentajePaso1"
+              [max]="100"
+              [color]="colorPaso1"
+              [background]="'#eaeaea'"
+              [radius]="55"
+              [stroke]="10"
+              [semicircle]="false"
+              [rounded]="true"
+              [clockwise]="true"
+              [responsive]="false"
+              [duration]="800"
+              [animation]="'easeInOutQuart'"
+              [animationDelay]="0"></round-progress>    
+            </div>
+            <div class="col-lg-3 col-xs-12 col-sm-12">
+            </div>
+            <div class="col-lg-9 col-xs-12 col-sm-12 text-center">
+              <p>1. Solicitud</p>
+            </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" [routerLink]="['/inscripcion/terminos']">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 arrow-container">
+          <div class="arrow-4"></div>    
+        </div>
+          <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 d-flex justify-content-center cursor">
+              <p class="pasos " >
+                <span *ngIf="pasoActual == 0"><i class="fa fa-lock fa-2x" aria-hidden="true"></i></span>
+                <span *ngIf="pasoActual > 0">{{paso2.completados}} de {{paso2.totales}}</span>
+              </p>
+              <round-progress class="grafica"
+              [current]= "porcentajePaso2"
+              [max]="100"
+              [color]="colorPaso2"
+              [background]="'#eaeaea'"
+              [radius]="55"
+              [stroke]="10"
+              [semicircle]="false"
+              [rounded]="true"
+              [clockwise]="true"
+              [responsive]="false"
+              [duration]="800"
+              [animation]="'easeInOutQuart'"
+              [animationDelay]="0"></round-progress> 
+            </div>
+            <div class="col-lg-3 col-xs-12 col-sm-12">
+            </div>
+            <div class="col-lg-9 col-xs-12 col-sm-12 text-center">
+              <p>2. Términos</p>
+            </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" [routerLink]="['/inscripcion/documentos']">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 arrow-container">
+          <div class="arrow-4"></div>    
+        </div>
+          <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 d-flex justify-content-center cursor">
+            <p class="pasos " >
+              <span *ngIf="pasoActual <= 1"><i class="fa fa-lock fa-2x" aria-hidden="true"></i></span>
+              <span *ngIf="pasoActual > 1">{{paso3.completados}} de {{paso3.totales}}</span>
+            </p>
+              <round-progress class="grafica"
+              [current]= "porcentajePaso3"
+              [max]="100"
+              [color]="colorPaso3"
+              [background]="'#eaeaea'"
+              [radius]="55"
+              [stroke]="10"
+              [semicircle]="false"
+              [rounded]="true"
+              [clockwise]="true"
+              [responsive]="false"
+              [duration]="800"
+              [animation]="'easeInOutQuart'"
+              [animationDelay]="0"></round-progress>    
+            </div>
+            <div class="col-lg-3 col-xs-12 col-sm-12">
+            </div>
+            <div class="col-lg-9 col-xs-12 col-sm-12 text-center">
+              <p>3.Documentos</p>
+            </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" [routerLink]="['/inscripcion/pagos']">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 arrow-container">
+          <div class="arrow-4"></div>    
+        </div>
+          <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 d-flex justify-content-center cursor">
+            <p class="pasos " >
+              <span *ngIf="pasoActual <= 2"><i class="fa fa-lock fa-2x" aria-hidden="true"></i></span>
+              <span *ngIf="pasoActual > 2">{{paso4.completados}} de {{paso4.totales}}</span> <!--paso 4-->
+            </p>
+              <round-progress class="grafica"
+              [current]= "porcentajePaso4"
+              [max]="100"
+              [color]="colorPaso4"
+              [background]="'#eaeaea'"
+              [radius]="55"
+              [stroke]="10"
+              [semicircle]="false"
+              [rounded]="true"
+              [clockwise]="true"
+              [responsive]="false"
+              [duration]="800"
+              [animation]="'easeInOutQuart'"
+              [animationDelay]="0"></round-progress>    
+            </div>
+            <div class="col-lg-3 col-xs-12 col-sm-12">
+            </div>
+            <div class="col-lg-9 col-xs-12 col-sm-12 text-center">
+              <p>4.Pago en línea</p>
+            </div>
+      </div>
+    </div>
+    
+  </div>
+    <!--div class="col-lg-1 col-xs-12">
+    <i class="fa fa-lock fa-3x textGraf" aria-hidden="true"></i>
+    <round-progress class="grafica" [routerLink]="['/inscripcion/terminos']"
+      [current]= 25
+
+      [max]="100"
+      [color]="'#45ccce'"
+      [background]="'#eaeaea'"
+      [radius]="55"
+      [stroke]="10"
+      [semicircle]="false"
+      [rounded]="true"
+      [clockwise]="true"
+      [responsive]="false"
+      [duration]="800"
+      [animation]="'easeInOutQuart'"
+      [animationDelay]="0"></round-progress>
+      <p class="text-center textoPasoPc">2. Términos</p>
+      <p class="textoPaso">2. Términos</p>
+    </!--div>
+  <div class="col-lg-1 col-xs-12 text-center">
+    <div class="arrow-4"></div>
+  </div>
+  <div class="col-lg-1 col-xs-12">
+    <i class="fa fa-lock fa-3x textGraf" aria-hidden="true"></i>
+    <round-progress class="grafica" [routerLink]="['/inscripcion/documentos']"
+        [current]= 27
+        [max]="100"
+        [color]="'#45ccce'"
+        [background]="'#eaeaea'"
+        [radius]="55"
+        [stroke]="10"
+        [semicircle]="false"
+        [rounded]="true"
+        [clockwise]="true"
+        [responsive]="false"
+        [duration]="800"
+        [animation]="'easeInOutQuart'"
+        [animationDelay]="0"></round-progress>
+        <p class="text-center textoPasoPc">3. Documentos</p>        
+    <p class="textoPaso">3. Documentos</p>
+  </div>
+  <div class="col-lg-1 col-xs-12 text-center">
+    <div class="arrow-4"></div>
+  </div>
+  <div class="col-lg-1 col-xs-12">
+    <i class="fa fa-lock fa-3x textGraf" aria-hidden="true"></i>
+    <round-progress class="grafica" [routerLink]="['/inscripcion/pagos']"
+        [current]= 27
+        [max]="100"
+        [color]="'#45ccce'"
+        [background]="'#eaeaea'"
+        [radius]="55"
+        [stroke]="10"
+        [semicircle]="false"
+        [rounded]="true"
+        [clockwise]="true"
+        [responsive]="false"
+        [duration]="800"
+        [animation]="'easeInOutQuart'"
+        [animationDelay]="0"></round-progress>
+        <p class="text-center textoPasoPc">4. Pago en línea</p>        
+    <p class="textoPaso">4. Pago en línea</p>
+  </div>
+  </div-->
+
+<br><br>
+<!--button class="btn btn-info pull-right" (click)="open(content)"><i class="fa fa-envelope"></i> Contacto </!--button>
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header" style="background-color: #002144;color: white;">
+        <h4 class="modal-title">Contacto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template-->
+
+<!--button class="btn btn-info pull-right modal_tit" (click)="open(content)">
+  <i class="fa fa-envelope"></i> Contacto </!--button>
+      <ng-template #content let-c="close" let-d="dismiss">
+          <div class="modal-header modal_tit">
+              <h4 class="modal-title">Contacto</h4>
+              <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+                <div class="modal-body">
+                    <p>Cualquier duda contáctanos por cualquiera de los siguientes medios:</p>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                      <div class="table tabla_panel">
+                        <div class="tabla_uni" style="padding: 10px 20px; text-align: justify;">
+                          <i class="fa fa-envelope fa-2x"></i>
+                          <a href="mailto:no-replay@unisant.mx" style="line-height: 30px"> educacion@unisant.edu.mx</a>
+                        </div>
+                        <div class="tabla_uni" style="padding: 10px 20px; text-align: justify;">
+                          <i class="fa fa-phone fa-2x"> </i>
+                          <a href="tel:+528004610267" style="line-height: 30px"> 8004610267</a>
+                          
+                        </div>
+                        <div class="tabla_uni" style="padding: 10px 20px; text-align: justify;">
+                            <i class="fa fa-facebook fa-2x"> </i>
+                            <a target="_blank" href="https://www.facebook.com/pages/Universidad-Santander/196598600360183?fref=ts"> Facebook</a>
+                        </div>
+                        <div class="tabla_uni" style="padding: 10px 20px; text-align: justify;">
+                            <i class="fa fa-twitter fa-2x"></i>
+                            <a target="_blank" href="https://twitter.com/unisant"> Twitter</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>        
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+          </div>
+      </ng-template-->
+
+      <!--modal principal-->
+<!--div class="container">
+<div class="row">
+  <div class="col-md-5 col-xs-12">
+    <div class="panel-heading modal_tit">
+      <div style="padding: 10px 10px 10px 20px">
+        <h6 class="panel-title" >
+          <i class="fa fa-comments fa-2x" style="color:white"></i>
+          Contacto
+        </h6>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="table tabla_panel">
+          <div class="tabla_uni" style="padding: 10px 20px; text-align: justify; border: solid 2px rgb(241, 241, 242); ">
+          Cualquier duda contáctanos por cualquiera de los siguientes medios:
+          </div>
+          <div class="tabla_uni" style="padding: 10px 20px; text-align: justify; border: solid 2px rgb(241, 241, 242);">
+            <i class="fa fa-envelope fa-2x"></i>
+            <a href="mailto:no-replay@unisant.mx" style="line-height: 30px"> educacion@unisant.edu.mx</a>
+          </div>
+          <div class="tabla_uni" style="padding: 10px 20px; text-align: justify; border: solid 2px rgb(241, 241, 242);">
+            <i class="fa fa-phone fa-2x"> </i>
+            <a href="tel:+528004610267" style="line-height: 30px"> 8004610267</a>
+            
+          </div>
+          <div class="tabla_uni" style="padding: 10px 20px; text-align: justify; border: solid 2px rgb(241, 241, 242);">
+              <i class="fa fa-facebook fa-2x"> </i>
+              <a target="_blank" href="https://www.facebook.com/pages/Universidad-Santander/196598600360183?fref=ts"> Facebook</a>
+          </div>
+          <div class="tabla_uni" style="padding: 10px 20px; text-align: justify; border: solid 2px rgb(241, 241, 242);">
+              <i class="fa fa-twitter fa-2x"></i>
+              <a target="_blank" href="https://twitter.com/unisant"> Twitter</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div-->

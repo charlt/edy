@@ -1,0 +1,19 @@
+<app-buscador-persona (consultaExitosa)="alumnoSeleccionado($event)"></app-buscador-persona>
+<div *ngIf="identTabla == true">
+  <table class="table table-striped table-bordered">
+    <tr>
+      <th>Lider de equipo</th>
+      <th>Nombre</th>
+      <th>CURP</th>
+    </tr>
+    <tr *ngFor="let alumno of grupo">
+      <td class="text-center"><div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="{{alumno.persona_id}}" name="{{alumno.persona_id}}"(click)="radio(alumno.persona_id)" [checked]="seleccionado == alumno.persona_id">
+            <label class="custom-control-label" for="{{alumno.persona_id}}"></label>
+          </div> 
+      </td>
+      <td>{{alumno.primer_apellido}} {{alumno.segundo_apellido}} {{alumno.nombre}}</td>
+      <td>{{alumno.curp}}</td>
+    </tr>
+  </table>
+</div>

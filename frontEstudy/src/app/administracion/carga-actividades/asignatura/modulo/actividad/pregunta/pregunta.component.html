@@ -1,0 +1,19 @@
+<div   class="row alert  alert-actividad" role="alert" >  
+  <div class="col-md-9" *ngIf="actividad">
+    <h5 class="text-left text-dark"> 
+       {{actividad.actividad_nombre}}</h5>
+    <p>Actividad del tipo {{actividad.tipo_actividad_nombre}}</p> 
+    <div  class="col-md-12">
+      <a  *ngIf="actividad.tipo_actividad_id == 2 || actividad.tipo_actividad_id == 4" class="btn btn-link" (click)="redireccion('preguntas')">
+        <span ><i class="fa fa-plus-square"></i> Mostrar preguntas</span>  
+      </a>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <button [hidden]="tipoAdmin == 0" (click)="redireccion('edita')" class="btn btn-info btn-accion"><i class="fa fa-pencil"></i></button>
+    <button  (click)="redireccion('vista-previa')" class="btn btn-info btn-accion" class="btn btn-warning btn-accion" ><i class="fa fa-eye"></i></button>
+  </div>
+  <div class="col-md-12">
+    <router-outlet></router-outlet>
+  </div>
+</div>

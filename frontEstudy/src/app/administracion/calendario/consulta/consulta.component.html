@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="col-12 mt-2">
+    <form [formGroup]="cicloForm">
+      <div class="form-group">
+        <label class="control-label">Ciclo: </label>
+        <select formControlName="ciclo_id" class="form-control"  >
+          <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+          <option [value]="ciclo.ciclo_id" *ngFor="let ciclo of catCiclos">{{ciclo.ciclo_desc}}</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="col-12" *ngIf="idCiclo">
+    <button class="btn btn-info" (click)="openModal(modalEvents, 0)">Consultar eventos</button>
+    <button class="btn btn-success ml-2" (click)="openModal(modalEvents, 1)">Agregar evento</button>
+  </div>
+  <div class="col-12 mt-3" *ngIf="idCiclo">
+    <app-calendario-component [idCiclo]="idCiclo"></app-calendario-component>
+  </div>
+</div>
+
+<ng-template #modalEvents let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title"><h5>{{titulo}}</h5></h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body mx-3">
+    <div class="row">
+      <div class="col-12 mb-2" *ngIf="edicion">
+        <button class="btn btn-primary" (click)="edicion = false; formCalendario = undefined"><i class="fa fa-arrow-left"></i> Regresar a la consulta</button>
+      </div>
+      <div class="col-12" *ngIf="tipoForm == 0 && !edicion">
+        <div class="table-responsive" *ngIf="!cargando">
+          <table class="table table-border">
+            <thead class="bg-light">
+              <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Color</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="Eventos">
+              <tr *ngFor="let evento of Eventos; let i = index;">
+                <td>{{evento.evento_nombre}}</td>
+                <td>{{evento.evento_desc}}</td>
+                <td>{{evento.fecha_inicio | date: 'dd/MM/yyyy'}}</td>
+                <td>{{evento.fecha_fin | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">
+                  <span [ngStyle]="{'background-color': evento.color, 'color': evento.color}" 
+                    class="badge p-2">00</span>
+                </td>
+                <td><button class="btn btn-info" (click)="setEdicion(evento)"><i class="fa fa-pencil"></i></button></td>
+                <td><button class="btn btn-danger" (click)="eliminar(evento, i)"><i class="fa fa-trash"></i></button></td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="!Eventos">
+              <tr>
+                <td class="text-center" colspan="7">No se encontraron eventos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="cargando" class="container border rounded py-4 px-5 text-center">
+          <h4><i class="fa fa-spin fa-spinner fa-lg"></i> Cargando eventos</h4>
+        </div>
+      </div>
+      <div class="col-12" *ngIf="(tipoForm == 1 && formCalendario) || (tipoForm == 0 && edicion && formCalendario)">
+        <form class="row" [formGroup]="formCalendario" (ngSubmit)="enviaInformacion()">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="form-group">
+              <label>Ciclo del evento: </label>
+              <select class="form-control" formControlName="ciclo_id">
+                <option value="" disabled hidden selected>Selecciona una opción</option>
+                <option [value]="ciclo.ciclo_id" *ngFor="let ciclo of catCiclos; let i = index">{{ciclo.ciclo_desc}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Nombre del evento: </label>
+              <input placeholder="Nombre del evento" formControlName="nombre" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+              <label>Descripción del evento: </label>
+              <textarea placeholder="Descripción del evento" class="form-control" formControlName="descripcion"></textarea>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="form-group">
+              <label>Fecha: </label>
+              <input formControlName="fecha" class="form-control" type="date">
+            </div>
+            <div class="form-group">
+              <div class="custom-control custom-checkbox">
+                <input formControlName="checkbox_fin" type="checkbox" class="custom-control-input" id="checkbox_fin">
+                <label class="custom-control-label" for="checkbox_fin"> Agregar fecha de fin</label>
+              </div>
+            </div> 
+            <div class="form-group" *ngIf="fC.fecha_fin">
+              <label>Fecha de fin: </label>
+              <input formControlName="fecha_fin" class="form-control" type="date">
+            </div>  
+            <div class="form-group">
+              <label>Color del evento:</label>
+              <input class="ml-2" formControlName="color" type="color">
+            </div>
+          </div>
+          <div class="col-12">
+            <button [disabled]="formCalendario.invalid" type="submit" class="btn btn-success pull-right">Guardar información</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

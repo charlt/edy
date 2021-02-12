@@ -1,0 +1,47 @@
+<div class="col-12">
+  <!-- <p>Maestria en educacion, Neurocognición y Aprendizaje</p> -->
+  <!-- <h4>Investigación Educativa I</h4> -->
+  <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+     et dolore magna aliqua. Sed viverra ipsum nunc aliquet. Eget egestas purus viverra accumsan. Augue ut
+      lectus arcu bibendum at varius vel pharetra. Eget est lorem ipsum dolor sit. Massa massa ultricies mi
+       quis hendrerit dolor. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Morbi
+        tristique senectus et netus. Feugiat in fermentum posuere urna nec tincidunt. Ut eu sem integer vitae.
+         Et ligula ullamcorper malesuada proin libero. Risus ultricies tristique nulla aliquet. Phasellus
+          vestibulum lorem sed risus. Auctor neque vitae tempus quam pellentesque nec nam.</p> -->
+  <div class="row">
+    <div class="col-4">
+          <canvas baseChart *ngIf="mostrarGrafica"
+              [data] = "ponderacion"
+              [colors] = "color"
+              [chartType] = "doughnutChartType"
+              [datasets]="barChartData"
+              [labels]="etiquetas"
+              [legend]="barChartLegend">      
+          </canvas>
+    </div>
+    <div class="col-8" >
+      <table class="table table-hover">
+        <thead class="thead-light">
+          <tr class="info" style="text-align: center;">
+            <th>Ponderación</th>
+            <th>Nombre</th>
+            <th>Objetivos</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let objetivos of objetivo; let i = index ">
+          <td class="text-center" [ngStyle]="{color: _colorGeneral[i]}">{{ponderacion[i]}}%</td>
+          <td>
+            <div class="flecha" [ngStyle]="{color: _colorGeneral[i]}">
+             <span >{{objetivos.actividad_nombre}}</span>
+            </div>
+          </td>
+          <td *ngIf="rol.rol_id == 3">{{objetivos.objetivo_docente}}</td>
+          <td *ngIf="rol.rol_id == 2">{{objetivos.objetivo_alumno}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="triangulo abajo">
+      <div></div>
+    </div>
+  </div>
+</div>

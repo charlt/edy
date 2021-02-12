@@ -1,0 +1,103 @@
+<div class="container" >
+  <div id="cleaver">
+    <div class="row">
+      <div class="col-12">
+        <h4>{{title}}</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+          <app-encabezado-persona [idPersona]="idAspirante" [idRol]="4"></app-encabezado-persona>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th>D</th>
+                <th>I</th>
+                <th>S</th>
+                <th>C</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let _dato of Datos; let i = index">
+                <td>{{_dato.text}}</td>
+                <td>{{_dato.value.D}}</td>
+                <td>{{_dato.value.I}}</td>
+                <td>{{_dato.value.S}}</td>
+                <td>{{_dato.value.C}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped" *ngIf="Combinacion">
+            <thead class="">
+              <tr>
+                <th>Combinaciones</th>
+                <th>Interpretación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="align-middle text-center"><h4>{{Combinacion.combinacion}}</h4></td>
+                <td><b>{{Combinacion.datos.bold}}</b> {{Combinacion.datos.text}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="bandera">
+      <div class="col col-4" *ngFor="let grafica of DataCharts; let i = index">
+        <div class="card mb-3">
+          <div class="card-header text-center">
+            {{Graficas[i]}}
+          </div>
+          <div class="card-body">
+            <canvas baseChart height="400" [datasets]="grafica" [labels]="Labels" 
+            [options]="Options" [colors]="Colors" [legend]="Legend" 
+            [chartType]="Type" (chartHover)="chartHovered($event)" 
+            (chartClick)="chartClicked($event)">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-primary pull-right mb-3" (click)="descargaImagen()">Descargar resultados</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="bg-light">
+            <tr>
+              <th></th>
+              <th>Más</th>
+              <th>Menos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let respuesta of Respuestas; let i = index">
+              <td>{{respuesta.nombre_reactivo}}</td>
+              <td><i class="fa fa-times" *ngIf="respuesta.respuesta_id == '2'"></i></td>
+              <td><i class="fa fa-times" *ngIf="respuesta.respuesta_id == '1'"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,150 @@
+<div class="container-fluid d-print-none" *ngIf="solicitudPago">
+  <div class="row">
+    <div class="col-5">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td class="font-weight-bold">Nombre del pago:</td>
+            <td>{{solicitudPago.nombre_pago}}</td>
+          </tr>
+          <tr>
+            <td class="font-weight-bold">Monto:</td>
+            <td>$ {{solicitudPago.monto}}</td>
+          </tr>
+
+          <tr *ngIf="solicitudPago.beca && solicitudPago.beca != 0" >
+            <td class="font-weight-bold">Beca:</td>
+            <td class="text-success">$ {{solicitudPago.beca}}</td>
+          </tr>
+ 
+          <tr class="codigo_promocion" *ngIf="!solicitudPago.descuento_id && tipoPago == 0" >
+            <td  span="2">
+              <div class="input-group m-1">
+                <input [(ngModel)]="ingresarCodigo" type="checkbox" class="custom-control-input"  id="codigo" name="codigo"> 
+                <label class="custom-control-label pl-3" for="codigo">Ingresar código de promoción</label>
+              </div>
+              <div *ngIf="ingresarCodigo" class="input-group m-1">
+                <input  class="form-control"
+                  #promocion [(ngModel)]="codigo_promocion" (input)="promocion.value=$event.target.value.toUpperCase()" 
+                      placeholder="Ingresa aquí el código de promoción"
+                    (blur)="validar_codigo()"
+                    >
+                <div class="input-group-append" >
+                  <span class="input-group-text" id="basic-addon2" [ngClass]="{'alert-success': estatusDescuento == 1, 'alert-danger' : estatusDescuento == 0 }" >
+                    <i *ngIf="!consultaDescuento" class=" fa fa-ticket"></i>
+                    <i *ngIf="consultaDescuento" class=" fa fa-ticket"></i>
+                  </span>
+                </div>
+              </div>
+              <p *ngIf="estatusDescuento == 1" class="text-success">Código correcto!</p>
+              <p *ngIf="estatusDescuento == 0" class="text-danger">Código de promoción Inválido</p>
+            </td>
+          </tr>
+          <tr   *ngIf=" solicitudPago.descuento_id">
+            <td class="font-weight-bold">{{solicitudPago.descripcion_descuento}} </td>
+            <td class="text-success">
+              <span *ngIf="solicitudPago.valor_descuento == 1"> $ </span>
+                 {{solicitudPago.descuento}}
+                <span *ngIf="solicitudPago.valor_descuento == 2"> % </span>
+              </td>
+          </tr>
+          <tr class="pago">
+            <td class="font-weight-bold">Total a pagar</td>
+            <td>$ {{solicitudPago.monto_final}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-7 tipoPago">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <p  *ngIf="tipoPago == 0"><b>Selecciona un método de pago:</b></p>
+          <button  *ngIf="tipoPago != 0"  class="btn btn-link "  (click)="elegirPago(0)">Seleccionar otro método de pago</button>
+        </div>
+        <div *ngIf="solicitudPago.tarjeta == 1 && (tipoPago == 0 || tipoPago == 1) " class="col-xs-12 col-sm-12 col-md-4 ">
+          <div [ngClass]="tipoPago== 1 ? 'alert-success':'alert-secondary'"  class="text-center alert" (click)="elegirPago(1)"  style="cursor: pointer;">
+            <i class="fa fa-credit-card fa-2x" style="color:#002144" aria-hidden="true"></i>
+            <a   ><p><b>Pago con tarjeta<br></b>Crédito o débito</p></a>
+          </div>
+        </div>
+        <div  *ngIf="solicitudPago.transferencia == 1  && (tipoPago == 0 || tipoPago == 2)" class="col-xs-12 col-sm-12 col-md-4 ">
+          <div [ngClass]="tipoPago== 2 ? 'alert-success':'alert-secondary'" class="text-center alert " (click)="elegirPago(2)"  style="cursor: pointer;">
+            <i class="fa fa-barcode fa-2x" style="color:#002144" aria-hidden="true"></i>
+            <a><p><b>Pago en tienda</b></p></a>
+          </div>
+        </div>
+        <div   *ngIf="solicitudPago.fisico == 1  && (tipoPago == 0 || tipoPago == 3) " class="col-xs-12 col-sm-12 col-md-4 ">
+          <div [ngClass]="tipoPago== 3 ? 'alert-success':'alert-secondary'"  class="  text-center alert" (click)="elegirPago(3)"  style="cursor: pointer;">
+            <i  class="fa fa-file-text-o fa-2x" style="color:#002144" aria-hidden="true"></i>
+            <a><p>Pago por transferencia/depósito en el banco</p></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <h5 *ngIf="tipoPago ==1"> <i class="fa fa-credit-card" aria-hidden="true"></i> Pago con tarjeta</h5>
+  <h5 *ngIf="tipoPago ==2"> <i class="fa fa-barcode"  aria-hidden="true"></i> Pago en efectivo en tienda de conveniencia</h5>
+  <h5 *ngIf="tipoPago ==3"> <i class="fa fa-bank"  aria-hidden="true"></i> Pago en banco / transferencia</h5>
+  <!--div class="row alert alert-info d-print-none" >       
+    <div *ngIf="solicitudPago" class="col-6">
+      
+      <h5>{{solicitudPago.nombre_pago}}</h5>
+      <h4><b *ngIf=" solicitudPago.descuento_id"> con {{solicitudPago.descripcion_descuento}}</b>${{solicitudPago.monto_final}}</h4>
+    </div>
+    <div class="col-6 text-right">
+      <h5 *ngIf="tipoPago ==1"> <i class="fa fa-credit-card" aria-hidden="true"></i> Pago con tarjeta</h5>
+      <h5 *ngIf="tipoPago ==2"> <i class="fa fa-barcode"  aria-hidden="true"></i> Pago en efectivo en tienda de conveniencia</h5>
+      <h5 *ngIf="tipoPago ==3"> <i class="fa fa-bank"  aria-hidden="true"></i> Pago en banco / transferencia</h5>
+    </div>
+  </div-->
+  <!--div class="row m-3" *ngIf="tipoPago == 0">
+    <div class="col-6">
+      
+
+
+      
+    </div>
+  </div-->
+  <div class="row" *ngIf="solicitudPago">
+    <!--div class="col-7 d-print-none" *ngIf="tipoPago == 0">  
+      <div class="row">
+        <div class="col-12">
+          <p><b>Selecciona un método de pago:</b></p>
+        </div>
+        <div *ngIf="solicitudPago.tarjeta == 1" class="col-xs-12 col-sm-12 col-md-4 ">
+          <div class="offset-md-1 text-center jumbotron" (click)="elegirPago(1)"  style="cursor: pointer;">
+            <i class="fa fa-credit-card fa-3x" style="color:#002144" aria-hidden="true"></i>
+            <a   ><p><b>Pago con tarjeta<br></b>Crédito o débito</p></a>
+          </div>
+        </div>
+        <div  *ngIf="solicitudPago.transferencia == 1" class="col-xs-12 col-sm-12 col-md-4 ">
+          <div class="offset-md-1 text-center jumbotron" (click)="elegirPago(2)"  style="cursor: pointer;">
+            <i class="fa fa-barcode fa-3x" style="color:#002144" aria-hidden="true"></i>
+            <a><p><b>Pago en efectivo en tienda de conveniencia</b></p></a>
+          </div>
+        </div>
+        <div   *ngIf="solicitudPago.fisico == 1" class="col-xs-12 col-sm-12 col-md-4 ">
+          <div class="offset-md-1  text-center jumbotron" (click)="elegirPago(3)"  style="cursor: pointer;">
+            <i class="fa fa-bank fa-3x" style="color:#002144" aria-hidden="true"></i>
+            <a><p>Pago en banco / transferencia</p></a>
+          </div>
+        </div>
+      </div>
+    </div-->
+    <div *ngIf="tipoPago != 0"  class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <!-- <iframe *ngIf="tipoPago == 1" [src]="url+'/pagos/openPay/index.html?id='+solicitudPago.solicitud_pago_id | safeUrl" style="border:0px; width: 100%; height: 800px"></iframe> -->
+          <iframe class="iframe" *ngIf="tipoPago == 1" style="border:0px; width: 100%; height: 800px" 
+            [src]="urlFrontPago + 'open-pay/' + idSolicitudPago + '/' + plataforma | safeUrl" ></iframe>
+          <iframe class="iframe" *ngIf="tipoPago == 2" style="border:0px; width: 100%; height: 800px" 
+          [src]="urlFrontPago + 'open-pay-transfer/' + idSolicitudPago | safeUrl" ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-transferencia   *ngIf="tipoPago == 3" [monto]="monto" [descripcion]="descripcion"
+  [fecha_limite]="fecha_limite" class="m-0 p-0"></app-transferencia>

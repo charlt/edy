@@ -1,0 +1,6 @@
+<app-header-docente></app-header-docente>
+<app-sidebar-docente (collapsedEvent)="receiveCollapsed($event)"></app-sidebar-docente>
+<section class="main-container" [ngClass]="{collapsed: collapedSideBar}">
+    <app-page-header [breadcum]="breadcum" ></app-page-header>
+    <router-outlet></router-outlet>
+</section>

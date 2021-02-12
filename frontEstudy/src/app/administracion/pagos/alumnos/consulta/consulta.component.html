@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4 class="mt-3">{{title}}</h4>
+  </div>  
+</div>
+<div class="input-group mb-3">
+  <input type="text" class="form-control" [formControl]="inputBusqueda" placeholder="{{'SearchInput' | translate}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  <div class="input-group-append">
+    <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+  </div>
+</div> 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Matrícula</th>
+      <th scope="col">Nombre del alumno</th>
+      <th scope="col">Plan de pagos</th>
+      <th scope="col">Pagos pendientes</th>
+      <th scope="col">Situación del alumno por pago</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="alumnos.length == 0">
+      <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+    </tr>
+    <tr *ngFor="let alumno of alumnos; let i = index">
+      <td>{{alumno.clave_alumno}}</td>
+      <td>{{alumno.nombre}} {{alumno.primer_apellido}} {{alumno.segundo_apellido}}</td>
+      <td><a [routerLink]="['../suscripcion/'+alumno.alumno_id+'/0']">
+        <span *ngIf="alumno.nombre_suscripcion">{{alumno.nombre_suscripcion}}</span>
+        <span *ngIf="!alumno.nombre_suscripcion"><i class="fa fa-plus-square"></i> Agrega suscripción</span>
+      </a></td>
+      <td class="text-center"><span class="badge" [ngClass]="alumno.pendientes_pago > 0 ? 'badge-danger': 'badge-info'">{{alumno.pendientes_pago}}</span>
+        <br>
+        <a [routerLink]="['../solicitud/'+alumno.alumno_id]">Ver pagos</a>
+      </td>
+      
+      <td [ngClass]="[alumno.situacion_pago_id == '1' ? 'alert-success':'',alumno.situacion_pago_id == '2' ? 'alert-danger':'',alumno.situacion_pago_id == '3' ? 'alert-warning':'']" class="text-center">
+        <i (click)="open(Situacion, alumno.alumno_id)" class="fa fa-money _hover fa-2x" aria-hidden="true"></i>
+          <p> {{alumno.situacion_pago_descripcion}}</p>
+        </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+<ng-template #Situacion let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Situación del alumno por pago</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <form [formGroup]="situacionForm" (ngSubmit)="enviaInformacion()">
+        <div class="form-group">
+          <label class="control-label">Tipo de situación</label>
+          <select formControlName="situacion" class="form-control"  >
+            <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+            <option [value]="situacion.situacion_pago_id" *ngFor="let situacion of catSituacion">{{situacion.situacion_pago_descripcion}}</option>
+          </select>
+        </div>
+        <div class="form-group" *ngIf="situacionForm.get('observacion')">
+          <label class="control-label">Observación</label>
+          <textarea class="form-control" formControlName="observacion" rows="3"></textarea>
+        </div>
+        <!-- <button [hidden]="tipoAdmin == 0" class="btn btn-success pull-right mt-3" [disabled]="situacionForm.invalid">Guardar información</button> -->
+        <button class="btn btn-success pull-right mt-3" [disabled]="situacionForm.invalid">Guardar información</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Salir</button>
+  </div>
+</ng-template>
+

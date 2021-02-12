@@ -1,0 +1,204 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>Aspirantes</h4>
+    <button class="btn btn-success" (click)="setSelectedRol()" [routerLink]="['/asesor/aspirante/nuevo']">Agregar
+      aspirante</button>
+    <!--div class="btn-group float-right" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-outline-info" (click)="generaExcel()">
+        <h4><i class="fa fa-file-excel-o"></i></h4>
+        Genera reporte
+      </button>
+      <button [routerLink]="['/asesor/aspirante/estadisticas']" class="btn btn-outline-info">
+        <h4><i class="fa fa-table"></i></h4>
+        Consulta estadística
+      </button>
+    </div-->
+    <p class="mt-3">Búsqueda de aspirantes</p>
+    <div class="input-group mb-3">
+      <input (keyup)="buscaPersona()" [(ngModel)]="contenido" type="text" class="form-control"
+        placeholder="{{'SearchInput' | translate}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+    <p *ngIf="!consultaAspirantes"><strong style="font-size: small;">Total de registros: {{totalItems}}</strong></p>
+    <div class="row">
+      <!--div class="col-md-3">
+        <div class="form-group">
+          <label for="tipo">Tipo de búsqueda</label>
+          <select class="form-control" id="tipo" [(ngModel)]="tipoConsulta" (change)="switchConsulta(tipoConsulta)">
+            <option value="" hidden disabled>Selecciona una opción</option>
+            <option value= 1 >Todos</option>
+            <option value= 2 >Validados</option>
+            <option value= 3 >Sin validar</option>
+          </select>
+        </div>
+      </div-->
+      <!-- <div class="col-md-4">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-primary" [ngClass]="tipoConsulta == 1 ? 'active':''"
+            (click)="consultaTodos(1)">Todos</button>
+          <button type="button" class="btn btn-primary" [ngClass]="tipoConsulta == 2 ? 'active':''"
+            (click)="muestraAspirantes(2)">Validado</button>
+          <button type="button" class="btn btn-primary" [ngClass]="tipoConsulta == 3 ? 'active':''"
+            (click)="muestraAspirantes(3)">Sin validar</button>
+        </div>
+      </div> -->
+      <!--div class="col-md-3">
+        <div class="form-group">
+          <label for="cat_carrera">Carrera</label>
+          <select class="form-control" id="cat_carrera" [(ngModel)]="carreraIdBusqueda" (change)="switchConsulta(tipoConsulta)">
+            <option value="" hidden disabled>Selecciona una opción</option>
+            <option value="0">Ninguna</option>
+            <option *ngFor="let carrera of carreras" value="{{carrera.carrera_id}}">{{carrera.carrera}}</option>
+          </select>
+        </div>
+      </div-->
+    </div>
+    <table class="table table-bordered table-responsive">
+      <thead class="thead-light">
+        <tr>
+          <th>Folio de aspirante</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Carrera</th>
+          <th>Paso</th>
+          <!-- <th>Validado por el administrador</th>
+          <th>Matricular</th> -->
+          <th>Información de inscripción</th>
+          <th>Expediente</th>
+          <th>Situación</th>
+          <th>Resultado cleaver</th>
+          <th>Reporte</th>
+          <th>Último acceso</th>
+          <!--<th>Generar matrícula</th>-->
+          <th>Fecha de registro</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="aspirantes">
+        <tr *ngFor="let aspirante of aspirantes; let i = index">
+          <td>{{aspirante.persona_id}}</td>
+          <td style="width:20%">{{aspirante.nombre}} {{aspirante.primer_apellido}} {{aspirante.segundo_apellido}}</td>
+          <td>{{aspirante.email}}</td>
+          <td>
+            {{aspirante.carrera}}
+            <a href="javascript:void(0)" (click)="abreModal(i)">Cambiar</a>
+          </td>
+          <td class="text-center" [ngClass]="aspirante.paso == 4 ? 'alert-success':''">
+            <!--span *ngIf="aspirante.paso == 4"
+              (click)="matricula_aspirante(aspirante.persona_id,aspirante.nombre,aspirante.primer_apellido,i)"
+              style="cursor: pointer;"><i class="fa fa-id-card-o"></i><span
+                style="font-size: 10px;">Matrícular</span></span-->
+            <span>{{aspirante.paso}}</span>
+          </td>
+          <!-- <td>
+            <div style="display: flex; justify-content: center;">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="{{aspirante.persona_id}}"
+                  (click)="cambiaValidador(aspirante.persona_id, i )" [checked]="aspirante.validado_administrador != 0">
+                <label class="custom-control-label" for="{{aspirante.persona_id}}"></label>
+              </div>
+            </div>
+          </td> -->
+          <!-- <td class="alert text-center" role="alert" [ngClass]="aspirante.paso == 4 ? 'alert-success':''">
+            <a href="javascript:void()" (click)="setFiltros()" [routerLink]="['../../matriculacion/'+aspirante.persona_id]"><i
+                class="fa fa-id-card-o" aria-hidden="true"></i><br>
+              <small>Matricular</small>
+            </a>
+          </td> -->
+          <td class="text-center">
+            <a [routerLink]="['../solicitud/'+aspirante.persona_id]" target="_blank"
+              [ngClass]="aspirante.paso >= 1 ? 'bg-completo': 'bg-incompleto'">
+              <i class="fa fa-list fa-2x" aria-hidden="true"></i>
+              <p>{{aspirante.porcentaje_formulario}}%</p>
+            </a>
+          </td>
+          <td class="text-center">
+            <a [routerLink]="['../expediente/'+aspirante.persona_id]"
+              [ngClass]="aspirante.paso >= 3 ? 'bg-completo': 'bg-incompleto'" target="_blank">
+              <i class="fa fa-folder-open-o fa-2x" aria-hidden="true"></i>
+              <p>{{aspirante.porcentaje_documento}}%</p>
+            </a>
+          </td>
+          <td class="text-center">
+          <a href="javascript:void(0)" [ngClass]="{'bg-completo':aspirante.situacion_aspirante_id == 1, 'bg-incompleto':aspirante.situacion_aspirante_id ==2,
+           'bg-incompleto':aspirante.situacion_aspirante_id ==3, 'bg-null':aspirante.situacion_aspirante_id ==null}" (click)="muestraModalSituacion(aspirante.persona_id, aspirante.situacion_aspirante_id, i)">
+            <i class="fa fa-user-o fa-2x" aria-hidden="true"></i>
+            <p>{{aspirante.situacion_aspirante_descripcion}}</p>
+          </a>
+          </td>
+          <td [ngClass]="aspirante.cleaver_completo == '1' ? 'bg-completo': 'bg-incompleto'" class="text-center"
+            [routerLink]="['../cleaver/'+aspirante.persona_id]"><i class="fa fa-bar-chart fa-2x" aria-hidden="true"></i>
+          </td>
+          <td [ngClass]="aspirante.paso >= 1 ? 'bg-completo': 'bg-incompleto'" class="text-center"><a
+              [href]="url+'/seguimiento/reportes/solicitud_inscripcion.php?id='+ aspirante.persona_id"
+              style="color:inherit" target="_blank"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a></td>
+          <td>
+            <p>{{aspirante.sesion | date: "dd/MM/yyyy"}} {{aspirante.sesion | date: "mediumTime"}} </p>
+          </td>
+          <!-- <td class="text-center"><i style="color: red;" class="fa fa-times fa-2x" aria-hidden="true"></i></td> -->
+          <td class="text-center">{{aspirante.fecha_creacion | date: "dd/MM/yyyy"}}
+            {{aspirante.fecha_creacion | date: "mediumTime"}}</td>
+          <td class="text-center"><i style="color: red;" class="fa fa-minus-square fa-2x" aria-hidden="true"
+              (click)="eliminar(aspirante.persona_id, i)"></i></td>
+        </tr>
+      </tbody>
+      <tr *ngIf="consultaAspirantes">
+        <td colspan="11">
+          <div class="col text-center mt-1 mb-1">
+            <i class="fa fa-spinner fa-pulse fa-2x fa-fw mb-3"></i>
+            <h5>"Cargando datos, por favor espere."</h5>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div *ngIf="numAspirantes == 0" class="alert alert-danger text-center" role="alert">
+      Sin coincidencias
+    </div>
+    <!--div class="d-flex justify-content-center">
+      <ngb-pagination [collectionSize]="totalItems" [pageSize]="itemsPerPage" [(page)]="page" [maxSize]="4"
+        [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+    </div-->
+  </div>
+</div>
+
+<ng-template #modalCarrera let-modal>
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><b>Aspirante:</b> {{selectAspirante.nombre}} {{selectAspirante.primer_apellido}}
+      {{selectAspirante.segundo_apellido}}</p>
+    <p><b>Carrera:</b> {{selectAspirante.carrera}}</p>
+    <app-consulta-asignatura [nivel]="1" [tipo]="'small'" (sucessEvent)="obtieneCarrera($event)"></app-consulta-asignatura>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="cambiaCarrera()">Guardar</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalSituacion let-modal>
+  <div class="modal-header">
+    <h4>Edita situación</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="cat_estatus">Situación</label>
+      <select id="cat_estatus" class="form-control" [(ngModel)]="situacion_aspirante_id">
+        <option value="" hidden selected>Selecciona una opción</option>
+        <option value="{{estatus.situacion_aspirante_id}}" *ngFor="let estatus of estatusPermitido">{{estatus.situacion_aspirante_descripcion}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="cambiaEstatusAspirante()">Guardar</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>
+  </div>
+</ng-template>

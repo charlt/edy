@@ -1,0 +1,170 @@
+
+<div *ngIf="paso == 0 && idRol != 3" class="row">
+  <div  class="col-12 zona-drag" [ngClass]="preguntas.length > 5 ? 'overflow' : ''">
+    <div class="d-flex flex-row" [ngClass]="preguntas.length > 5 ? '' : 'justify-content-center'"
+      cdkDropList
+      id="zona_preguntas"
+      [cdkDropListData]="preguntas"
+      [cdkDropListConnectedTo]="connectedTo"
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)">
+      <div class="card" [ngClass]="i == 0 ? '' : 'ml-5'" 
+        *ngFor="let _pregunta of preguntas; let i = index" cdkDrag>
+        <div class="card-header bg-secondary text-white">
+          <div class="form-row">
+            <b class="col-9">{{_pregunta.actividad_nombre}}</b><div class="col-3 numero"><b>{{_pregunta.calificacion}}</b></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{_pregunta.retroalimentacion}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div *ngIf="paso == 0 && idRol != 3" class="row" >
+    <div class="col-12 mt-4">
+      <h5 class="ml-3"><b>Instrucción y preguntas guía</b></h5>
+    </div>
+    <div class="col-12  justify-content-center" >
+      <div class="row">
+        <div class="ml-4 mb-3 contenedor"  *ngFor="let _zona of zonas; let i = index">
+          <div class="form-row">
+            <div class="col-6" 
+              cdkDropList id="{{_zona.id}}" [cdkDropListData]="_zona.data" 
+              [cdkDropListConnectedTo]="principal" 
+              (cdkDropListDropped)="drop($event, _zona.id)">
+              <div *ngIf="_zona.data[0] == ''">
+                <div class="recuadro zona-drop">
+                  <div class="digito">{{i+1}}</div>
+                </div>
+              </div>
+              <div *ngIf="_zona.data[0] != ''">
+                <div class="card_zone card mb-4" style="cursor: default; box-shadow: none;">
+                  <div class="card-header bg-secondary text-white">
+                    <div class="form-row">
+                      <b class="col-9">{{_zona.data[0].actividad_nombre}}</b><div class="col-3 numero"><b>{{_zona.data[0].calificacion}}</b></div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">{{_zona.data[0].retroalimentacion}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <textarea class="recuadro text-area" id="texto_{{i}}_{{idMateriaFechaActividad}}"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="col col-6 mb-4">
+          <button class="btn btn-primary" (click)="borrarSeleccion()">
+            Borrar selecciones
+          </button>
+        </div>   
+        <div class="col col-6 mb-4">
+          <button class="btn btn-success pull-right" (click)="enviarPortafolio()">
+            Enviar portafolio
+          </button>
+        </div>   
+      </div> 
+    </div>
+    </div>
+
+  
+
+
+<!-- <div *ngIf="edicion == 0 && idRol != 3">
+  <div class="alert alert-secondary">
+    El portafolio de evidencias ha sido respondido.
+  </div>
+</div> -->
+
+<div *ngIf="paso == 1 || paso == 2" class="row" >
+  <div class="col-12 justify-content-center">
+    <div class="row">
+      <div class="ml-4 mb-3 contenedor" *ngFor="let _respuesta of respuestasAlumno; let i = index">
+        <div class="form-row">
+          <div class="col-6">
+            <div class="card_zone card mb-4" style="cursor: default; box-shadow: none;">
+              <div class="card-header bg-secondary text-white">
+                <div class="form-row">
+                  <b class="col-9">{{_respuesta.actividad_nombre}}</b><div class="col-3 numero"><b>{{_respuesta.calificacion}}</b></div>
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{_respuesta.retroalimentacion}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <textarea class="recuadro text-area" id="texto_{{i}}_{{idMateriaFechaActividad}}" disabled>{{_respuesta.respuesta}}</textarea>
+          </div>
+        </div>
+        <div *ngIf="idRol == 3" class="col-12 d-flex justify-content-center">
+          <label class="c_checkbox">
+            <input type="checkbox" [checked]="_respuesta.validado == 1" (change)="validarRespuesta(i)" [disabled]="fechaActividad.estatus_actividad_id == 7 || portafolio.adjunto != null">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="paso == 2 && idRol != 3 ">
+  <div>
+    <h5 class="ml-3"><b>Instrucción y preguntas guía</b></h5>
+  </div>
+
+  <div class="row">
+    <form class="col" [formGroup]="cargaArchivo" (ngSubmit)="enviaArchivo()">
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="row justify-content-center mt-3">
+            <i class="fa fa-file-text-o documento" aria-hidden="true"><div class="circulo row justify-content-center"><i class="fa fa-arrow-up flecha"></i></div></i>
+          </div>
+          <app-file-upload formControlName="archivo"></app-file-upload>
+          <span class="invalidText" *ngIf="hasError( 'required')">
+              Se requiere un archivo (.doc, .docx, .pdf, .odt)
+          </span>
+          <span class="invalidText" *ngIf="hasError( 'requiredFileType')">
+              Tipo de archivo inválido (.doc, .docx, .pdf, .odt)
+          </span>
+        </div>   
+        <div class="col-md-6 mb-4 mt-3">
+          <textarea formControlName="respuesta" class="area-text" name="" id=""></textarea>
+          <span class="invalidText" *ngIf="f.respuesta.invalid && f.respuesta.touched">
+              Escribe una respuesta
+          </span>
+        </div>
+      </div>  
+      <div class="row">
+        <div class="col col-12 mb-4">
+          <button class="btn btn-success pull-right col-2" [disabled]="cargaArchivo.invalid">
+            Enviar
+          </button>
+        </div>   
+      </div>     
+    </form> 
+  </div>
+</div>
+
+<div *ngIf="paso == 3">
+  <div class="row" >
+    <div class="col-6">
+      <label>Documento adjunto:</label>
+      <div class="form-control d-flex justify-content-center">
+        <app-archivo [urlBase]="portafolio.adjunto"></app-archivo> 
+      </div>
+    </div>
+    <div class="col-6">
+      <label>Conclusión:</label>
+      <p>{{portafolio.descripcion}}</p>
+    </div>
+  </div>
+</div>

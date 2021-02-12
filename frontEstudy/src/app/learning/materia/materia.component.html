@@ -1,0 +1,57 @@
+<div class="row">
+<div class="col">
+  <div class="row">
+    <div class="col-6">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" [ngClass]="tipoConsulta == 1 ? 'active':''"   class="btn btn-info" (click)="consultaMaterias(1)">Activas</button>
+        <button type="button" [ngClass]="tipoConsulta == 2 ? 'active':''" class="btn btn-info" (click)="consultaMaterias(2)">Finalizadas</button>
+      </div>
+    </div>
+  </div>
+  
+  <div  class="row">
+    <div class="col-md-4"  *ngFor="let materia of materias; let i = index" >
+        <div  class="row card-materia" (click)="seleccionaMateria(materia.materia_id,i)">
+          <span class="badge badge-materia badge-success" *ngIf="materia.activa == 1 && materia.estado != 0">Cierre : {{materia.fecha_fin | date: "dd/MM/yyyy"}} </span>
+          <span class="badge badge-materia badge-info" *ngIf="materia.activa == 0 && materia.estado == 2">Apertura: {{materia.fecha_inicio | date: "dd/MM/yyyy"}}</span>
+          <span class="badge badge-materia badge-danger" *ngIf="materia.activa == 0 && materia.estado == 3">Cierre: {{materia.fecha_fin | date: "dd/MM/yyyy"}}</span>
+          <div class="col-md-12 card imgs" [ngClass]="!materia.activa ? 'gray' : ''" [ngStyle]="{'background-image': 'url('+materia.url_imagen_previa+')'}" style="background-position: center;">
+              <p class="text-materias"><strong>{{materia.asignatura}}</strong><br> Grupo: {{materia.grupo}}</p>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- <ng-template #modalEncuesta let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Encuesta</h4>
+    <button *ngIf="Encuestas[0].obligatorio == '0'" type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body my-3 mx-2 text-center">
+      <p>Antes de continuar, ayúdanos a contestar el siguiente cuestionario</p>
+      <a class="btn btn-lg btn-primary mb-3" [routerLink]="['encuesta/'+ idEncuesta]">Ir al cuestionario</a>
+      <router-outlet></router-outlet> 
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="Encuestas[0].obligatorio == '0'" type="button" class="btn btn-light" (click)="closeModal()">Cerrar</button>
+  </div>
+</ng-template>
+  
+<ng-template #modalTickets let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Tickets</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+      <router-outlet></router-outlet> 
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="closeModal()">Cerrar</button>
+  </div>
+</ng-template> -->

@@ -1,0 +1,62 @@
+<div class="col-12 mt-4" *ngIf="bandera">
+  <div class="mb-3">
+    <h4 [innerHTML]=Formulario.titulo></h4>
+    <div [innerHTML]=Formulario.instruccion></div>
+    <p class="mt-3"><b>Los campos con (*) son obligatorios.</b></p>
+  </div>
+  <form [formGroup]="generatorForm" (submit)="guardarFormulario()" class="mb-5 row">
+    <div formArrayName="preguntas" [ngClass]="[generatorForm.get('preguntas').controls.length > 5? 'col-6': 'col-12',
+      pregunta.controls.campo_formulario_id? '' : 'd-none']"
+      *ngFor="let pregunta of generatorForm.get('preguntas').controls; let i = index;">
+      <div [formGroupName]="i">
+        <div *ngIf="pregunta.controls.campo_formulario_id">
+          <label> <span *ngIf="pregunta.controls.id">{{ pregunta.controls.id.value }}. </span> 
+            <span *ngIf="pregunta.controls.obligatorio.value == '1'"> * </span>
+            {{pregunta.controls.pregunta.value}}
+          </label>
+
+          <div class="form-group" *ngIf="pregunta.controls.tipo.value == 'text' || pregunta.controls.tipo.value == 'number'" >
+            <input placeholder="{{pregunta.controls.descripcion.value}}" formControlName="respuesta" type="{{pregunta.controls.tipo.value}}" id="p_{{pregunta.controls.campo_formulario_id.value}}" class="form-control">
+          </div>
+
+          <div class="form-group" *ngIf="pregunta.controls.tipo.value == 'radio'">
+            <div *ngFor="let reactivo of pregunta.controls.reactivos.controls; let j = index">
+              <input formControlName="respuesta" [value]="reactivo.controls.texto.value" class="ml-2" type="radio" id="r_{{reactivo.controls.id_reactivo.value}}">
+              <span class="ml-2 form-check-label" attr.for="r_{{reactivo.controls.id_reactivo.value}}">{{reactivo.controls.texto.value}}</span>
+            </div>
+            <input *ngIf="pregunta.controls.otro" formControlName="otro" class="form-control mt-2" type="text" placeholder="Escribe tu respuesta">
+          </div>
+
+          <div class="form-group ml-2" *ngIf="pregunta.controls.tipo.value == 'checkbox'">
+            <div [formArrayName]="'reactivos'">
+              <div *ngFor="let reactivo of pregunta.controls.respuesta.controls.reactivos.controls; let k = index" [formGroup]="reactivo">
+                <input type="checkbox" formControlName="checkbox" id="{{reactivo.controls.id_reactivo.value}}">
+                <span class="ml-2 form-check-label" attr.for="{{reactivo.controls.id_reactivo.value}}">{{reactivo.controls.texto.value}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="pregunta.controls.tipo.value == 'select'">
+            <select class="form-control" formControlName="respuesta">
+              <option hidden value="" disabled  selected>{{pregunta.controls.descripcion.value}}</option>
+              <option *ngFor="let opcion of pregunta.controls.reactivos.controls" [value]="opcion.controls.texto.value">{{opcion.controls.texto.value}}</option>
+            </select>
+            <input *ngIf="pregunta.controls.otro" formControlName="otro" class="form-control mt-2" type="text" placeholder="Escribe tu respuesta">
+          </div>
+          
+          <div class="form-group" *ngIf="pregunta.controls.tipo.value == 'textarea'" >
+            <textarea placeholder="{{pregunta.controls.descripcion.value}}" formControlName="respuesta" id="t_{{pregunta.controls.campo_formulario_id.value}}" rows="4" class="form-control"></textarea>
+          </div>
+
+          <span *ngIf="( ( pregunta.dirty || pregunta.touched ) && pregunta.invalid ) && pregunta.controls.obligatorio.value == 1" class="text-danger">
+            {{pregunta.controls.mensaje_error.value}}</span>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="col-12">
+      <button type="button" class="btn btn-light mt-3" (click)="editarInformacion()" *ngIf="contestado.contestado">Editar</button>
+      <button type="submit" class="btn btn-success pull-right mt-3" [disabled]="generatorForm.invalid || contestado.contestado">Guardar información</button>
+    </div>
+  </form>
+</div>

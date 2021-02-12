@@ -1,0 +1,63 @@
+<div class="row">
+
+  <form class="col" [formGroup]="preguntaMultipleForm" (ngSubmit)="enviarInformacionPregunta()" >
+
+    <div *ngIf="numRespuestas" class="alert alert-warning text-center mt-2 p-3">
+      Esta pregunta ya ha sido contestada por {{numRespuestas}} alumnos, sólo es posible hacer edición
+      <br>
+      <button  type="button" (click)="reasignarCalificacion()" class="btn btn-warning">Recalcular calificaciones</button>
+    </div>
+     
+    <div class="container-fluid mb-3"  formArrayName="items" *ngFor="let item of preguntaMultipleForm.get('items')['controls']; let i = index;">
+      <form class="row" [formGroupName]="i" >
+        <div class="col-2 pt-7">
+          <br>
+            <input class="form-control" formControlName="idReactivo" type="hidden"  >
+            <b>{{'Respuesta correcta' | translate}}</b>
+            <br>
+            <input class="form-control" formControlName="ponderacion" type="checkbox" style="display: block;" >
+        </div>
+        <div class="col-9">
+          <div class="row">
+              <div class="col-12" [hidden]=" checkMultiple">
+                <label class="control-label" for="tipo_pregunta">{{'textoPregunta' | translate}}:</label>
+                <!--textarea class="form-control" formControlName="respuesta"></textarea-->
+                <ckeditor [config]="{
+                  toolbar: reactiveEditor,
+                  extraPlugins: ['uploadimage','justify'],
+                  filebrowserUploadUrl: 'http://plataforma.estudy.com/apiestudy/extras/archivo/carga_ckeditor.php'
+                  }"
+                  (ready)="comienza($event)" (blur)="getData($event,i)"
+                   formControlName="respuesta" name="ckeditor"></ckeditor>
+                <span class="invalidText" *ngIf="sf.controls[i].controls.respuesta.invalid && sf.controls[i].controls.respuesta.touched">
+                    {{'fmErrText' | translate}}
+                </span>
+            </div>
+            <div class="col-12">
+                <label><input formControlName="checkretro" type="checkbox"> ¿Agregar retroalimentación?</label>
+                <textarea  [hidden]="!sf.controls[i].controls.checkretro.value " class="form-control" formControlName="retroalimentacion" placeholder="Agrega tu retroalimentación"></textarea>
+            </div> 
+          </div>
+        </div>
+        
+        <div class="col-1 text-center mt-2 pt-1">
+            <br>
+            <button [hidden]="tipoAdmin == 0" *ngIf="!numRespuestas && i > 0" type="button" class="btn btn-danger" (click)="confirmaEliminaRespuesta(i)"><i class="fa fa-trash"></i> </button>
+            <button [hidden]="tipoAdmin == 0" *ngIf="numRespuestas" type="button" class="btn btn-info" (click)="editaReactivo(i)"><i class="fa fa-pencil"></i> </button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="noSelectCheckbox" class="alert alert-danger p-3 mt-3">
+      Debes seleccionar al menos un reactivo que sea correcto
+    </div>
+    <div class="row">
+      <div class="col">
+          <button [hidden]="tipoAdmin == 0" (click)="agregarRespuesta()" type="button" class="btn btn-link mt-3"><i class="fa fa-plus"></i>{{'agregarRespuesta' | translate}}</button>
+      </div>
+      <div class="col">
+          <button [hidden]="tipoAdmin == 0" *ngIf="!numRespuestas" type="submit" 
+            class="btn btn-success pull-right mt-3" [disabled]="preguntaMultipleForm.invalid">{{'guardarTerminar' | translate}}</button>
+      </div>
+    </div>
+  </form>
+</div>

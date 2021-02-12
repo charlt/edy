@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col col-xl-12 col-lg-12">
+        <!-- <div class="row"> -->
+        <form [formGroup]="inputForm" (ngSubmit)="enviarRespuestas()">
+          <div class="row">
+            <div class="col">
+                <label>{{'Labelimagen' | translate }}</label>
+                <app-file-upload formControlName="imagen" ></app-file-upload>
+                <div class="invalid-feedback" style="display: block">
+                  <ng-container *ngIf="hasError( 'required')">{{'fmErrfileRequired' | translate}}</ng-container>
+                  <ng-container *ngIf="hasError( 'requiredFileType')">{{'fmErrfileImage' | translate}}</ng-container>
+                </div>
+              </div>
+          </div>
+          <div formArrayName="items" *ngFor="let item of inputForm.get('items')['controls']; let i = index;">
+            <div class="row" [formGroupName]="i">
+              <div class="col-10">
+                <div class="form-group ">
+                  <label>{{'respuestaZona' | translate}} {{i + 1}}</label><br>
+                  <input formControlName="input" class="form-control" placeholder="Ingresa respuesta">
+                </div>
+              </div>
+              <div class="col-1">
+                  <div class="form-group ">
+                    <label>{{'color' | translate}}:</label><br>
+                    <input formControlName="color" placeholder="Ingresa respuesta" type="color" class="mt-2">
+                  </div>
+                </div>
+              <div class="col-1">
+                  <br>
+                  <i *ngIf="i > 0" class="fa fa-times fa-2x cambiaCursor pt-2 mt-1" (click)="deleteItem(i)"></i>        
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="button" class="btn btn-link" (click)="addItem(0)"><i class="fa fa-plus-square"></i> Agregar</button> 
+            </div>
+            <div class="col-12">
+              <button [hidden]="tipoAdmin == 0" [disabled]="inputForm.invalid" type="submit" class="btn btn-success pull-right">Enviar</button>
+            </div>
+          </div>
+        </form>
+      </div> 
+    </div>
+    <div class="row container-cards" *ngIf="showCards">
+      <div class="col">
+        <div class="row">
+          <div class="col-md-3 mt-3" *ngFor="let respuesta of respuestas; let i = index">
+              <div class="card text-black p-2" [style.borderColor]="respuesta.color">
+                <div class="row">
+                <div class="col-1 mt-3">
+                    <h3>{{i + 1}}</h3>
+                </div>       
+                <div class="col" disabled>     
+                  <blockquote class=" mb-0">
+                    <small>{{respuesta.input}}</small>
+                  </blockquote>
+                </div>            
+                </div>
+              </div> 
+            </div> 
+        </div>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col">
+        <canvas #myCanvas id="canvas" (mousedown)="mouseDown($event)" (mouseup)="mouseUp($event)" [hidden]="hideCanvas"></canvas>
+      </div>
+    </div>  
+    <div class="row">
+      <div class="col">
+        <button [hidden]="hideCanvas || tipoAdmin == 0" class="btn btn-danger btn-lg" type="button" (click)="cleanCanvas()">Borrar</button>   
+        <button [hidden]="hideCanvas || tipoAdmin == 0" class="btn btn-primary btn-lg pull-right" type="button" (click)="guardarCanvas()">Guardar</button>         
+      </div>    
+    </div> 
+    <br>
+    <div class="row justify-content-md-center">
+        <canvas #myImage ></canvas>
+      <!-- <img #myImage [src]="imgURL" [hidden]="hideImage" alt="Imagen"> -->
+    </div>
+      
+
+

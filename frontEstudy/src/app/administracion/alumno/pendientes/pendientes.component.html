@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-12" *ngIf="Alumnos">
+    <ngb-tabset>
+      <ngb-tab title="{{pestania.title}}" *ngFor="let pestania of pestanias; let i = index;">
+        <ng-template ngbTabContent>
+          <div class="container mt-3">
+            <!-- <h5>{{labelsAbiertas[i]}}</h5> -->
+            <div class="table-responsive mt-3">
+              <table class="table table-bordered">
+                <thead class="bg-light">
+                  <tr>
+                    <th class="alert-warning" colspan="6">
+                      {{pestania.description}}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre del alumno</th>
+                    <th>Clave del alumno</th>
+                    <th *ngIf="pestania.key == 'alumnos_sin_plan'">Carrera</th>
+                    <th *ngIf="pestania.key == 'alumnos_asignaturas_duplicadas'">Asignaturas</th>
+                    <th *ngIf="pestania.key == 'alumnos_materias_incompletas'">Total de asignatura</th>
+                    <th>Dashboard</th>
+                    <th>Plataforma</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let alumno of Alumnos[pestania.key]; let j = index;">
+                    <td>{{j+1}}</td>
+                    <td>{{alumno.primer_apellido}} {{alumno.segundo_apellido}} {{alumno.nombre}}</td>
+                    <td>{{alumno.clave_alumno}}</td>
+                    <th *ngIf="pestania.key == 'alumnos_sin_plan'">
+                      <a [routerLink]="['/admin/alumno/carrera/'+alumno.alumno_id]">+ Agregar</a>
+                    </th>
+                    <th *ngIf="pestania.key == 'alumnos_asignaturas_duplicadas'">
+                      <a [routerLink]="['/admin/alumno/materias/'+alumno.alumno_id]">{{alumno.asignatura}}</a>
+                    </th>
+                    <th *ngIf="pestania.key == 'alumnos_materias_incompletas'">
+                      <a [routerLink]="['/admin/alumno/materias/'+alumno.alumno_id]">{{alumno.activas}} / {{alumno.totales}}</a>
+                    </th>
+                    <td class="text-center">
+                      <button class="btn btn-primary" [routerLink]="['../dashboard/'+alumno.alumno_id]"><i class="fa fa-dashboard"></i></button>
+                    </td>
+                    <td class="text-center">
+                      <button class="btn btn-warning" (click)="verPlataforma(alumno)"><i class="fa fa-eye"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

@@ -1,0 +1,163 @@
+<div class="col-md-12 animated slideInUp">
+  <h4 class="top-buffer">{{title}}</h4>
+  <form [formGroup]="grupoForm" (ngSubmit)="enviarInformacion()">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label" for="clave_grupo">{{'claveGrupo' | translate}}</label>
+          <input formControlName="claveGrupo" class="form-control" id="clave_grupo"
+            placeholder="{{'claveGrupo' | translate}}" type="text" required autocomplete="off">
+          <span class="invalidText" *ngIf="f.claveGrupo.invalid && f.claveGrupo.touched">
+            {{'fmErrText' | translate}}
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="nombre_grupo">{{'nombreGrupo' | translate}}</label>
+          <input formControlName="nombreGrupo" class="form-control" id="nombre_grupo"
+            placeholder="{{'nombreGrupo' | translate}}" type="text" required autocomplete="off">
+          <span class="invalidText" *ngIf="f.nombreGrupo.invalid && f.nombreGrupo.touched">
+            {{'fmErrText' | translate}}
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="descripcion_grupo">{{'descripcion' | translate}} (Opcional)</label>
+          <input formControlName="descripcion" class="form-control" id="descripcion_grupo"
+            placeholder="{{'descripcion' | translate}}" type="text"  autocomplete="off">
+          <span class="invalidText" *ngIf="f.descripcion.invalid && f.descripcion.touched">
+            {{'fmErrText' | translate}}
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="cupo">{{'cupo' | translate}}</label>
+          <input formControlName="cupo" class="form-control" id="cupo" placeholder="{{'cupo' | translate}}"
+            type="number" required autocomplete="off">
+          <span class="invalidText" *ngIf="f.cupo.invalid && f.cupo.touched">
+            {{'fmErrNumber' | translate}}
+          </span>
+        </div>
+        <div class="form-group " rel="1">
+          <label class="control-label" for="">{{'Ciclo' | translate}}:</label>
+          <select formControlName="idCiclo" class="form-control">
+            <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+            <option [value]="ciclo.ciclo_id" *ngFor="let ciclo of ciclos">{{ciclo.ciclo_desc}}</option>
+          </select>
+          <span class="invalidText" *ngIf="f.idCiclo.invalid && f.idCiclo.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div>
+        <label>
+          <input type="checkbox" formControlName="seleccionaCampus" (change)="mostrarCampus()" value="1">
+          Agregar Campus
+        </label>
+        <div *ngIf="_mostrarCampus" class="form-group " rel="1">
+          <label class="control-label" for="">Campus (opcional)</label>
+          <select formControlName="campus" class="form-control">
+            <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+            <option [value]="_campus.campus_id" *ngFor="let _campus of campus">{{_campus.campus}}</option>
+          </select>
+          <span class="invalidText" *ngIf="f.campus.invalid && f.campus.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div><br>
+        <button [hidden]="tipoAdmin == 0" *ngIf="idGrupo" type="submit"
+          class="btn btn-primary pull-right enviar-datos-grupos">{{'fmSave' | translate}}</button>
+      </div>
+      <div class="col-md-6" *ngIf="!idGrupo">
+        <app-consulta-asignatura *ngIf="grupoForm" [tipo]="'small'" [parentForm]="grupoForm" [nivel]="3">
+        </app-consulta-asignatura>
+        <br>
+        <label *ngIf="f.plan_orden_id && f.plan_orden_id.value">
+          <input type="checkbox" formControlName="completo" (change)="mostrarAlumnos($event)">
+          {{'guardarconalumnos' |translate}}
+        </label>
+      </div>
+    </div>
+
+
+    <div *ngIf="f.plan_orden_id && f.plan_orden_id.value && seleccionarAlumnos" class="row mt-3">
+      <div *ngIf="alumnos.length" class="col-6">
+        <h5>Selecciona los alumnos que vas a agregar al grupo</h5>
+        <li class="list-group-item d-flex justify-content-between align-items-center" formArrayName="alumnos"
+          *ngFor="let item of alumnosArray.controls; let i = index;">
+          <div class="col-2">
+            <form [formGroupName]="i">
+              <input id="alumno_{{i}}" class="form-control" formControlName="idAlumno" type="checkbox"
+                (click)="setIdAlumno(i, item)">
+            </form>
+          </div>
+          <div class="col-10">
+            <label for="alumno_{{i}}">
+              {{alumnos[i].nombre}} {{alumnos[i].primer_apellido}} {{alumnos[i].segundo_apellido}} -
+              {{alumnos[i].clave_alumno}}
+            </label>
+          </div>
+        </li>
+      </div>
+      <div *ngIf="!alumnos.length" class="col-6">
+        <div class="alert alert-warning">
+          No hay alumnos en el grado que no esten asignados a un grupo
+        </div>
+      </div>
+
+      <div *ngIf="asignaturas.length" class="col-6">
+        <h5>Selecciona las asignaturas que vas a agregar al grupo</h5>
+        <!-- <div class="input-group mb-3">
+            <input type="text" class="form-control" formControlName="search" placeholder="{{'SearchInput' | translate}}" 
+              aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+            </div>
+          </div> -->
+        <li class="list-group-item d-flex justify-content-between align-items-center" formArrayName="asignaturas"
+          *ngFor="let item of asignaturasArray.controls | filter: search; let i = index;">
+          <div class="col-2">
+            <form [formGroupName]="i">
+              <input id="grupo_{{i}}" class="form-control" formControlName="idOrdenAsignatura" type="checkbox"
+                (click)="setIdOrden(i, item)">
+            </form>
+          </div>
+          <div class="col-10">
+            <label for="grupo_{{i}}">{{asignaturas[i].asignatura}} </label>
+          </div>
+        </li>
+      </div>
+      <div *ngIf="!asignaturas.length" class="col-6">
+        <div class="alert alert-warning">
+          No hay asignaturas en el grado
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!idGrupo" class="row">
+      <div class="col-12">
+        <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right enviar-datos-grupos" [disabled]="cargando">
+          <span *ngIf="!cargando">{{'fmSave' | translate}}</span>
+          <span *ngIf="cargando"><i class="fa fa-spin fa-spinner"></i> {{'Guardando información' | translate}}</span>
+        </button>
+      </div>
+
+    </div>
+  </form>
+  <div class="resultado-alta-grupos margin-top"></div>
+</div>
+
+
+
+<!-- <div class="input-group mb-3">
+  <input type="text" class="form-control" [(ngModel)]="searchInput" placeholder="{{'SearchInput' | translate}}" 
+    aria-label="Recipient's username" aria-describedby="basic-addon2">
+  <div class="input-group-append">
+    <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+  </div>
+</div>
+
+<div *ngIf="asignaturas">
+<li class="list-group-item d-flex justify-content-between align-items-center" 
+  *ngFor="let item of asignaturas | filter: searchInput; let i = index;">
+  <div class="col-2">
+      <input id="grupo1_{{i}}" class="form-control" type="checkbox" (click)="verDatos()" >
+  </div>
+  <div class="col-10">
+    <label for="grupo1_{{i}}">{{asignaturas[i].asignatura}} </label>
+  </div>
+</li>
+</div> -->

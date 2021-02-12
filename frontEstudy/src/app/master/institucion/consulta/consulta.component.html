@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-12">
+      <h4 class="top-buffer">{{title}}</h4>
+      <div><br>
+        <a [routerLink]="['../form']" class="btn btn-success"><i class="fa fa-plus"></i> Agregar Institución</a>
+      </div>
+      <hr>
+      <table class="table table-striped table-bordered">
+        <tr>
+        <th>{{'TbInstClave' | translate}}</th>
+        <th>{{'TbInstitucion' | translate}}</th>
+        <th>{{'TbInstTipo' | translate}}</th>
+        <th>{{'TbInstEstatus' | translate}}</th>
+        <th>{{'Edit' | translate}}</th>
+        <th>{{'Erase' | translate}}</th>
+        </tr>
+        <tr *ngFor="let instituciones of institucion let i = index">
+        <td>{{instituciones.institucion_clave}}</td>
+        <td>{{instituciones.institucion}}</td>
+        <td>{{instituciones.tipo_institucion}}</td>
+        <td>
+          <span *ngIf="instituciones.estatus == 1">Activo</span>
+          <span *ngIf="instituciones.estatus == 0">Inactivo</span>
+        </td>
+        <td class="text-center"> <a [routerLink]="['../editar/'+instituciones.institucion_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a></td>
+        <td class="text-center"><button class="btn btn-danger" (click)="eliminar(instituciones.institucion_id, i)" ><i class="fa fa-trash"></i></button></td>
+        </tr>
+      </table>
+  </div>
+</div>

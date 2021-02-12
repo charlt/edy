@@ -1,0 +1,55 @@
+// $topnav-background-color: rgb(7, 9, 139);
+:host {
+    .navbar {
+        // background-color: $topnav-background-color;
+        .navbar-brand {
+            color: #fff;
+        }
+        .nav-item > a {
+            color: #eee;
+            &:hover {
+                color: #fff;
+            }
+        }
+        .user-menu{
+            min-width: 200px;
+            text-align: right;
+        }
+        .user-menu>a{
+            overflow-x: hidden;
+        }
+    }
+    .notification{
+        width: 100px;
+
+    }
+    .messages {
+        width: 300px;
+        .media {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 10px;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .media-body {
+            h5 {
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .small {
+                margin: 0;
+            }
+            .last {
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.contenido {
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}

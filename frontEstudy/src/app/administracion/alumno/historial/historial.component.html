@@ -1,0 +1,41 @@
+<app-encabezado-persona [idPersona]="idAlumno" [idRol]="2"></app-encabezado-persona>
+<div class="row">
+    <div class="col-12">
+        <a class="btn btn-success" routerLink="../nuevo/" *ngIf="idRol == 1">Agregar Calificación</a>
+        <button class="btn btn-primary pull-right" (click)="imprimeHistorial()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir historial</button><br>
+        <div class="table-responsive mt-4">
+            <table class="table">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Materia</th>
+                        <th>Descripción</th>
+                        <th>Grado</th>
+                        <th>Ciclo</th>
+                        <th>Fecha</th>
+                        <th>Tipo de evaluación</th>
+                        <th>Calificación ordinaria</th>
+                        <th *ngIf="idRol == 1">Editar</th>
+                        <th *ngIf="idRol == 1">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let historial of Historial; let i = index;">
+                        <td>{{historial.asignatura_clave}}</td>
+                        <td>{{historial.asignatura}}</td>
+                        <td>{{historial.orden_jerarquico}}</td>
+                        <td>{{historial.ciclo_desc}}</td>
+                        <td></td>
+                        <td>{{historial.estatus_historial_descripcion}}</td>
+                        <td>{{historial.situacion_reprobatoria_id == null? historial.calificacion: historial.situacion_clave}}</td>
+                        <td *ngIf="idRol == 1"><button class="btn btn-info" [routerLink]="['./editar/'+historial.historial_id]"><i class="fa fa-pencil"></i></button></td>
+                        <td *ngIf="idRol == 1"><button class="btn btn-danger" (click)="eliminar(i, historial.historial_id)"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                    <tr *ngIf="Historial == null">
+                        <td class="text-center" colspan="7" *ngIf="idRol == 1">No se encontró información</td>
+                        <td class="text-center" colspan="5" *ngIf="idRol == 2">No se encontró información</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

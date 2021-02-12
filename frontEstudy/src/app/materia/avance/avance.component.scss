@@ -1,0 +1,218 @@
+@import "../../app.component.scss";
+
+// div{
+//     border: solid;
+// }
+.tarjetaMateria{
+    margin-left: 25%;
+}
+.grafica{
+    margin: auto;
+}
+.tabla{
+    position: relative;
+    margin: auto;
+
+}
+.titulo{
+    position: relative;
+    text-align: center;
+}
+.accesso{
+    margin-left: 90px;
+}
+.porcentaje{
+    position: absolute;
+    left: 50%;
+    top: 140px;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+}
+.asignaturasSemestre{
+    color: royalblue;
+}
+
+// .cont_avance{
+//     // border: 1px solid black !important;
+// }
+
+.avanceGeneral{
+    position: relative;
+    margin-top: -5%;
+    text-align:center;
+}
+.cont_acceso{
+    position: absolute;
+    margin-top: 45%;
+    margin-left: -13%;
+    width: 100%;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+@media print{
+    // div{
+    //     border: solid;
+    // }
+
+    :host ::ng-deep .tabset1 a.nav-link {
+        visibility: hidden;
+        display: none;
+    }
+
+    .textReporte{
+        display: none;
+    }
+
+    .nombre{
+        width: 74%;
+        height: 1%;
+    }
+    .impresion{
+        visibility:hidden;
+    }
+    .grafica{
+        margin-top: -26%;
+        margin-left: 0%;
+        width: 40%;
+        height: 40%;
+        // background-size: 20px;
+    }
+    .titulo{
+        position: absolute;
+        width: 200%;
+        left: 250%;
+        top: 0px;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+    }
+    .tabla{
+        position: absolute;
+        width: 200%;
+        left: 250%;
+        top: 50px;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+    }
+
+    .pAccesso{
+        width: 65%;
+    }
+    .uAccesso{
+        width: 65%;
+    }
+
+    .asignaturasSemestre{
+        position: relative;
+        margin-top: 2%;
+        visibility: hidden;
+    }
+    .altura{
+        position: relative;
+        margin-top: 68%;
+        visibility: hidden;
+    }
+    .nombreMateria{
+        position: relative;
+        margin-top: 4%;
+    }
+
+    .tarjetaMateria{
+        margin-top: -10%;
+    }
+    .progress {
+        position: relative;
+    }
+    .progress:before {
+        display: block;
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 0;
+        border-bottom: 2rem solid #eeeeee;
+    }
+    .progress-bar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        border-bottom: 2rem solid #337ab7;
+    }
+    .bg-success {
+        border-bottom-color: #1e9131;
+    }
+    .bg-info {
+        border-bottom-color: #5bc0de;
+    }
+    .bg-warning {
+        border-bottom-color: #ebdb05;
+    }
+    .bg-danger {
+        border-bottom-color: #d1090d;
+    }
+
+    .cont_avance{
+        // border: 1px solid black !important;
+        position:absolute;
+    }
+
+    .cont_acceso{
+    //    border:  solid; 
+       position: absolute;
+       margin-top: 30%;
+       margin-left: -21%;
+       width: 70%;
+    }
+
+    .avanceGeneral{
+        position: absolute;
+        margin-top: -35%;
+        margin-left: -24%;
+    }
+    .porcentaje{
+        position: absolute;
+        left: 50%;
+        top: 35px;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+    }
+
+    .card-body{
+        margin-top: -4%;
+        position: relative;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        color: black;
+    }
+    .badge-secondary{
+        border-bottom-color: #646464;
+        border: 2px solid #646464;
+    }
+    .badge-danger{
+        border-bottom-color: #c42a2a;
+        border: 2px solid #c42a2a;
+    }
+    .badge-success{
+        border-bottom-color: #1e9131;
+        border: 2px solid #1e9131;
+    }
+    .actProm{
+        margin-top: 2%;
+        width: 30%;
+
+    }
+    .califActual{
+        margin-top: 5%;
+        width: 30%;
+    }
+    .textoAct{
+        margin-top: -45%;
+        margin-left: 25%;
+    }
+
+}

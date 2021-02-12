@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-12">
+    <div>
+      <a [routerLink]="['../nuevo']" class="btn btn-success"><i class="fa fa-plus"></i> Agregar ciclo</a>
+    </div>
+    <hr>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" [(ngModel)]="search" placeholder="{{'SearchInput' | translate}}"
+        aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+    <table class="table table-striped table-bordered">
+      <tr>
+        <th>{{'_nombreCiclo' | translate}}</th>
+        <!--<th>{{'Level' | translate}}</th>-->
+        <th>{{'tbFechaInicio' | translate}} </th>
+        <th>{{'tbFechaFin' | translate}}</th>
+        <th>{{'Estatus' | translate}}</th>
+        <th [hidden]="tipoAdmin == 0">{{'Edit' | translate}}</th>
+        <th [hidden]="tipoAdmin == 0">{{'Erase' | translate}}</th>
+      </tr>
+      <tr *ngIf="(ciclos | filter: search).length === 0">
+        <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+      </tr>
+      <tr *ngFor="let ciclo of ciclos | filter:search; let i = index ">
+        <td>{{ciclo.ciclo_desc}}</td>
+        <!--<td></td>-->
+        <td>{{ciclo.fecha_inicio | date: "dd/MM/yyyy"}}</td>
+        <td>{{ciclo.fecha_fin | date: "dd/MM/yyyy"}}</td>
+        <td [ngClass]="{'alert-success':ciclo.ciclo_estatus_id == 1, 'alert-danger': ciclo.ciclo_estatus_id == 2, 'alert-primary': ciclo.ciclo_estatus_id == 3}"
+          class="alert text-center" role="alert">
+          <p>{{ciclo.ciclo_estatus_desc}}</p>
+          <!--button *ngIf="ciclo.ciclo_estatus_id == 1" class="btn btn-danger" (click)="cerrarCiclo(ciclo.ciclo_id)">Cerrar ciclo</button>
+          <button *ngIf="ciclo.ciclo_estatus_id == 2" class="btn btn-info" [routerLink]="['../transferir/'+ciclo.ciclo_id]">Transferir ciclo</button-->
+        </td>
+        <td [hidden]="tipoAdmin == 0" class="text-center"><a [routerLink]="['../editar/'+ciclo.ciclo_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a></td>
+        <td [hidden]="tipoAdmin == 0" class="text-center"><button (click)="eliminar(ciclo.ciclo_id, i)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

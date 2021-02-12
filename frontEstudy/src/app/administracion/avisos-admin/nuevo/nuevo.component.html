@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="col col-xl-12 col-lg-12">
+    <div class="container">
+      <div class="col-md-12">
+        <form [formGroup]="avisosForm" (ngSubmit)="enviarInformacion()">
+          <div class="form-group">
+            <label class="control-label">Titulo de aviso</label>
+            <input formControlName="tituloAviso" class="form-control" type="text" placeholder="Titulo de aviso">
+            <span class="invalidText" *ngIf="f.tituloAviso.invalid && f.tituloAviso.touched">
+              {{'fmErrText' | translate}}
+            </span>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">Fecha inicio</label>
+                <input formControlName="fechaInicio" class="form-control" type="date">
+                <span class="invalidText" *ngIf="f.fechaInicio.invalid && f.fechaInicio.touched">
+                  Ingresa una fecha de inicio
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">Fecha fin</label>
+                <input formControlName="fechaFin" class="form-control" type="date">
+                <span class="invalidText" *ngIf="f.fechaFin.invalid && f.fechaFin.touched">
+                  Ingresa una fecha de fin
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">Archivo adjunto</label>
+                <input formControlName="adjuntaArchivo" (change)="cargaAdjunto($event)" class="form-control"
+                  type="file">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label> Importancia</label>
+              <select formControlName="importancia" class="form-control" id="asignatura_id">
+                <option hidden value="" selected>{{'fmOptSelect' | translate}}</option>
+                <option [value]="prioridad.importancia_aviso_id" *ngFor="let prioridad of prioridades">
+                  {{prioridad.importancia}}</option>
+              </select>
+              <span class="invalidText" *ngIf="f.importancia.invalid && f.importancia.touched">
+                Ingresa una fecha de fin
+              </span>
+            </div>
+            <div class="col-md-6 documento">
+              <app-archivo class="archivo" *ngIf="archivoAdjunto" [urlBase]="archivoAdjunto"></app-archivo>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Mensaje</label>
+            <ckeditor [config]="{
+              toolbar: teacherEditor,
+              extraPlugins: ['uploadimage','justify'],
+              filebrowserUploadUrl: 'http://plataforma.estudy.com/apiestudy/extras/archivo/carga_ckeditor.php'
+              }" (ready)="comienza($event)" formControlName="mensaje" name="ckeditor"></ckeditor><br>
+            <button [disabled]="!valid" [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right"><i *ngIf="!valid" class="fa fa-spinner fa-pulse"></i> {{'fmSave' | translate}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

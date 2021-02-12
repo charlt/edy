@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-md-12">
+        <h4>{{title}}</h4>
+    </div>
+    <div class="col-md-12 editar-ciclo">
+        <form [formGroup]="colegiaturaForm" (ngSubmit)="enviarInformacion()">
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="beca">Nombre del plan de pagos:</label>
+                    <input formControlName="nombreSuscripcion" class="form-control" id="beca" placeholder="Ingresa el nombre del plan de pagos" type="text" required>
+                    <span class="invalidText" *ngIf="f.nombreSuscripcion.invalid && f.nombreSuscripcion.touched">
+        {{'fmErrText' | translate}}
+      </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="beca">Descripcion del plan de pagos:</label>
+                    <ckeditor formControlName="descripcionSuscripcion" [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}"></ckeditor>
+                    <!-- <textarea formControlName="descripcionSuscripcion" class="form-control" id="beca" placeholder="Ingresa la descripción" >
+      </textarea> -->
+                    <span class="invalidText" *ngIf="f.nombreSuscripcion.invalid && f.nombreSuscripcion.touched">
+        {{'fmErrText' | translate}}
+      </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="beca">Clave del plan de pagos:</label>
+                    <input formControlName="claveSuscripcion" class="form-control" id="clave_suscripcion" placeholder="Ingresa la clave del plan de pagos" type="text" required>
+                    <span class="invalidText" *ngIf="f.claveSuscripcion.invalid && f.claveSuscripcion.touched">
+        {{'fmErrText' | translate}}
+      </span>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <h5>Inscripción/Reinscripción</h5>
+                        <div class="form-group">
+                            <label class="control-label" for="beca">Monto:</label>
+                            <input formControlName="montoReinscripcion" class="form-control" id="montoReinscripcion" placeholder="Monto de la reinscripción" type="number">
+                            <span class="invalidText" *ngIf="f.montoReinscripcion.invalid && f.montoReinscripcion.touched">
+            {{'fmErrNumber' | translate}}
+          </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="beca">Día de pago:</label>
+                            <input formControlName="diaPagoReinscripcion" class="form-control" id="diaPagoReinscripcion" placeholder="Día de pago límite" type="number">
+                            <span class="invalidText" *ngIf="f.diaPagoReinscripcion.invalid && f.diaPagoReinscripcion.touched">
+            {{'fmErrNumber' | translate}}
+          </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h5>Colegiaturas</h5>
+                        <div class="form-group">
+                            <label class="control-label" for="beca">Monto:</label>
+                            <input formControlName="montoColegiatura" class="form-control" id="montoColegiatura" placeholder="Monto de la colegiatura" type="number">
+                            <span class="invalidText" *ngIf="f.montoColegiatura.invalid && f.montoColegiatura.touched">
+            {{'fmErrNumber' | translate}}
+          </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="beca">Día de pago:</label>
+                            <input formControlName="diaPagoColegiatura" class="form-control" id="diaPagoColegiatura" placeholder="Día de pago limite" type="number">
+                            <span class="invalidText" *ngIf="f.diaPagoColegiatura.invalid && f.diaPagoColegiatura.touched">
+            {{'fmErrNumber' | translate}}
+          </span>
+                        </div>
+                    </div>
+                </div>
+
+                <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right mt-3">{{'fmSave' | translate}}</button>
+                <div class="resultado-datos-ciclo margin-top"></div>
+            </div>
+        </form>
+    </div>
+</div>

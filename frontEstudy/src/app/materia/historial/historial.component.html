@@ -1,0 +1,43 @@
+<div *ngIf="materias" class="row">
+  <div class="col-md-6">
+      <label class="control-label">Selecciona la carrera</label>
+      <select [(ngModel)]="id_materia" class="form-control" (ngModelChange)="consultaHist()">
+        <option hidden value="" disabled selected>Selecciona una opción</option>
+        <option [value]="materia.materia_id" *ngFor="let materia of materias">{{materia.asignatura}}</option>
+      </select>
+  </div>
+</div><br>
+<div class="row">
+  <div class="col-md-12 mb-3">
+    <div class="custom-control custom-radio custom-control-inline">
+      <input checked [value]="1" type="radio" id="activas" name="filtro" (click)="consultaHist(1)" class="custom-control-input">
+      <label class="custom-control-label" for="activas">Activas</label>
+    </div>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input [value]="0" type="radio" id="todas" name="filtro" (click)="consultaHist(0)" class="custom-control-input">
+      <label class="custom-control-label" for="todas">Todas</label>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <table class="table table-bordered">
+    <tr class="bg-light">
+      <th>Nombre de actividad</th>
+      <th>Calificación</th>
+      <th>Intentos</th>
+      <th>Estatus de la actividad</th>
+      <th>Fecha de entrega</th>
+    </tr>
+    <tr *ngIf="!historial">
+      <td colspan="12" class="text-center">No se encontró información</td>
+    </tr>
+    <tr [ngClass]="actividad.estatus == 1? 'bg-activo': ''" *ngFor="let actividad of historial">
+      <td>{{actividad.actividad_nombre}}</td>
+      <td class="text-center">{{actividad.calificacion}}</td>
+      <td class="text-center">{{actividad.intento_num}}</td>
+      <td><i class="fa {{actividad.icono}}" aria-hidden="true"></i> {{actividad.estatus_actividad}}</td>
+      <td>{{actividad.fecha_actualiza | date: "dd/MM/yyyy"}}</td>
+      <!-- <td>{{actividad.icono}}</td> -->
+    </tr>
+    </table>
+  </div>
+</div>

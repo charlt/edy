@@ -1,0 +1,19 @@
+<div class="col-md-6 nuevoRol">
+  <form [formGroup]="areaForm" (ngSubmit)="enviarInformacion()">    
+        <div class="form-group">                               
+            <label class="control-label  " for="area">Área</label>
+            <input formControlName="area" class="form-control" id="area" placeholder="Área" type="text" required>
+            <span class="invalidText" *ngIf="f.area.invalid && f.area.touched">
+                Ingresa el nombre del área
+            </span>
+        </div>
+        <div class="form-group">                               
+          <label class="control-label  " for="desc">Descripción</label>
+          <input formControlName="desc" class="form-control" id="desc" placeholder="Descripción" type="text" required>
+          <span class="invalidText" *ngIf="f.desc.invalid && f.desc.touched">
+              Ingresa una descripción
+          </span>
+      </div><br>
+        <button [hidden]="tipoAdmin == 0"  type="submit" class="btn btn-primary pull-right enviar-datos-rol">{{'fmSave' | translate}}</button>
+  </form>
+</div>

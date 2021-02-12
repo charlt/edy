@@ -1,0 +1,34 @@
+
+
+  <div class="col-md-12" cdkDropList (cdkDropListDropped)="dropPregunta($event)">
+    <div class="list-group"  >
+      <div cdkDrag class="list-group-item" [class.alert-sin-contenido]="!pregunta.pregunta"  *ngFor="let pregunta of preguntas; let k=index">
+            <!-- <p *ngIf="!pregunta.editar && !pregunta.pregunta" class="contenido_pregunta" class="list-group-item "> ({{'sinContenido' | translate}})</p> -->
+        <div class="row">
+          <div class="col-sm-1">
+            <h4>{{k+1}}.- </h4>
+          </div>
+          <div  class="col-sm-9">
+            <p *ngIf="!pregunta.pregunta" class="contenido_pregunta">   ({{'sinContenido' | translate}})</p>
+            <p *ngIf="pregunta.pregunta"class="contenido_pregunta" [innerHTML]="pregunta.pregunta"></p>
+            <small >{{pregunta.tipo_pregunta_nombre}}</small>
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-danger btn-accion" (click)="eliminaPregunta(pregunta.datos_pregunta_id,k)" ><i class="fa fa-trash" ></i></button>
+            <a class="btn btn-info btn-accion " [routerLink]="['./edita/'+pregunta.datos_pregunta_id]"><i class="fa fa-pencil"></i></a>
+            <button  cdkDragHandle class="btn btn-success btn-accion"><i class="fa fa-arrows-alt" ></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item">
+        <div class="row">
+          <a [routerLink]="['./nuevo']" type="button" >
+            <div  class="col-sm-12 text-center">
+                <p class="contenido_pregunta" ><i class="fa fa-plus"></i>{{'nuevaPregunta' | translate}}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    </div>
+

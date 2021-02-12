@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-12">  
+    <div style="display: block">
+      <div class="border rounded p-2 text-center">
+        <h4>Estadísticas de encuestas</h4>
+        <div class="row mt-2">
+          <div class="col-6 mb-5" *ngFor="let chart of idsReactivos; let i = index">
+            <h6>{{labelsReactivos[i]}}</h6>
+            <canvas height="120" baseChart [data]="pieChartData[i]" [labels]="pieChartLabels[i]"
+            [chartType]="pieChartType" [options]="pieChartOptions"
+            [colors]="pieChartColors[i]" [legend]="pieChartLegend">> 
+            </canvas>
+          </div>
+        </div>
+        <!-- <canvas height="100" baseChart [datasets]="ChartData" [labels]="ChartLabels" [options]="ChartOptions"
+          [legend]="ChartLegend" [chartType]="ChartType" [colors]="chartColors">
+        </canvas> -->
+        <ngb-tabset>
+          <ngb-tab title="Pregunta abierta {{i+1}}" *ngFor="let abierta of idsAbiertas; let i = index;">
+            <ng-template ngbTabContent>
+              <div class="container mt-3">
+                <h5>{{labelsAbiertas[i]}}</h5>
+                <div class="table-responsive mt-3">
+                  <table class="table table-bordered">
+                    <thead class="bg-light">
+                      <tr>
+                        <th>Respuesta</th>
+                        <th>Veces que se repite</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of Abiertas[i]; let j = index;">
+                        <td>{{item.respuesta}}</td>
+                        <td class="w-25">{{item.num_respuestas}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+    <!-- <div *ngIf="Accesos == null && !loading && !show" class="container border rounded py-4 px-5 text-center">
+      <h4>No se encontró información</h4>
+    </div> -->
+    <!-- <div *ngIf="loading" class="container border rounded py-4 px-5 text-center">
+      <h4><i class="fa fa-spin fa-spinner fa-lg"></i> Cargando información</h4>
+    </div> -->
+  </div>
+
+</div>

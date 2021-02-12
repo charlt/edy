@@ -1,0 +1,23 @@
+@import "../../app.component.scss";
+
+table td:first-child {
+	width: 10%;
+}
+
+table td:nth-child(2) {
+	width: 30%;
+}
+
+.flecha{
+    border-top:2px dashed;
+    border-right:2px dashed;
+    // border-top-right-radius: 50%;
+    // border-bottom-right-radius: 50%;
+    border-right:2px dashed ;
+    border-bottom:2px dashed;
+
+}
+
+span{
+color:black;
+}

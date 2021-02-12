@@ -1,0 +1,42 @@
+@import "../../app.component.scss";
+
+.card-materia{
+
+    padding:20px;
+
+    .card{
+        // background-image: url('https://concepto.de/wp-content/uploads/2018/09/educacion-concepto-e1536242687832.jpg');
+        background-size: cover; 
+        height:200px;
+        padding:0px;        
+        cursor: pointer;
+
+        .text-materias{
+            padding:10px;
+            margin: 0px;
+            color: white;
+            min-height: 80px;
+            position: absolute;
+            width: 100%;
+            bottom: 0px;
+        }
+
+        .text-contenido{
+            padding:10px;
+            margin: 0px;
+            color: white;
+            min-height: 50px;
+            position: absolute;
+            width: 100%;
+            bottom: 0px;
+        }       
+    }
+
+    .imgs:hover{
+        border:1px solid rgba(117, 234, 250, 0.5);
+        box-shadow: 0px 0px 5px solid rgb(53, 92, 90);
+        -webkit-box-shadow: 0px 0px 10px 5px #a1a7a5fa;
+        -moz-box-shadow: 2px 2px 5px #999;
+        filter: shadow(color=#999999, direction=135, strength=2);
+      }
+}

@@ -1,0 +1,38 @@
+@import "../../app.component.scss";
+
+iframe{
+    display:block;
+    margin: auto;
+}
+.container-actividad{
+    margin-top:20px;
+}
+
+.semaforo{
+    position: fixed;
+    bottom: 0;
+    right: 0;   
+    height: 100px; 
+    display: flex; 
+    width: 100px;
+}
+
+.circulo {
+    width: 30px;
+    height: 30px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.off{
+    background: radial-gradient(rgba(0, 0, 0, 0.5) 5%, #676d73 25%, #818182 70%); 
+}
+.green{
+    background: radial-gradient(rgba(149, 199, 149, 0.9) 5%, #7cc57c 25%, #5cb85c 70%);    
+}
+.red{
+    background: radial-gradient(rgba(224, 134, 131, 0.9) 5%, #de6562 25%, #d9534f 70%);
+}
+.yellow{
+    background: radial-gradient(rgba(226, 193, 145, 0.9) 5%, #efb15a 25%, #f0ad4e 70%);
+}

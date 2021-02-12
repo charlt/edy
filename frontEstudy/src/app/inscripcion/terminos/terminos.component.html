@@ -1,0 +1,108 @@
+<div class="container" *ngIf="pasoActual == 0 ">
+    <div class="alert alert-danger text-center" role="alert">
+        Para continuar, debes terminar el bloque anterior.
+    </div>
+</div>
+<div class="container" *ngIf="pasoActual == 1">
+    <div class="row">
+        <div class="col">
+            <h4>{{title}}</h4>
+            <p> {{instruccion[momento]}}:</p>
+        </div>
+    </div>
+    <div class="row" *ngIf="momento == 1">
+        <div class="col-12">
+            <div class="row" *ngIf="!carreraSeleccionada">
+                <div class="col-md-6 col-lg-4" *ngFor="let carrera of carreras;let i = index">
+
+                    <div class="card">
+                        <img class="card-img-top" [src]="urlAssets + carrera.imagen_url" alt="Card image cap">
+                        <div class="card-body" style="min-height: 200px;">
+                            <h5 class="card-title"><b>{{carrera.carrera}}</b></h5>
+                            <p class="card-text">{{carrera.objetivo}}</p>
+                            <button class="btn btn-primary pull-right" (click)="seleccionaOferta(i)">Seleccionar oferta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="carreraSeleccionada">
+                <div class="col-md-4">
+                    <img class="card-img-top" [src]="urlAssets + carreraSeleccionada.imagen_url" alt="Card image cap">
+                </div>
+                <div class="col-md-8">
+                    <h5>{{carreraSeleccionada.carrera}}</h5>
+                    <p>{{carreraSeleccionada.objetivo}}</p>
+                    <button class="btn btn-primary pull-right" (click)="confirmaOferta(i)">Confirmar oferta</button>
+                </div>
+                <div class="col-md-12">
+
+                    <app-plan-estudio *ngIf="idPlanEstudios" [idPlanEstudios]="idPlanEstudios"></app-plan-estudio>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="momento == 2">
+        <div class="col-12">
+            <iframe src="assets/layout/inscripcion/terminos.pdf" style="width: 100%; height: 600px"></iframe>
+        </div>
+        <div class="col-12 text-center">
+            <h5>He leído y acepto el reglamento general, código de conducta, términos y condiciones de la Universidad.</h5>
+            <!--button class="btn btn-outline-secondary" (click)="cambiarOferta()">Cambiar oferta educativa<-button-->
+            <button class="btn btn-default btn-success " (click)="guardarOferta()">Acepto los términos </button>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="pasoActual >= 2">
+    <p style="text-align: justify;">
+        Has completado el segundo paso satisfactoriamente. Antes de pasar a la carga de documentos es necesario que:
+    </p>
+    <ul>
+        <li>
+            <b>Descargues y firmes tu Información de inscripción.</b>
+        </li>
+        <li>
+            Descargues el reglamento general de educación superior.
+        </li>
+    </ul>
+
+    <div class="row">
+        <div class="col-md-6">
+            <a [href]="url+'/seguimiento/reportes/solicitud_inscripcion.php?id='+identity.persona_id" target="_blank">
+                <p style="text-align: center; font-size: 40px; color: royalblue;">
+
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                </p>
+                <p style="font-size: 20px; text-align: center; color: royalblue;">
+                    Información de inscripción
+                </p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="assets/layout/inscripcion/terminos.pdf" target="_blank">
+                <p style="text-align: center; font-size: 40px; color: royalblue;">
+
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                </p>
+                <p style="font-size: 20px; text-align: center; color: royalblue;">
+                    Reglamento general de educación superior
+                </p>
+            </a>
+        </div>
+        <!--
+    <div class="col-md-4">
+        <p style="text-align: center; font-size: 40px; color: royalblue;">
+            <a href="" download="Carta compromiso" target="_blank">                
+          <i class="fa fa-file-text-o" aria-hidden="true"></i></a>
+        </p>
+        <p style="font-size: 20px; text-align: center; color: royalblue;">
+            Acuse de Recibo
+        </p>
+    </div>
+    -->
+    </div>
+    <div class="">
+        <button [routerLink]="['/inscripcion/documentos']" class="btn btn-info pull-right">
+        Siguiente
+      </button>
+    </div>
+</div>

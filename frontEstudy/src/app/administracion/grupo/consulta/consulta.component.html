@@ -1,0 +1,223 @@
+<div class="row">
+  <div class="col col-xl-12 col-lg-12">
+    <h4 class="top-buffer">{{title}}</h4>
+    <br>
+    <!--div class="form-group" >
+            <label class="control-label" for="">1. {{'selectCiclo' | translate}}</label>
+            <select class="form-control" (change)="consultaGrupo_($event)" >
+              <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+              <option *ngFor="let ciclo of ciclos" [value]="ciclo.ciclo_id">{{ciclo.ciclo_desc}}</option>
+            </select>
+          </div-->
+    <div>
+      <a [routerLink]="['../nuevo']" class="btn btn-success"><i class="fa fa-plus"></i> {{'nuevoGrupo' | translate}}
+      </a>
+      <hr>
+      <form [formGroup]="formConsulta">
+        <div class="form-group">
+          <div class="custom-control custom-radio custom-control-inline"
+            *ngFor="let tipo of tipoConsulta; let i = index;">
+            <input type="radio" [value]="tipo.value" id="radio_{{i}}" formControlName="busqueda"
+              class="custom-control-input">
+            <label class="custom-control-label" for="radio_{{i}}">{{tipo.label}}</label>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="fc.filtro">
+          <select class="form-control" name="" id="" formControlName="filtro">
+            <option value="" disabled selected hidden>Selecciona {{datosSelect.opcion}}</option>
+            <option [value]="select[datosSelect.value]" *ngFor="let select of Selects; let i = index;">
+              {{select[datosSelect.label]}}</option>
+          </select>
+        </div>
+        <div class="form-group" *ngIf="fc.busqueda.value == 5">
+          <app-consulta-asignatura [tipo]="'large'" [parentForm]="formConsulta" [nivel]="3"></app-consulta-asignatura>
+        </div>
+      </form>
+      <div class="input-group mb-3" *ngIf="bandera">
+        <input type="text" class="form-control" [(ngModel)]="search" placeholder="{{'SearchInput' | translate}}"
+          aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+        </div>
+      </div>
+      <div class=" table-responsive" *ngIf="bandera">
+        <table class="table table-striped table-bordered ">
+          <tbody>
+            <tr>
+              <th>{{'grupo' | translate}}</th>
+              <th>{{'nombreGrupo' | translate}} </th>
+              <th>{{'Carrera' | translate}}</th>
+              <th>{{'Grado' | translate}}</th>
+              <th>{{'Ciclo' | translate}}</th>
+              <th>{{'grupoAlumnos' | translate}}</th>
+              <th>{{'grupoAsignaturas' | translate}}</th>
+              <th>{{'situacionGrupo' | translate}}</th>
+              <!-- <th [hidden]="tipoAdmin == 0">{{'Edit' | translate}}</th>
+              <th [hidden]="tipoAdmin == 0">{{'Erase' | translate}}</th> -->
+            </tr>
+            <tr *ngIf="(grupos | filter: search).length === 0">
+              <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+            </tr>
+            <tr *ngFor="let grupo of grupos | filter:search; let i = index;">
+              <td>{{grupo.grupo}}</td>
+              <td>
+                <button class="btn btn-link m-0 p-0" (click)="mostrarGrupo(modalGrupo, grupo, i)">{{grupo.nombre_grupo}}</button>
+              </td>
+              <td>
+                <p class="my-0">{{grupo.carrera}}</p>
+              </td>
+              <td>
+                <p class="my-0">{{grupo.grado}}</p>
+              </td>
+              <td>{{grupo.ciclo_desc}}</td>
+              <td class="text-center">
+                <a [routerLink]="['../consultaAlumnos/'+grupo.grupo_id]" class="btn btn-success"><i
+                    class="fa fa-users"></i></a>
+              </td>
+              <td class="text-center">
+                <a (click)="guardaIdGrupo(grupo.grupo_id)" [routerLink]="['../consultaAsignaturas/'+grupo.grupo_id]"
+                  class="btn btn-success"><i class="fa fa-book"></i></a>
+              </td>
+              <td class="text-center"
+                [ngClass]="{'alert-success': grupo.situacion_grupo_id == 1,'alert-warning': grupo.situacion_grupo_id == 2 || grupo.situacion_grupo_id == 3,'alert-danger': grupo.situacion_grupo_id == 4 || grupo.situacion_grupo_id == 5}">
+                <p>{{grupo.situacion_grupo_descripcion}}</p>
+                <a *ngIf=" grupo.situacion_grupo_id < 4" [routerLink]="['../calculo/'+ grupo.grupo_id+'/1']"
+                  class="btn btn-info"><i class="fa fa-pencil-square-o"></i></a>
+                <a *ngIf=" grupo.situacion_grupo_id == 4" class="btn btn-light" (click)="transferir(content, grupo.grupo_id, grupo.grupo,grupo.nombre_grupo,i)"><i class="fa fa-share"></i></a>
+              </td>
+              <!-- <td [hidden]="tipoAdmin == 0" class="text-center">
+                <a [routerLink]="['../editar/'+grupo.grupo_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+              </td>
+              <td [hidden]="tipoAdmin == 0">
+                <button (click)="eliminar(grupo.grupo_id, i)" class="btn btn-danger"><i
+                    class="fa fa-trash"></i></button>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content>
+  <form [formGroup]="grupoForm" (ngSubmit)="enviarInformacion()">
+    <div class="modal-header">
+      <h4 class="modal-title">Transferir grupo {{f.clave.value}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" class="custom-control-input" id="nuevoNombre" name="inlineDefaultRadiosExample" [checked]="tipoForm ==1" (click)="cambiaTipo();">
+            <label class="custom-control-label" for="nuevoNombre">Crear nuevo nombre de grupo</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" class="custom-control-input" id="mismoNombre" name="inlineDefaultRadiosExample" [checked]="tipoForm ==2" (click)="cambiaTipo();">
+            <label class="custom-control-label" for="mismoNombre">Usar el mismo nombre del grupo</label>
+          </div><br><br>
+          <div *ngIf="tipoForm==1" class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label" for="clave">Clave:</label>
+                <input formControlName="clave" class="form-control" id="clave" placeholder="Clave" type="text">
+                <span class="invalidText" *ngIf="f.clave.invalid && f.clave.touched">
+                  Ingresa una clave
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label" for="nombre">Nombre</label>
+                <input formControlName="nombre" class="form-control" id="nombre" placeholder="Nombre" type="text">
+                <span class="invalidText" *ngIf="f.nombre.invalid && f.nombre.touched">
+                  {{'fmErrText' | translate}}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group " rel="1">
+            <label class="control-label" for="">Selecciona ciclo donde se transfiere el grupo:</label>
+            <select formControlName="ciclo" class="form-control">
+              <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+              <option [value]="ciclo.ciclo_id" *ngFor="let ciclo of ciclos">{{ciclo.ciclo_desc}}</option>
+            </select>
+            <span class="invalidText" *ngIf="f.ciclo.invalid && f.ciclo.touched">
+              {{'fmErrSelect' | translate}}
+            </span>
+          </div>
+          <!--div class="form-group " rel="1">
+            
+            <label class="control-label" for="numMateria" *ngIf="f.validacionReprobadas.value != 1">Máximo de materias reprobadas permitidas para pasar al siguiente grado:</label>
+            <select formControlName="numMateria" class="form-control" *ngIf="f.validacionReprobadas.value != 1">
+              <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <label class="control-label" for="validacionReprobadas">
+            <input formControlName="validacionReprobadas"  id="validacionReprobadas"  type="checkbox" value="1">
+            No validar materias reprobadas
+          </label>
+      
+            <span class="invalidText" *ngIf="f.numMateria.invalid && f.numMateria.touched">
+              {{'fmErrSelect' | translate}}
+            </span>
+          </div-->
+          <!-- <div class="form-group">
+            <label class="control-label" for="numeroAlumn">Numero de alumnos por materia:</label>
+            <input formControlName="numeroAlumn" class="form-control" id="numeroAlumn" placeholder="Numero"
+              type="number">
+            <span class="invalidText" *ngIf="f.numeroAlumn.invalid && f.numeroAlumn.touched">
+              {{'fmErrText' | translate}}
+            </span>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Transferir grupo</button>
+      <button [disabled]="bloquea" type="button" class="btn btn-secondary" (click)="close()">Cerrar</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #modalGrupo let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title"></h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6">
+        <div class="container">
+          <h4 class="mb-3"><b>Nombre del grupo: {{grupoSeleccionado.nombre_grupo}}</b></h4>
+          <h5 class="mb-3">Clave: {{grupoSeleccionado.grupo}}</h5>
+          <p><b>Descripción:</b><br> {{grupoSeleccionado.descripcion}}</p>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="container border rounded text-primary border-primary pt-2">
+          <p>Ciclo: {{grupoSeleccionado.ciclo_desc}}</p>
+          <p>Carrera: {{grupoSeleccionado.carrera}}</p>
+          <p>Plan de estudios: {{grupoSeleccionado.plan_estudio}}</p>
+          <p>Grado: {{grupoSeleccionado.grado}}</p>
+        </div>
+      </div>
+      <div class="col-12 mt-3" [hidden]="tipoAdmin == 0">
+        <button (click)="eliminar(grupoSeleccionado.grupo_id)" class="btn btn-danger pull-right"><i class="fa fa-trash"></i> Eliminar</button>
+        <button (click)="modal.close()" [routerLink]="['../editar/'+grupoSeleccionado.grupo_id]" class="btn btn-info pull-right mr-2"><i class="fa fa-pencil"></i> Editar</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col col-xl-12 col-lg-12" [hidden]="edicion == 0 && !hayRespuesta">
+
+    <div class="row container-cards" *ngIf="reactivos">
+      <div class="col">
+        <div class="row">
+          <div class="col-md-3 mt-3" *ngFor="let reactivo of reactivos; let i = index">
+            <div class="card card-estudy text-black p-2" [style.borderColor]="reactivo.color">
+              <div class="row">
+              <div class="col-1 mt-3">
+                  <h3>{{i + 1}}</h3>
+              </div>       
+              <div class="col">     
+                <blockquote class=" mb-0">
+                  <small>{{reactivo.reactivo_desc}}</small>
+                </blockquote>
+              </div>            
+              </div>
+            </div> 
+          </div> 
+        </div>
+      </div>
+    </div>  
+    <hr *ngIf="reactivos">
+    <div class="row justify-content-md-center" [hidden]="edicion == 0 && !hayRespuesta">
+      <canvas #myImage id="{{tipo}}" [hidden]="hideImage" (click)="edicion == 1? drawCircle(0, $event): true"></canvas>
+    </div>
+    <br> 
+    <div class="row" *ngIf="edicion == 1 && reactivos">
+      <div class="col">
+        <button class="btn btn-danger" type="button" (click)="cleanCanvas()">Borrar selección</button>  
+      </div>    
+      <!-- <div class="col">
+        <button class="btn btn-success pull-right" (click)="guardarSeleccion()">Guardar selección</button>
+      </div> -->
+    </div> 
+    <br>          
+  </div>
+  <div class="col" *ngIf="!edicion && !intentosRestantes">
+    <button class="btn btn-primary pull-right" (click)="open(content)">Ver respuestas</button>
+  </div>
+</div>
+
+<div class="container" *ngIf="edicion == 0 && !hayRespuesta">
+    <div class="alert alert-secondary mt-3">No se puede responder la pregunta.</div>
+</div>  
+
+<div class="row" *ngIf="!reactivos">
+  <div class="col-12">
+      <div class="alert alert-danger">No se han cargado reactivos en la pregunta</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <ng-template #content>
+      <div class="modal-header">
+        <h4 class="modal-title">Respuestas</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-md-center">
+          <canvas id="resultado"></canvas>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">Cerrar</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+

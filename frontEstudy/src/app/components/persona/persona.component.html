@@ -1,0 +1,104 @@
+
+<div class="col col-xl-12 col-lg-12">
+    <form [formGroup]="personaForm" (ngSubmit)="enviarInformacion()">
+      <div class="row">             
+        <div class="col-md-6">           
+          <div class="form-group">                               
+            <label class="control-label">*{{'nombreUsuario' | translate}}</label>
+            <input formControlName="nombreUsuario" class="form-control" placeholder="{{'nombreUsuario' | translate}}" type="text" required autocomplete="off">
+            <span class="invalidText" *ngIf="f.nombreUsuario.invalid && f.nombreUsuario.touched">
+                {{'fmErrText' | translate}}
+            </span>       
+          </div> 
+                   
+          <div class="form-group">                               
+              <label class="control-label">*{{'apMatUsuario' | translate}}</label>
+              <input formControlName="apMatUsuario" class="form-control" placeholder="{{'apMatUsuario' | translate}}" type="text" required autocomplete="off">
+              <span class="invalidText" *ngIf="f.apMatUsuario.invalid && f.apMatUsuario.touched">
+                  {{'fmErrNumber' | translate}}
+              </span>            
+          </div>  
+          <div class="form-group">                               
+            <label class="control-label">*{{'correoUsuario' | translate}}</label>
+            <input formControlName="correoUsuario" class="form-control" placeholder="{{'correoUsuario' | translate}}" type="email" required autocomplete="off">
+            <span class="invalidText" *ngIf="f.correoUsuario.invalid && f.correoUsuario.touched">
+                {{'fmErrEmail' | translate}}
+            </span>            
+          </div>
+          <div class="form-group">                               
+            <label class="control-label">*{{'celUsuario' | translate}}</label>
+            <input formControlName="celUsuario" class="form-control" placeholder="{{'celUsuario' | translate}}" type="text" required autocomplete="off">
+            <span class="invalidText" *ngIf="f.celUsuario.invalid && f.celUsuario.touched">
+                {{'fmErrNumber' | translate}}
+            </span>            
+        </div>
+        <!--div class="form-group">
+          <label class="control-label">*Clave de elector</label>
+          <input  class="form-control" formControlName="claveElector" >
+          <span class="invalidText" *ngIf="f.claveElector.invalid && f.claveElector.touched">
+              {{'fmErrText' | translate}}
+          </span>
+          </div-->
+          
+          <!--button (click)="limpiarForm()" type="button" class="btn btn-info pull-left">Limpiar formulario</button-->
+        </div>
+        <div class="col-md-6">        
+          <div class="form-group">                               
+            <label class="control-label">*{{'apPatUsuario' | translate}}</label>
+            <input formControlName="apPatUsuario" class="form-control" placeholder="{{'apPatUsuario' | translate}}" type="text" required autocomplete="off">
+            <span class="invalidText" *ngIf="f.apPatUsuario.invalid && f.apPatUsuario.touched">
+                {{'fmErrText' | translate}}
+            </span>            
+        </div> 
+          <div class="form-group">
+            <label class="control-label"*ngIf="tipoForm != 0">*{{'rfcUsuario' | translate}}</label>
+            <label class="control-label"*ngIf="tipoForm == 0">{{'rfcUsuario' | translate}}</label>
+            <!--^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-Z]|[0-9]){2}([A]|[0-9]){1})?$-->
+            <input pattern="^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([A-ZÑ\x26]|[0-9])*)?$"
+            type="text" class="form-control" formControlName="rfcUsuario" placeholder="{{'rfcUsuario' | translate}}"
+            id="rfc" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()">
+            <span class="invalidText" *ngIf="f.rfcUsuario.invalid && f.rfcUsuario.touched">
+                {{'fmErrRFC' | translate}}
+            </span>
+          </div>
+          <div class="form-group">
+            <label class="control-label" *ngIf="tipoForm != 0">*{{'curpUsuario' | translate}}</label>
+            <label class="control-label" *ngIf="tipoForm == 0">{{'curpUsuario' | translate}}</label>
+            <input pattern="^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$"
+            type="text" class="form-control" formControlName="curpUsuario" placeholder="{{'curpUsuario' | translate}}"
+            id="curp" onKeyUp="document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()" (blur)="obtieneFechaN(0)">
+            <span class="invalidText" *ngIf="f.curpUsuario.invalid && f.curpUsuario.touched">
+                {{'fmErrCURP' | translate}}
+            </span>
+          </div> 
+            <div class="form-group">
+              <label class="control-label">{{'fnUsuario' | translate}}</label>
+              <input type="date" class="form-control" formControlName="fnUsuario" (blur)="obtieneFechaN(1)">
+              <span class="invalidText" *ngIf="f.fnUsuario.invalid && f.fnUsuario.touched">
+                  {{'fmErrDate' | translate}}
+              </span>
+          </div>                                                    
+          
+          <!-- <div class="form-group">                               
+              <label class="control-label">{{'sexoUsuario' | translate}}</label><br>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input formControlName="sexoUsuario" type="radio" id="hombre" name="sexoUsuario" class="custom-control-input" value="1">
+                <label class="custom-control-label text-dark" for="hombre">Hombre</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input formControlName="sexoUsuario" type="radio" id="mujer" name="sexoUsuario" class="custom-control-input" value="2">
+                <label class="custom-control-label text-dark" for="mujer">Mujer</label>
+              </div>      
+              <br>     
+              <span class="invalidText" *ngIf="f.sexoUsuario.invalid && f.sexoUsuario.touched">
+                  {{'fmOptSelect' | translate}}
+              </span>            
+          </div> -->
+          
+          <br>                          
+          <button type="submit" class="btn btn-success pull-right">{{'fmSave' | translate}}</button>
+        </div>        
+
+      </div>
+    </form>
+  </div><br>

@@ -1,0 +1,20 @@
+<div class="alert">
+  <div class="row fondo" *ngIf="persona">
+    <div class="imagenes">
+      <app-logotipo-usuario *ngIf="persona && !persona.url_perfil " [iniciales]= "persona.nombre" [alto]="75" [ancho]="75" [tamLetra]="45" [color]="persona.color"></app-logotipo-usuario>
+        <div *ngIf="persona && persona.url_perfil">
+          <img src="assets/images/marco_foto.png"  class="margen" width="11%">
+          <div  class="imagen_persona">
+            <img src="assets/images/ico_alumno.png"  class="icono" width="2.5%">
+            <img src="{{urlPerfil}}" width="90%">
+          </div>
+        </div>
+    </div>
+    <div class="texto">
+      <p class="header-estudy rol_persona">{{rol[idRol-1]}}</p>
+      <h4 class="nombre_persona">{{persona.nombre}} {{persona.primer_apellido}} {{persona.segundo_apellido}}</h4>
+      <p *ngIf="persona.clave_alumno" class="header-estudy matricula"><b>Matricula: {{persona.clave_alumno}}</b></p>
+      <p *ngIf="persona.clave_profesor" class="header-estudy"><b>Clave: {{persona.clave_profesor}}</b></p>
+    </div>
+  </div>
+</div>  

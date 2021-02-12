@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <form [formGroup]="matriculacionForm" (ngSubmit)="enviarInformacion()">
+      <div *ngIf="carrera" class="alert alert-info">
+        <label>El aspirante seleccionó</label>
+        <h4>{{carrera}}</h4>
+      </div>
+      <!-- Default unchecked -->
+    <div class="custom-control custom-checkbox">
+      <input formControlName="check" type="checkbox" class="custom-control-input" id="defaultUnchecked">
+      <label class="custom-control-label" for="defaultUnchecked">Deseas agregar el nuevo alumno a un grupo?</label>
+    </div>
+    <app-consulta-asignatura *ngIf="f.check.value" [nivel]="3" [tipo]="'small'" (sucessEvent)="obtieneGrado($event)" [parentForm]="matriculacionForm"></app-consulta-asignatura>
+      <div *ngIf="f.check.value" class="form-group">
+        <label class="control-label" for="grupo"><b>Grupo</b></label>
+        <select formControlName="grupo" class="form-control">
+          <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+          <option [value]="grupo.grupo_id" *ngFor="let grupo of grupos">{{grupo.nombre_grupo}} ({{grupo.grupo}})
+          </option>
+        </select>
+        <span class="invalidText" *ngIf="f.grupo.invalid && f.grupo.touched">
+          {{'fmErrSelect' | translate}}
+        </span>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input formControlName="checkMatricula" type="checkbox" class="custom-control-input" id="defaultUncheckedMatricula">
+        <label class="custom-control-label" for="defaultUncheckedMatricula">¿Deseas agregar la matrícula manualmente ?</label>
+      </div>
+      <div  *ngIf="f.checkMatricula.value"  class="form-group">
+        <label class="control-label" for="matricula"><b> Matricula</b></label>
+        <input formControlName="matricula" class="form-control" id="nombre_ciclo" placeholder="Matricula" type="text">
+        <span class="invalidText" *ngIf="f.matricula.invalid && f.matricula.touched">Introduce una matricula</span>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input formControlName="campus" type="checkbox" class="custom-control-input" id="campus">
+        <label class="custom-control-label" for="campus">¿Deseas agregar a campus?</label>
+      </div>
+      <div *ngIf="f.campus.value" class="form-group">
+        <label class="control-label" for="selectCampus"><b>Campus</b></label>
+        <select formControlName="selectCampus" class="form-control" (click)="consultaCampus()">
+          <option hidden value="" disabled selected>{{'fmOptSelect' | translate}}</option>
+          <option [value]="campi.campus_id" *ngFor="let campi of campus">{{campi.campus}}</option>
+        </select>
+        <span class="invalidText" *ngIf="f.grupo.invalid && f.grupo.touched">
+          {{'fmErrSelect' | translate}}
+        </span>
+      </div><br>
+      <button class="btn btn-success pull-right" type="submit" [disabled]="loading"><i *ngIf="loading" class="fa fa-spin fa-spinner"></i>Guardar información</button>
+    </form>
+  </div>
+</div>

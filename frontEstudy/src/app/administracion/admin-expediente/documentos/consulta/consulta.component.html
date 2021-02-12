@@ -1,0 +1,161 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4><br>
+    <button class=" btn btn-success" (click)="abrirModal(modalDocumentos)"><i class="fa fa-plus"></i> Agregar documento</button>
+    <button class="btn btn-info mr-2 pull-right" [routerLink]="['/admin/expediente/etiquetas']">Ver catálogo de etiquetas</button>
+    <div class="table-responsive mt-3">
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>Documento</th>
+            <th>Descripción</th>
+            <th>Carreras</th>
+            <th>Etiquetas</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="Documentos">
+          <tr *ngFor="let documento of Documentos; let i = index">
+            <td>{{documento.nombre_documento}}</td>
+            <td>{{documento.documento_desc}}</td>
+            <td>
+              <button class="btn btn-success" (click)="carrerasDocumento(modalCarreras, documento.documento_id)">
+                <i class="fa fa-book" aria-hidden="true"></i>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-warning" (click)="etiquetasDocumento(modalEtiquetas, documento.documento_id)">
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              </button>
+            </td>
+            <td class="text-center" (click)="abrirModal(modalDocumentos, documento)">
+              <button class="btn btn-info">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-danger" (click)="eliminar(documento.documento_id, i)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!Documentos && !loading">
+          <tr>
+            <td colspan="9" class="text-center">No se encontraron documentos</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="loading">
+          <tr>
+            <td colspan="9" class="text-center">
+              <div class="mt-2 mb-2">
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw mb-3"></i>
+                <h5>"Cargando información, por favor espere."</h5>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <div class="d-flex justify-content-center">
+        <ngb-pagination [collectionSize]="totalItems" [pageSize]="itemsPerPage" [(page)]="page" 
+          [maxSize]="4" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<ng-template #modalEtiquetas let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Etiquetas del documento</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body px-5">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <ul class="list-group" *ngIf="Etiquetas.length > 0 && catEtiquetas">
+        <li *ngFor="let etiqueta of catEtiquetas; let i = index;"
+          class="list-group-item d-flex justify-content-between align-items-center"
+         style="cursor: pointer;" [ngClass]="Etiquetas[i].seleccionado? 'bg-light': ''"
+         (click)="seleccionaDato(i, 0)">
+          {{etiqueta.nombre}}
+          <span *ngIf="Etiquetas[i].seleccionado" class="badge badge-primary"><i class="fa fa-check"></i></span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 mt-3">
+      <button class="btn btn-success pull-right" (click)="guardarDatos(0)">Guardar información</button>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Salir</button>
+  </div>
+</ng-template>
+
+<ng-template #modalCarreras let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Carreras del documento</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body px-5">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <ul class="list-group" *ngIf="Carreras.length > 0 && catCarreras">
+        <li *ngFor="let carrera of catCarreras; let i = index;"
+          class="list-group-item d-flex justify-content-between align-items-center"
+         style="cursor: pointer;" [ngClass]="Carreras[i].seleccionado? 'bg-light': ''"
+         (click)="seleccionaDato(i, 1)">
+          {{carrera.carrera}}
+          <span *ngIf="Carreras[i].seleccionado" class="badge badge-primary"><i class="fa fa-check"></i></span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 mt-3">
+      <button class="btn btn-success pull-right" (click)="guardarDatos(1)">Guardar información</button>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Salir</button>
+  </div>
+</ng-template>
+
+<ng-template #modalDocumentos let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{tipo}} documento</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body px-5">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <form *ngIf="documentoForm" [formGroup]="documentoForm" (ngSubmit)="modificaDocumento()">
+        <div class="form-group">
+          <label class="control-label">Nombre: </label>
+          <input class="form-control" type="text" formControlName="nombre_documento">
+        </div>
+        <div class="form-group">
+          <label class="control-label">Descripción: </label>
+          <textarea class="form-control" formControlName="documento_desc" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Obligatorio: </label>
+          <br>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input formControlName="obligatorio" value="1" type="radio" id="radio_1" class="custom-control-input">
+            <label class="custom-control-label" for="radio_1">Si</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input formControlName="obligatorio" value="0" type="radio" id="radio_2" class="custom-control-input">
+            <label class="custom-control-label" for="radio_2">No</label>
+          </div>
+        </div>
+        <button class="btn btn-success pull-right mt-3" [disabled]="documentoForm.invalid">{{boton}} información</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Salir</button>
+  </div>
+</ng-template>

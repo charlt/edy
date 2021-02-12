@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col col-xl-12 col-lg-12">
+ 
+    <div class="input-group mb-3">
+      <input (keyup)="consultaPersona()"[(ngModel)]="contenido"  type="text" class="form-control" placeholder="Buscar información" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+
+    <div class="col-md-12 " *ngIf=" contenido != null && quitar == 1 && contenido != 0 && _quitar != 1">
+      <div class="window">
+        <div *ngFor="let _nombre of persona; let i = index">    
+          <h5 class="persona" (click)="muestraPersona(tipoForm,i,_nombre.persona_id)" >{{_nombre.primer_apellido}} {{_nombre.segundo_apellido}} {{_nombre.nombre}}</h5>
+          <p  class="persona" (click)="muestraPersona(tipoForm,i, _nombre.persona_id)" >{{_nombre.curp}}</p><hr>
+        </div>
+    </div>
+  </div>
+    <div class="formGroup">                                   
+      <label class="control-label">Realizar búsqueda por:</label><br>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input  [(ngModel)]="tipoForm" [value]="1" type="radio" id="nombre" name="tipoForm" class="custom-control-input">
+        <label class="custom-control-label text-dark" for="nombre">Nombre</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input [(ngModel)]="tipoForm"  [value]="2" type="radio" id="curp" name="tipoForm" class="custom-control-input">
+        <label class="custom-control-label text-dark" for="curp">CURP</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input [(ngModel)]="tipoForm"  [value]="3" type="radio" id="email" name="tipoForm" class="custom-control-input">
+        <label class="custom-control-label text-dark" for="email">Email</label>
+      </div>      
+      <br>                 
+    </div>  
+  </div>
+</div>
+<br>

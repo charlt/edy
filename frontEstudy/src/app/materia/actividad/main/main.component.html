@@ -1,0 +1,164 @@
+<div class="col-md-12 container-actividad">
+    <div class="row banner">
+      <div class="col-md-2 pt-1">
+        <!-- padre {{idActividadPadre}} {{actividadPadreContestada}} -->
+          <span *ngIf="!activoFM && estadoFM == 3" class="badge badge-danger badge-actividad">Fecha cierre de materia: {{materia.fecha_fin | date: "dd/MM/yyyy hh:mm a"}} </span> 
+          <span *ngIf="!activoFM && estadoFM == 2" class="badge badge-danger badge-actividad">Fecha inicio de materia: {{materia.fecha_inicio | date: "dd/MM/yyyy hh:mm a"}} </span> 
+          <span *ngIf="activoF && estadoFA == 1"  class="badge badge-success badge-actividad">Fecha cierre de actividad: {{actividad.fecha_fin | date: "dd/MM/yyyy hh:mm a"}} </span> 
+          <span *ngIf="!activoF && estadoFA ==  3" class="badge badge-danger badge-actividad">Fecha de cierre de actividad: {{actividad.fecha_fin | date: "dd/MM/yyyy hh:mm a"}} </span> 
+          <!-- <span *ngIf="vigenciaFin == 0 && fechaValidaFin" class="badge badge-success badge-actividad">Fecha de cierre: {{actividad.fecha_fin | date: "dd/MM/yyyy"}} </span>  -->
+          <span *ngIf="!activoF && estadoFA == 2" class="badge badge-secondary  badge-actividad">Fecha de inicio de actividad: {{actividad.fecha_inicio | date: "dd/MM/yyyy hh:mm a"}} </span> 
+          <span *ngIf="activoF && numIntentos != 0" [ngClass]="intentosRestantes == 0 ? 'badge-danger' : 'badge-success' " class="badge  badge-actividad">Intentos restantes: {{intentosRestantes}} </span>  
+          
+        </div>
+        <div class="col-md-8 pt-1" >
+            <h2 class="text-center titulo">{{actividad.actividad_nombre}}</h2>    
+        </div>
+        <div *ngIf="actividad.rubrica_id" class="col-md-2 pt-1">
+          <button  class="btn btn-primary pull-right" (click)="openModalRubrica(rubrica)">Ver rúbrica</button>
+        </div>
+        <div class="pt-2">
+          <button *ngIf="actividad.tipo_actividad_id != 1 && notificacionStatus == 0" type="button" class="btn btn-primary btn-sm" (click)="openModalRetro(content)" >
+              <i class="fa fa-exchange"></i>
+              {{'_mensajesRetro' | translate}}
+              <span>(0)</span>
+          </button>
+          <button *ngIf="actividad.tipo_actividad_id != 1 && notificacionStatus >= 1" type="button" class="btn btn-success btn-sm" (click)="openModalRetro(content)" >
+              <i class="fa fa-exchange"></i>
+              {{'_mensajesRetro' | translate}}
+              <span>({{numeroMensajes}})</span>
+          </button>
+        </div>
+        <div class="col-12 my-0 py-0" *ngIf="reloj">
+          <div class="pull-right text-white text-right">
+          <small class="mr-2">Tiempo restante</small>
+          <div class="container border rounded">
+            <h5 class="m-0 py-0">{{horas}}: {{minutos}}: {{segundos}}</h5>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+    <div class="row justify-content-center text-center" >
+      <div class="col-md-4">
+        <!-- ACTIVIDAD CONTESTADA (PRIORIDAD UNO-->
+        <div *ngIf="(fechaActividad.estatus_actividad_id == 2 || fechaActividad.estatus_actividad_id == 4
+          || fechaActividad.estatus_actividad_id == 9 || fechaActividad.estatus_actividad_id == 10)" style="margin-top: -75px" class=" alert" [ngClass]="fechaActividad.calificacion > 5.99 ? 'alert-success': 'alert-danger'" >
+            <h1>{{fechaActividad.calificacion}}</h1>
+            <p *ngIf="fechaActividad.estatus_actividad_id != 9 && fechaActividad.estatus_actividad_id != 10 ">{{fechaActividad.estatus_actividad}}</p>
+            <span *ngIf="unica=='1'"  class="badge" [ngClass]="fechaActividad.calificacion > 5.99 ? 'badge-success': 'badge-danger'">Calificación final de la asignatura</span>
+            <button *ngIf="actividad.tipo_calificacion == '2'" class="btn btn-sm btn-success" (click)="openModalRubrica(rubrica)">Ver rúbrica</button>
+            <button  class="btn btn-sm"
+            [ngClass]="fechaActividad.calificacion > 5.99 ? 'btn-outline-success': 'btn-outline-danger'"
+              *ngIf="numIntentos !== null && intentosRestantes > 0 
+              && fechaActividad.estatus_actividad_id != 1
+              && actividad.tipo_actividad_id != 1 
+              && activoF 
+              && (fechaActividad.estatus_actividad_id ==4 || fechaActividad.estatus_actividad_id == 2)" (click)="reintentarActividad()"> Reintentar la actividad</button>
+        </div>
+        <!-- ACTIVIDAD CON FECHA ATRASADA -->
+        <div *ngIf="(!activoF || !activoFM) && fechaActividad.estatus_actividad_id == 1"  style="margin-top: -75px"  class="alert alert-danger">
+          <h1><i class="fa fa-clock-o" aria-hidden="true"></i></h1>
+          <p *ngIf="!activoFM && estadoFM == 3">La materia se cerró el día {{materia.fecha_fin | date: "dd/MM/yyyy h:mm:ss a"}} </p>
+          <p *ngIf="activoFM && estadoFA == 3">
+            Esta actividad se cerró el día {{actividad.fecha_fin | date: "dd/MM/yyyy"}}
+            <br>
+             <span *ngIf="actividad.fecha_fin.getHours() != 0 || actividad.fecha_fin.getMinutes() !=0" >
+              a las {{actividad.fecha_fin | date: "h:mm:ss a"}}
+             </span>
+          </p>
+          <p *ngIf="!activoFM && estadoFA == 2">La materia se podrá visualizar el día {{actividad.fecha_inicio | date: "dd/MM/yyyy h:mm:ss a"}} </p>
+          <p *ngIf="activoFM && estadoFA == 2">
+            Esta actividad se podrá visualizar el día {{actividad.fecha_inicio | date: "dd/MM/yyyy"}}
+            <br>
+            <span *ngIf="actividad.fecha_inicio.getHours() != 0 || actividad.fecha_inicio.getMinutes() !=0" >
+             a las {{actividad.fecha_inicio | date: "h:mm:ss a"}}
+            </span>  
+          </p>
+        </div>
+        <!-- ACTIVIDAD BLOQUEADA POR OTRA ACTIVIDAD -->
+        <div *ngIf="idActividadPadre && !actividadPadreContestada  && fechaActividad.estatus_actividad_id == 1"  class=" alert alert-warning"  style="margin-top: -75px"  >   
+          <h1><i class="fa fa-exclamation-triangle"></i></h1>
+          <p>Debes realizar <strong *ngIf="actPadre">{{actPadre.actividad_nombre}}</strong></p>
+        </div>
+        <!-- ACTIVIDAD PARA CONTESTAR -->  
+          <div *ngIf="fechaActividad.estatus_actividad_id == 3"  class=" alert alert-warning"  style="margin-top: -75px"  >   
+                  <h1><i class="fa fa-pencil-square-o"></i></h1>
+                  <p>{{fechaActividad.estatus_actividad}}</p>
+          </div>
+            <div *ngIf="fechaActividad.estatus_actividad_id == 5"  class=" alert alert-warning"  style="margin-top: -75px"  >   
+              <h1><i class="fa fa-exclamation-triangle"></i></h1>
+              <p>{{fechaActividad.estatus_actividad}}</p>
+            </div>
+            <div *ngIf="fechaActividad.estatus_actividad_id == 6"  class=" alert alert-danger"  style="margin-top: -75px"  >   
+              <h1><i class="fa fa-times"></i></h1>
+              <p>{{fechaActividad.estatus_actividad}}</p>
+            </div>
+            <div *ngIf="fechaActividad.estatus_actividad_id == 7"  class=" alert alert-success"  style="margin-top: -75px"  >   
+              <h1><i class="fa fa-file-o"></i></h1>
+              <p>{{fechaActividad.estatus_actividad}}</p>
+            </div>
+            <!--div *ngIf="unica == '1' && ocultaActividad && fechaActividad.estatus_actividad_id == 1" class="alert alert-warning" style="margin-top: -75px">
+              <button class="btn btn-primary mt-2" (click)="comienzaActividad()">Comenzar actividad</button>
+            </div-->
+            
+          </div>
+    </div>
+<!--div class="row" *ngIf="!ocultaActividad" -->
+<div class="row" *ngIf="errorFechaActividad">
+  {{mensajeFechaActividad}}
+</div>
+<div class="row">
+  <div class="col-12" *ngIf="!errorFechaActividad && estadoFA != 2 && estadoFM != 2">
+      <app-contenido *ngIf="finalizaCarga" [actividad]="actividad"></app-contenido>
+  </div>
+  <div class="col-12">
+      <app-actividad 
+        *ngIf="finalizaCarga && (actividad.tipo_actividad_id == 2 || actividad.tipo_actividad_id == 4)" 
+        (actividadEnviada)="refrescaHeader($event)"
+        [actividad]="actividad" [fechaActividad]="fechaActividad" [edicion]="edicion"
+        [intentosRestantes]="intentosRestantes"></app-actividad>
+      <portafolio-evidencias  *ngIf="finalizaCarga && actividad.tipo_actividad_id == 3"  
+        [idActividad]="actividad.actividad_id" 
+        [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id" 
+        [edicion]="edicion" 
+        [estatusActividad]="fechaActividad.estatus_actividad_id"
+        [fechaActividad]="fechaActividad"></portafolio-evidencias>
+  </div>
+</div>
+<!--div class="row" *ngIf="!ocultaActividad" -->
+<div class="row">
+    <div class="col-md-12 text-center my-5" >
+      <button *ngIf="actividad.tipo_actividad_id == 1 ||((actividad.tipo_actividad_id != 1  && edicion == 0)) "  class="btn btn-success btn-lg" (click)="siguienteActividad()">
+        Siguiente
+      </button>
+    </div>
+</div>
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    <retroalimentacion *ngIf="verRetro" [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id" [idMateria]="idMateria" [idActividad]="actividad.actividad_id" ></retroalimentacion>
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+        </div>
+    </ng-template>
+    <ng-template #rubrica let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        Rúbrica
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col">
+                <app-rubrica [idRubrica]="actividad.rubrica_id" [idMateriaFechaActividad]="fechaActividad.materia_fecha_actividad_id"></app-rubrica>  
+              </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="c('Close click')">Salir</button>
+      </div>
+  </ng-template>
+</div>

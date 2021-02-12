@@ -1,0 +1,165 @@
+    <div class="col-md-12">
+        <h3 style="color:#002144;" >Pago en tienda de conveniencia</h3><hr>
+        <div class="row">
+           
+            <div class="col-md-5">
+              <h4 class="text-center"><b><i class="fa fa-shopping-cart"></i> Datos de la compra:</b></h4>
+              <div class="form-group">
+                <label for="descripcion_pago">Concepto:</label>
+                <input type="text" class="form-control" id="descripcion_pago" [(ngModel)]="nombreCarrera" placeholder="Curso de Gerencia de Campaña del Partido Acción Nacional" disabled>
+              </div>
+              <div class="form-group">
+                <label for="descripcion_pago">Monto:</label>
+                <input type="text" class="form-control" id="descripcion_pago" name="descripcion_pago" placeholder="${{monto}} MXN" disabled>
+              </div>
+              <!--button type="button" class="btn btn-primary btn-sm btn-block" (click)="open(content)">
+                <i class="fa fa-eye" style="color:#FFF" aria-hidden="true"></i> Ver todas las tiendas afiliadas
+              </button-->  
+              <a href="https://www.paynet.com.mx/mapa-tiendas/index.html" class="btn btn-primary btn-sm btn-block" target="_blank"><i class="fa fa-map-marker" style="color:#FFF" aria-hidden="true"></i> Localiza tu punto de pago más cercano</a>
+                      
+            </div>       
+          <div class="col-xs-12 col-sm-12  col-md-7">
+            <h4 class="text-center"><b><i class="fa fa-file-pdf-o"></i> Ficha de pago:</b></h4>
+            <p>Instrucciones:</p>
+            <div *ngIf="verRecibo==true" class="alert alert-warning">
+              <strong>Atención:</strong> Hemos detectado que se ha generado una ficha de pago, para visualizarla favor de dar clic al siguiente botón:
+            </div>
+            <div *ngIf="generarRecibo==true" class="alert alert-warning">
+              <strong>Atención:</strong> Para generar una referencia de pago, favor de dar clic al siguiente botón:
+            </div>            
+              <button   *ngIf="generarRecibo==true" class="btn btn-info btn-md pull-right" (click)="generar_recibo()"><i *ngIf="generandoRecibo"  class="fa fa-spin fa-spinner"></i> Generar ficha de pago</button>
+              <button  *ngIf="verRecibo==true"  class="btn  btn-success btn-md pull-right" (click)="ver_recibo()">Ver ficha de pago</button>        
+          </div>
+        </div>
+    </div>
+
+    <div class="modal-header">
+        <h5 class="modal-title">Tiendas de conveniencia para pagar</h5>
+    </div>
+    <div class="modal-body py-0 px-3">
+              <div class="row text-center">
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+          <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/f-benavides.jpg"><br>
+     
+                      <span style="font-size: 0.9rem;">Farmacias Benavides</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $15,000.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/01.jpg"><br>
+                      <span style="font-size: 0.9rem;">7-Eleven</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $15,000.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/walmart.png"><br><br>
+                      <span style="font-size: 0.9rem;">Walmart</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/02.jpg"><br>
+                      <span style="font-size: 0.9rem;">Farmacias del Ahorro</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $20,000.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span><br>
+                      <span style="font-size: 0.5rem;">Solo para:</span><br>
+                      <span style="font-size: 0.5rem;">Vivaaerobus, Volaris, Tar</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/sams.png"><br><br>
+                      <span style="font-size: 0.9rem;">Sam's</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,000.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/Superama.png"><br><br>
+                      <span style="font-size: 0.9rem;">Superama</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/aurrera.png"><br><br>
+                      <span style="font-size: 0.9rem;">Bodega Aurrera</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/circlek.jpg"><br>
+                      <span style="font-size: 0.9rem;">Circle K</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $10,000.00</span><br>
+                      <span style="font-size: 0.5rem;">CDMX, Edo. Mexico, Nuevo Léon, Puebla, Queretaro</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/asturiano.jpg"><br>
+                      <span style="font-size: 0.9rem;">El Asturiano</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/k.jpg"><br>
+                      <span style="font-size: 0.9rem;">K</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $10,000.00</span><br>
+                      <span style="font-size: 0.5rem;">Querétaro</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/waldos.jpg"><br>
+                      <span style="font-size: 0.9rem;">Waldos</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $5,000.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/17.jpg"><br>
+                      <span style="font-size: 0.9rem;">Alsuper</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Chihuahua, Coahuila, Durango</span>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/04.jpg"><br><br>
+                      <span style="font-size: 0.9rem;">Extra</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $10,000.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/10.jpg"><br><br>
+                      <span style="font-size: 0.9rem;">Kiosko</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Colima, Jalisco, Nayarit, Sinaloa</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/guadalajara.jpg"><br><br><br>
+                      <span style="font-size: 0.9rem;">Farmacias Guadalajara</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span><br>
+                      <span style="font-size: 0.5rem;">Solo para:</span><br>
+                      <span style="font-size: 0.5rem;">Vivaaerobus, Volaris, Tar</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/gestoPago.jpg"><br><br>
+                      <span style="font-size: 0.9rem;">GestoPago</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/aTiendas.jpg"><br><br>
+                      <span style="font-size: 0.9rem;">A tiendas</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nuevo Léon, San Luis Potosi, Tamaulipas</span>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/multiRecargas.jpg"><br>
+                      <span style="font-size: 0.9rem;">Multi Recargas</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 py-3 selectable bg-white" style="line-height:12px; border: 1px solid #EEE; border-width:1px;">
+                      <img style="margin:auto; width:80%" src="https://www.openpay.mx/img/negocios/pagoRapido.jpg"><br>
+                      <span style="font-size: 0.9rem;">Pago Rapido</span><br>
+                      <span style="font-size: 0.5rem;">Monto maximo por pago: $29,999.00</span><br>
+                      <span style="font-size: 0.5rem;">Nivel nacional</span>
+                  </div>
+
+              </div>
+          </div>

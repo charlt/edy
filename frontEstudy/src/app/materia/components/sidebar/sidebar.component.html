@@ -1,0 +1,36 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+    <div class="list-group">
+        <a routerLink="./home" [routerLinkActive]="['router-link-active']" class="list-group-item pl-4" >
+            <span><i class="fa fa-home"></i> Inicio</span>
+        </a>
+        <div *ngFor="let modulo of modulos; let i = index">
+            <div class="nested-menu">
+                <div>
+                    <a class="list-group-item" (click)="addExpandClass(i)" style="box-shadow: -8px 0px #0000006e;">
+                        <i *ngIf="modulo.desplegarAct" class="fa fa-plus" style="margin-left: 12px;"></i>
+                        <span class="sombra"><i *ngIf="!modulo.desplegarAct" class="fa fa-minus" style="margin-left: 12px;"></i></span>
+                        <span>{{ modulo.modulo_nombre }}</span>
+                    </a>
+                </div>
+                <li class="nested" [class.expand]="!modulo.desplegarAct">
+                    <ul class="submenu">
+                        <li *ngFor="let actividad of modulo.actividades">
+                            <a [class.disabled]="disabled ? true : null" [ngClass]="actividad.estatus_actividad_id == 1 ? 'alert-warning' : ''"  [routerLink]="['./actividad' + '/' + actividad.actividad_id]" [routerLinkActive]="['router-link-active']" href="javascript:void(0)">
+                                <span>
+                                    <i  title="{{actividad.estatus_actividad}}"  class="fa {{actividad.icono}}" ></i>
+                                    {{ actividad.actividad_nombre }} </span>
+                            </a>
+                            
+                        </li>                
+                    </ul>
+                </li>
+            </div>
+        </div>        
+    </div>
+
+    <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+        <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+        <span>{{ 'Collapse Sidebar' | translate }}</span>
+    </div>
+    
+</nav>

@@ -1,0 +1,124 @@
+
+  
+<div class="row">
+  <div class="col-12">
+    <h4 *ngIf="grupo">{{title}} {{grupo.grupo}} </h4>
+  </div>
+  <div class="col-12">
+      <button  (click)="menuModal(contentNuevaAsignatura,'asignatura')"  class="btn btn-success"><i class="fa fa-plus"></i> {{'nuevaAsignatura' | translate}} </button><br><br>
+      <div class="table-responsive">
+          <table class="table table-striped table-bordered ">
+            <tbody>
+              <tr>
+                <th>{{'claveAsignatura' | translate}} </th>
+                <th>{{'nombreAsignatura' | translate}}</th>
+                <th>Editar fechas</th>
+                <th>{{'verDocente' | translate}}</th>
+                <th>{{'verAlumnosAsignatura' | translate}}</th>
+                <th>{{'situacionAsignaturaGrupo' | translate}}</th>
+                <th [hidden]="tipoAdmin == 0">{{'Erase' | translate}}</th>                                                         
+              </tr>
+            <tr *ngIf="asignaturas.length == 0">
+              <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+            </tr>
+              <tr *ngFor="let asignatura of asignaturas; let i = index;">
+                <td>{{asignatura.asignatura_clave}}</td>
+                <td><a href="javascript:void(0)" [routerLink]="['../../calificaciones/' + asignatura.asignatura_grupo_id]">{{asignatura.asignatura}}</a></td>
+                
+                <td class="text-center"><button class="btn btn-warning" (click)="modalFechas(contentFechas, asignatura.fecha_inicio, asignatura.fecha_fin, asignatura.asignatura_grupo_id)"><i class="fa fa-calendar"></i></button></td>
+                <td class="text-center"><button class="btn btn-success" (click)="menuModal(contentDocente,'docente',asignatura.asignatura_grupo_id)"><i class="fa fa-book"></i></button></td>
+                <td class="text-center"><a [routerLink]="['../../alumnoAsignatura/'+ asignatura.asignatura_grupo_id]" class="btn btn-success"><i class="fa fa-users"></i></a></td>
+                
+                <td class="text-center" [ngClass]="{'alert-success': asignatura.situacion_asignatura_grupo_id == 1,'alert-warning': asignatura.situacion_asignatura_grupo_id == 2 || asignatura.situacion_asignatura_grupo_id == 3,'alert-danger': asignatura.situacion_asignatura_grupo_id == 4}">
+                  <p>{{asignatura.situacion_asignatura_grupo_descripcion}}</p>
+                  <a *ngIf=" asignatura.situacion_asignatura_grupo_id != 4" [routerLink]="['../../calculo/'+ asignatura.asignatura_grupo_id+'/2']" class="btn btn-info" ><i class="fa fa-pencil-square-o"></i></a>
+                </td>
+                <td [hidden]="tipoAdmin == 0" class="text-center">
+                  <button (click)="eliminaAsignatura(asignatura.asignatura_grupo_id, i)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                </td>
+              </tr>          
+          </tbody></table>
+        </div>
+  </div>
+</div>
+
+<ng-template #contentFechas let-modal>
+    <form [formGroup]="fechasForm" (ngSubmit)="actualizaFechas()">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Editar fechas</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">                               
+          <label class="control-label" for="fecha_inicio"><i class="fa fa-calendar"></i> {{'fmFechaInicio' | translate}}:</label>
+          <input formControlName="fechaInicio" class="form-control" id="fecha_inicio" type="date">
+        </div>
+        <div class="form-group">                               
+            <label class="control-label" for="fecha_fin"><i class="fa fa-calendar"></i> {{'fmFechaFin' | translate}}:</label>
+            <input formControlName="fechaFin" class="form-control" id="fecha_fin" type="date">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('exit')">Salir</button>
+        <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-success">Guardar</button>
+    </div>
+  </form>
+</ng-template>
+
+
+
+<ng-template #contentNuevaAsignatura let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{'_seleccionMateria' | translate}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <app-consulta-asignatura [nivel]="4" [tipo]="'small'" (sucessEvent)="getAsignatura($event)"></app-consulta-asignatura>
+    </div>
+    <div class="modal-footer">
+        <button  type="button" class="btn btn-outline-dark" (click)="modal.close('exit')">Salir</button>
+        <button [disabled]="guardando" type="button" class="btn btn-success" (click)="guardarAsignatura()">Guardar</button>
+    </div>
+</ng-template>
+
+<ng-template #contentDocente let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{'_modalDocente' | translate}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div   *ngIf="!editorDocente" >
+          <div *ngIf="!docente" class="alert alert-warning text-center">
+            <p>{{'_asignaturaSinDocente' | translate }}</p>
+            <button (click)="abrirEditorDocente()" class="btn btn-primary">{{'_agregarDocente' | translate}}</button>
+          </div>
+          <div  *ngIf="docente" class="alert alert-success text-center" >
+          <p>{{'_docente' | translate }}:</p>
+            <h4>{{docente.primer_apellido}} {{docente.segundo_apellido}}  {{docente.nombre}}
+              <br><small>{{docente.clave_docente}}</small>
+            </h4>
+            <button (click)="abrirEditorDocente()" class="btn btn-primary">{{'_cambiarDocente' | translate}}</button>
+          </div>
+        </div>
+        <div *ngIf="editorDocente">
+            <app-buscador-persona [idRol]="3" (consultaExitosa)="docenteSeleccionado($event)"></app-buscador-persona>
+            <div *ngIf="selectedDocente" class="alert alert-info">
+              <a href="javascript:void()"   (click)="cambiaPag(selectedDocente.persona_id)" >
+                <h4>{{selectedDocente.primer_apellido}} {{selectedDocente.segundo_apellido}} {{selectedDocente.nombre}}</h4>
+                <p>Clave: {{selectedDocente.clave_profesor}}</p>
+              </a>
+                <!-- <p> {{selectedDocente.curp}}</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('exit')">Salir</button>
+        <button type="button" class="btn btn-success" (click)="guardarDocente()">Guardar</button>
+    </div>
+</ng-template>

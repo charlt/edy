@@ -1,0 +1,22 @@
+@import "../../../app.component.scss";
+
+iframe{
+    display:block;
+    margin: auto;
+}
+.container-actividad{
+    margin-top:20px;
+}
+
+.banner{
+    padding-bottom:75px;
+    background-image: url('../../../../assets/materia/default_cintillo_Actividades.png');
+    background-repeat: no-repeat;
+    background-size: cover
+}
+
+.titulo{
+    margin-top: 3%;
+    text-align: center;
+    color: white;
+}

@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead> 
+          <tr>
+            <th>Clave</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Fecha de acceso</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let persona of personas">
+          <tr>
+            <td>{{persona.clave_alumno}}</td>
+            <td>{{persona.primer_apellido}} {{persona.segundo_apellido}} {{persona.nombre}}</td>
+            <td>{{persona.email}}</td>
+            <td>{{persona.fecha_acceso | date: "dd/MM/yyyy"}} {{persona.fecha_acceso | date: "shortTime"}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+  
+  .contenedor {
+    width: 100%; 
+    height: 650px; 
+    position: relative; 
+  }
+  
+  .circulo { 
+    width: 500px; 
+    height: 500px; 
+    border-radius: 50%;
+    position: absolute;     
+  }
+  
+  .azul{left:25px; top: 30px; border: 2px rgb(0, 153, 255) solid; background: rgba(0, 195, 255, 0.2);}
+  .verde{left: 350px; top: 30px; border: 2px rgb(0, 255, 0) solid; background: rgba(60, 255, 0, 0.2);}
+  .rojo{left: 175px; top: 300px;  border: 2px rgb(255, 0, 0) solid; background: rgba(255, 0, 0, 0.2);}
+  
+  .text {
+    align-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 10%;  
+    width: 60%;
+    text-align: center;
+    margin: -63% 0 0 -30%;
+    font-size: 20px;
+    // border: 1px solid black;
+  }  
+
+  .borde-azul{border: 2px rgb(0, 153, 255) dashed;}
+  .borde-verde{border: 2px  rgb(0, 255, 0) dashed}
+  .borde-rojo{border: 2px rgb(255, 0, 0) dashed}
+  .borde-neutro{border: 2px rgb(134, 134, 134) dashed}
+
+  textarea, textarea:focus {
+    outline:0px !important;
+    -webkit-appearance: none;
+    box-shadow: none;
+    background: transparent;
+    font-size: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+  }
+
+  .textarea-container {
+    position: relative;
+    float: left;
+  }
+
+  .copy {
+  position: absolute;
+  left: 100px;
+  top: 0;
+  }
+
+  .respuesta{
+    text-align: justify;
+    font-size: 12px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    overflow-y: scroll;
+    text-overflow: ellipsis;
+  }
+
+  textarea{
+    scrollbar-width: thin;
+  }

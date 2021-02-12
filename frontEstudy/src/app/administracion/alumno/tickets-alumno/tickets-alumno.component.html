@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-6">
+    <app-encabezado-persona *ngIf="idRol == 1" [idPersona]="idPersona" [idRol]="idRolPersona"></app-encabezado-persona>
+    <button *ngIf="idRol == 1" class="btn btn-link pull-right" [routerLink]="['../../consulta-ticket/'+ idPersona]"><i class="fa fa-list" aria-hidden="true"></i> Otros tickets de alumno</button>
+    
+    <h4 *ngIf="idRol == 2" class="m-3" >Envíar nuevo ticket</h4>
+    <h4 *ngIf="idRol == 1" class="m-3" >Envíar notificación</h4>
+    <form *ngIf="bandera" [formGroup]="ticketForm" (ngSubmit)="enviarInformacion()" class="alert alert-primary" role="alert">
+      <div class="row">
+        <div class="col-md-12">
+
+        <div class="form-group">                               
+          <label class="control-label" for="asunto">Asunto</label>
+          <input formControlName="asunto" class="form-control" id="asunto" type="text" placeholder="Asunto">
+          <span class="invalidText" *ngIf="f.asunto.invalid && f.asunto.touched">
+              {{'fmErrText' | translate}}
+          </span>
+        </div> 
+        <div class="form-group">
+          <label class="control-label" for="mensaje">Mensaje</label>
+          <textarea formControlName="mensaje" class="form-control" id="mensaje" rows="5" maxlength="1000"></textarea>
+          <span class="invalidText" *ngIf="f.mensaje.invalid && f.mensaje.touched">
+            {{'fmErrText' | translate}}
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Tipo del ticket</label>
+          <select formControlName="tipoTicket" class="form-control form-control-md">
+            <option hidden value="" disabled selected>Selecciona una opción</option>
+            <option [value]="ticket.tipo_ticket_id" *ngFor="let ticket of tiposTicket">{{ticket.tipo_ticket}}
+            </option>
+          </select>
+          <span class="invalidText" *ngIf="f.tipoTicket.invalid && f.tipoTicket.touched">
+            {{'fmErrSelect' | translate}}
+          </span>
+        </div><br>
+        <div class="fom-group">
+          <button class="btn btn-primary enviar pull-right" type="submit" [disabled]="enviando">
+            <span *ngIf="!enviando">Enviar</span>
+            <span *ngIf="enviando"><i class="fa fa-spinner fa-spin"></i> Enviando</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>

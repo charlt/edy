@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-md-12">
+    <form [formGroup]="descuentoForm" (ngSubmit)="enviarInformacion()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label  " for="clave">Clave</label>
+            <input formControlName="clave" class="form-control" id="clave" placeholder="Clave" type="text" required>
+            <span class="invalidText" *ngIf="f.clave.invalid && f.clave.touched">
+              Ingresa una clave de descuento
+            </span>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="fecha_inicio"><i class="fa fa-calendar"></i>Fecha inicio</label>
+            <input formControlName="fechaInicio" class="form-control" id="fecha_inicio" type="date">
+            <span class="invalidText" *ngIf="f.fechaInicio.invalid && f.fechaInicio.touched">
+              {{'fmErrDateStart' | translate}}
+            </span>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="fecha_inicio"><i class="fa fa-calendar"></i>Fecha fin</label>
+            <input formControlName="fechaFin" class="form-control" id="fechaFin" type="date">
+            <span class="invalidText" *ngIf="f.fechaFin.invalid && f.fechaFin.touched">
+              {{'fmErrDateStart' | translate}}
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label  " for="desc">Descripción</label>
+            <input formControlName="desc" class="form-control" id="desc" placeholder="Descripción" type="text" required>
+            <span class="invalidText" *ngIf="f.desc.invalid && f.desc.touched">
+              Ingresa una descripción
+            </span>
+          </div>
+          <div class="form-group">
+            <label class="control-label  " for="descuento">Descuento</label>
+            <input formControlName="descuento" class="form-control" id="descuento" placeholder="Descuento" type="number"
+              required>
+            <span class="invalidText" *ngIf="f.descuento.invalid && f.descuento.touched">
+              Ingresa un descuento
+            </span>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample" (click) ="cambiaTipo()" [checked]="tipo == 1">
+            <label class="custom-control-label" for="defaultInline1">Monto</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample" (click) ="cambiaTipo()" [checked]="tipo == 2">
+            <label class="custom-control-label" for="defaultInline2">Porcentaje</label>
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="codigoProm">Código de promoción</label>
+            <input formControlName="codigoProm" class="form-control" id="codigoProm" placeholder="Código de promoción"
+              type="text" required>
+            <span class="invalidText" *ngIf="f.codigoProm.invalid && f.codigoProm.touched">
+              Ingresa un código de promoción
+            </span>
+          </div><br>
+          <button class="btn btn-success pull-right" type="submit">Guardar información</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

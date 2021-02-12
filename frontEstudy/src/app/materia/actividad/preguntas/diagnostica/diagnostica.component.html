@@ -1,0 +1,57 @@
+<!-- 
+<div class="col-md-12" *ngIf=" momento == '1'">    
+    <ckeditor 
+    *ngIf="edicion"
+    [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}"   
+    [(ngModel)]="model"
+    (blur)="guardarBorrador($event)"
+    (ready)="editorCargado($event)"
+    ></ckeditor>
+    <div *ngIf="!edicion" class="alert alert-secondary mt-3">La pregunta  ha sido contestada.</div>
+</div>
+<div class="col-md-12" *ngIf="momento == '2'">
+    <div *ngIf="!edicion" class="alert alert-secondary mt-3">La pregunta  ha sido contestada.</div>
+    <div *ngIf="edicion && momentoCompletado < 1" class="alert alert-secondary mt-3">Aún no puedes responder esta pregunta.</div>
+    <ckeditor 
+          *ngIf="otrasRespuestas && edicion"
+                [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}"   
+                [(ngModel)]="model"
+                (blur)="guardarBorrador($event)" 
+                (ready)="editorCargado($event)"></ckeditor>
+</div>
+<div *ngIf="momento == '3'" class="col-md-12">
+    <div *ngIf="edicion && momentoCompletado < 2" class="alert alert-secondary mt-3">Aún no puedes responder esta pregunta.</div>
+      <div class="row">
+        <div class="col-md-12">
+            <table id="tablaDia_{{idPregunta}}" class="table table-bordered">
+                <tbody>
+                  <tr *ngFor="let _respuesta of generateRowIndexes(size);let i = index">
+                    <td >
+                        <span *ngIf="respuestasM1[i]">
+                            <p ><b [innerHTML]="respuestasM1[i].pregunta"></b></p>
+                          <p [innerHTML]="respuestasM1[i].respuesta"></p></span>
+                    </td>
+                    <td >
+                        <span *ngIf="respuestasM2[i]">
+                            <p ><b [innerHTML]="respuestasM2[i].pregunta"></b></p>
+                          <p [innerHTML]="respuestasM2[i].respuesta"></p></span>
+                    </td>
+                    <td *ngIf="i == 0" [attr.rowspan]="size">
+                        <p><b>Conclusión</b></p>
+                        <ckeditor 
+                        *ngIf="edicion"
+                        [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}"   
+                        [(ngModel)]="model"
+                        (blur)="guardarBorrador($event)" 
+                        (ready)="editorCargado($event)"></ckeditor>
+                        <p *ngIf="!edicion && respuesta" [innerHtml]="model"></p>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+            <img class="pull-right" style="display: none" *ngIf="imgURL" [src]="imgURL" width="50%" id="urlDia_{{idPregunta}}">
+            <button *ngIf="edicion == 0" class="btn btn-primary pull-right" (click)="descargaImagen()"><i class="fa fa-file-image-o "></i> Descargar</button>
+        </div>          
+      </div>
+</div>
+ -->

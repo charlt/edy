@@ -1,0 +1,195 @@
+<div class="row" *ngIf="!Rubrica && idRubrica != 0 && bandera">
+  <div class="col-12">
+    <form [formGroup]="rubricaForm" (ngSubmit)="enviarRespuestas()">
+      <div class="form-group mb-3">
+        <label class="control-label">¿Cuál es el título de la rúbrica?</label>
+        <input class="form-control" formControlName="titulo" type="text">          
+      </div> 
+      <div *ngFor="let form of Datos; let i = index;">
+        <div class="row col">
+          <div class="form-group">
+            <label class="control-label mt-2">{{form.label}}</label>
+          </div> 
+          <div class="ml-3">
+            <select class="form-control" formControlName="{{form.select}}">
+              <option *ngFor="let item of [].constructor(form.num); let j = index;" [value]="j+1">{{j+1}}</option>
+            </select>
+          </div>
+        </div> 
+        <div formArrayName="{{form.type}}" class="mt-2"
+          *ngFor="let item of rubricaForm.get(form.type).controls; let k = index;">
+          <div [formGroupName]="k" class="row">
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">{{form.text}} {{k+1}}</span>
+                </div>
+                <input formControlName="texto" type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">{{form.text_2}} {{k+1}}</span>
+                </div>
+                <input formControlName="porcentaje" type="number" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>  
+      </div>
+      <div *ngIf="!bandera_c" class="alert alert-danger">
+        La suma de la filas debe ser igual a 100%
+      </div>
+      <div *ngIf="!bandera_e" class="alert alert-danger">
+        El valor máximo de las columnas no debe de superar el 100%
+      </div>
+      <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-success pull-right" [disabled]="rubricaForm.invalid">Guardar información</button>
+    </form>    
+  </div>
+</div>
+
+<div *ngIf="Rubrica && idRubrica && bandera">
+  <div class="row mb-2">
+    <div class="col-md-8">
+      <h4 class="top-buffer">{{Rubrica.desc_rubrica}}</h4>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <form [formGroup]="tablaForm">
+      <table class="table table-border" formArrayName="Datos">
+        <thead>
+          <tr class="bg-light">
+            <th scope="col">Categorías</th>
+            <!-- Horizontales = Elementos -->
+            <!-- Verticales = Categorías -->
+            <th scope="col" *ngFor="let elemento of Horizontales; let i = index">{{elemento.elemento_desc}}</th>
+            <th scope="col">Total</th>
+          </tr> 
+        </thead>
+        <div *ngFor="let fila of tablaForm.get('Datos').controls; let i=index; let l=last;"
+          [formGroupName]="i" style="display: table-row-group;">
+          <div div style="display: table-row;">
+            <th class="align-middle">{{Verticales[i].categoria_desc}}</th>
+            <td *ngFor="let columna of fila.controls; let j = index" [formGroupName]="j">
+              <textarea formControlName="texto" class="form-control" rows="5" placeholder="Descripción">{{columna.controls.texto.value.length}}</textarea>
+            </td>
+            <td></td>
+          </div>
+          <div style="display: table-row;" class="text-center">
+            <td class="align-middle">Equivalencia</td>
+            <td *ngFor="let columna of fila.controls; let j = index" [formGroupName]="j">
+              <input type="number" class="form-control" formControlName="equivalencia" [value]="columna.controls.equivalencia.value">
+              <button type="button" 
+                class="btn btn-success btn-sm btn-block mt-1" [disabled]="formArray['controls'][i]['controls'][j].invalid"
+                (click)="guardarCelda(i,j)">Enviar</button>
+              <!-- <button *ngIf="columna.controls.texto.value != ''" type="button" 
+                class="btn btn-primary btn-sm btn-block mt-1" [disabled]="formArray['controls'][i]['controls'][j].invalid">Editar</button> -->
+            </td>
+            <td class="align-middle">
+              <div class="container p-0 m-0 text-center">{{Verticales[i].porcentaje}}%</div>
+            </td>
+          </div>
+        </div>
+        <div style="display: table-row;">
+          <td>Total</td>
+          <td *ngFor="let columna of Horizontales; let j = index">
+            <div class="container p-0 m-0 text-center">{{columna.porcentaje}}%</div>
+          </td>
+          <td>
+          </td>
+        </div>
+      </table>
+    </form>
+  </div>
+</div>
+
+
+
+
+<!-- <div *ngIf="Rubrica && idRubrica && bandera">
+  <div class="container" id="rubrica_{{idRespuesta}}">
+    <div>
+    <br>
+    <div class="row mb-2">
+      <div class="col-md-8">
+        <h4 class="top-buffer">{{Rubrica.desc_rubrica}}</h4>
+      </div> -->
+      <!-- <div class="col-md-4">
+        <div class="mr-3">
+          <img style="display: none" class="pull-right" *ngIf="imgURL" [src]="imgURL" width="50%" id="urlRubrica_{{idRespuesta}}">
+        </div>
+      </div> -->
+    <!-- </div>
+    <div class="table-responsive">
+      <table class="table table-bordered" *ngIf="Horizontales && Verticales && bandera">
+        <thead>
+          <tr class="bg-light">
+            <th scope="col">Categorías</th> -->
+            <!-- Horizontales = Elementos -->
+            <!-- <th scope="col" *ngFor="let elemento of Horizontales; let i = index">{{elemento.elemento_desc}} <p class="small">({{elemento.porcentaje}}%)</p></th> -->
+            <!-- <th scope="col" *ngFor="let elemento of Horizontales; let i = index">{{elemento.elemento_desc}}</th>
+            <th scope="col">Total</th>
+          </tr> 
+        </thead> -->
+        <!-- Verticales = Categorías -->
+        <!-- <div *ngFor="let categoria of Verticales; let i = index" style="display: table-row-group;">
+          <div style="display: table-row;"> -->
+            <!-- <th class="align-middle">{{categoria.categoria_desc}} <p>({{categoria.porcentaje}}%)</p></th> -->
+            <!-- <th class="align-middle">{{categoria.categoria_desc}}</th>
+            <td *ngFor="let horizontal of Horizontales; let j = index">
+              <textarea *ngIf="!getTexto(categoria.categoria_id, horizontal.elemento_id)" id="text_{{i}}_{{j}}" class="form-control rounded-0" rows="5" placeholder="Descripción"></textarea>
+              <textarea *ngIf="getTexto(categoria.categoria_id, horizontal.elemento_id).editar" class="form-control" id="text_{{i}}_{{j}}" rows="5">{{getTexto(categoria.categoria_id, horizontal.elemento_id).celda}}</textarea>
+              <div *ngIf="getTexto(categoria.categoria_id, horizontal.elemento_id) && !getTexto(categoria.categoria_id, horizontal.elemento_id).editar" class="container p-0 m-0">
+                {{getTexto(categoria.categoria_id, horizontal.elemento_id).celda}}
+              </div>
+            </td>
+            <td></td>
+          </div>
+          <div style="display: table-row;">
+            <td class="align-middle">Equivalencia</td>
+            <td *ngFor="let elemento of Horizontales; let j = index" class="text-center">
+              {{Porcentajes[i][j]}}%
+              <div *ngIf="!getTexto(categoria.categoria_id, elemento.elemento_id) || getTexto(categoria.categoria_id, elemento.elemento_id).editar"> -->
+                <!-- <input id="equivalencia_{{i}}_{{j}}" type="number" class="form-control form-control-sm" placeholder="Ponderación"> -->
+                <!-- <button class="btn btn-success btn-sm mt-1 btn-block" (click)="guardarDatos(i, j, elemento.elemento_id, categoria.categoria_id)">
+                  Enviar
+                </button>
+              </div>
+              <div *ngIf="getTexto(categoria.categoria_id, elemento.elemento_id) && !getTexto(categoria.categoria_id, elemento.elemento_id).editar"> -->
+                <!-- <div class="form-control form-control-sm">
+                  {{getTexto(categoria.categoria_id, elemento.elemento_id).valor}}%
+                </div> -->
+                <!-- <button class="btn btn-primary btn-sm btn-block mt-1" (click)="editaRespuesta(categoria.categoria_id, elemento.elemento_id)">Editar</button>
+              </div>
+            </td>
+            <td class="align-middle">
+              <div class="container p-0 m-0 text-center">{{categoria.porcentaje}}%</div> -->
+              <!-- <div class="container p-0 m-0 text-center" *ngIf="getMayor(categoria.categoria_id)">
+                {{getMayor(categoria.categoria_id)}}%
+              </div> -->
+            <!-- </td>
+          </div>
+        </div>
+  
+        <div style="display: table-row;">
+          <td>Total</td>
+          <td *ngFor="let elemento of Horizontales; let j = index">
+            <div class="container p-0 m-0 text-center">{{elemento.porcentaje}}%</div> -->
+            <!-- <div class="container p-0 m-0 text-center" *ngIf="getTotalColumna(elemento.elemento_id)"
+              [ngClass]="getTotalColumna(elemento.elemento_id) > 100? 'text-danger': ''">
+              {{getTotalColumna(elemento.elemento_id)}}%
+            </div> -->
+          <!-- </td>
+          <td> -->
+            <!-- <div class="container p-0 m-0 text-center" *ngIf="getTotal()" [ngClass]="getTotal() > 100? 'text-danger': ''">
+              {{getTotal()}}%
+            </div> -->
+          <!-- </td>
+        </div>
+      </table>
+    </div>
+    </div>
+    <br>
+  </div>
+  </div> -->

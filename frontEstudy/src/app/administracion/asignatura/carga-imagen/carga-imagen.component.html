@@ -1,0 +1,16 @@
+<form (ngSubmit)="guardarImagen()">
+  <div class="form-group">
+    <label class="control-label" ><b>Carga de imagen</b></label>
+    <div class="justify-content-center">
+      <img  *ngIf="imgURL" [src]="imgURL" style="width:100%">
+      <ngx-file-drop dropZoneLabel="Arrastra tu imagen aqui" (onFileDrop)="dropped($event)" 
+        (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" multiple="false">
+        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector"  accept='image/*'>
+          Arrastra tu imagen aquí o
+          <button class="btn btn-outline-secondary ml-1" type="button" (click)="openFileSelector()"> Selecciona tu imagen aquí</button>
+        </ng-template>
+      </ngx-file-drop><br>
+      <button [hidden]="tipoAdmin == 0" [disabled]="btnDisabled" type="submit" class="btn btn-primary pull-right">Guardar imagen</button>
+    </div>
+  </div>
+</form>

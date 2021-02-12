@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-12">
+        <h4 *ngIf="grupo">{{title}} {{grupo.grupo}}</h4>
+    </div>
+    <div class="col-12">
+        <button *ngIf="grupo && !bloquear" (click)="open(contentNuevoAlumno,'alumno')" class="btn btn-success my-3"><i class="fa fa-plus"></i> {{'nuevoAlumno' | translate}} </button>
+        <button *ngIf="grupo && bloquear" disabled="true" class="btn btn-success my-3"><i class="fa fa-plus"></i> {{'nuevoAlumno' | translate}} </button>
+        <button class="btn btn-success my-3 pull-right" (click)="generaReporteAlumnosGrupo()">Exportar a excel </button>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered ">
+                <tbody>
+                    <tr>
+                        <th>#</th>
+                        <th>{{'nombreAlumno' | translate}}</th>
+                        <th>{{'claveAlumno' | translate}} </th>
+                        <th>{{'curpAlumno' | translate}}</th>
+                        <th [hidden]="tipoAdmin == 0">{{'Erase' | translate}}</th>
+                    </tr>
+                    <tr *ngIf="alumnos.length === 0">
+                        <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+                    </tr>
+                    <tr *ngFor="let alumno of alumnos; let i = index;" [ngClass]="{'alert-danger':alumno.situacion_alumno_id == 2 || alumno.situacion_alumno_id == 3}">
+                        <td>{{i+1}}</td>
+                        <td><a [routerLink]="['/admin/alumno/materias/'+alumno.alumno_id]">{{alumno.primer_apellido}} {{alumno.segundo_apellido}} {{alumno.nombre}}</a></td>
+                        <td>{{alumno.clave_alumno}}</td>
+                        <td>{{alumno.curp}}</td>
+                        <td [hidden]="tipoAdmin == 0">
+                            <button (click)="eliminaAlumnoGrupo(alumno.alumno_id, i)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #contentNuevoAlumno let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{'_modalAlumno' | translate}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <app-buscador-persona [idRol]="2" (consultaExitosa)="alumnoSeleccionado($event)"></app-buscador-persona>
+        <div *ngIf="selectedAlumno" class="alert alert-info">
+            <a href="javascript:void()" (click)="cambiaPag(selectedAlumno.persona_id)">
+                <h4>{{selectedAlumno.primer_apellido}} {{selectedAlumno.segundo_apellido}} {{selectedAlumno.nombre}}</h4>
+                <p *ngIf="selectedAlumno.matricula">Matrícula: {{selectedAlumno.matricula}}</p>
+            </a>
+            <p *ngIf="selectedAlumno.carrera">Carrera: {{selectedAlumno.carrera}}</p>
+            <p *ngIf="selectedAlumno.orden_jerarquico">Grado: {{selectedAlumno.orden_jerarquico}}°</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('exit')">Salir</button>
+        <button [hidden]="tipoAdmin == 0" type="button" class="btn btn-success" (click)="guardarAlumno()">Guardar</button>
+    </div>
+</ng-template>

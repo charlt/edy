@@ -1,0 +1,25 @@
+.btn-accion{
+    float:right;
+    top:10px;
+    text-align:right;
+}
+
+.alert-actividad{
+    text-align: left;
+    padding: 20px;
+    background-color: white;
+}
+
+.btn-accion{
+    float:right;
+    top:10px;
+    text-align:right;
+}
+
+
+
+.alert-actividad:hover{
+    -webkit-box-shadow: 2.5px 2.5px 5   px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2.5px 2.5px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2.5px 2.5px 5px 0px rgba(0,0,0,0.75); 
+}

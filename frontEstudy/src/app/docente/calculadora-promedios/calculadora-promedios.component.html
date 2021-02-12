@@ -1,0 +1,41 @@
+<table class="table">
+    <thead class="thead">
+      <tr>
+        <th>
+          Nombre de la actividad
+        </th>
+        <th>
+          Ponderación
+        </th>
+        <th>
+          Calificación del alumno
+        </th>
+        <th>
+          Valor total
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let actividad of actividadesCalculadora; let i = index ">
+        <td>
+            {{actividad.actividad_nombre}}
+        </td>
+        <td>
+            {{actividad.ponderacion}}
+        </td>
+        <td>
+            <span *ngIf="actividad.unica != 1">{{actividad.calificacion}}</span>
+            <span><input class="form-control" type="number" (keyup)="calculaPromedio(i,actividad.calificacion)" [(ngModel)]="actividad.calificacion" min="0" max="10"></span>
+        </td>
+        <td>
+            {{actividad.valor}}
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Calificación en la materia</td>
+        <td>{{calificacionTotalAsignatura}}</td>
+      </tr>
+    </tfoot>
+  </table>  

@@ -1,0 +1,29 @@
+
+.btn-accion{
+    float:right;
+    top:10px;
+    text-align:right;
+}
+.alert-sin-contenido{
+    color: #721c24;
+    background-color: #f8d7da;
+}
+
+.alert-sin-contenido-y{
+    color: #856404;
+background-color: #fff3cd;
+}
+
+.list-pregunta{
+    border: 1px solid rgba(0,0,0,.125);
+}
+.list-pregunta:hover{
+    cursor: pointer;
+    background-color: #e9ecef;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.contenido_pregunta{
+    height: 20px;
+    overflow: hidden;
+}

@@ -1,0 +1,52 @@
+<div>
+<div class="container" id="tablaCC_{{idRespuesta}}">
+  <div>
+  <br>
+  <div class="row mb-2">
+    <div class="col-md-8">
+      <h4 class="top-buffer">{{respuesta.cuadro_comparativo_desc}}</h4>
+    </div>
+    <div class="col-md-4">
+      <div class="mr-3">
+        <img style="display: none" class="pull-right" *ngIf="imgURL" [src]="imgURL" width="50%" id="urlCC_{{idRespuesta}}">
+      </div>
+    </div>
+  </div>
+    <table class="table table-bordered" *ngIf="categorias && elementos">
+      <thead>
+        <tr class="bg-secondary">
+          <th scope="col"></th>
+          <th scope="col" class="text-white" *ngFor="let elemento of elementos; let i = index">{{elemento.elemento_desc}}</th>
+          <th scope="col" class="text-white">Conclusiones</th>
+        </tr> 
+      </thead>
+      <tbody>
+        <tr *ngFor="let categoria of categorias; let i = index">
+          <td class="td_principal">{{categoria.categoria_desc}}</td>
+          <td *ngFor="let elemento of elementos; let j = index" style="height: 100px; min-width: 200px; max-width: 250px;">
+            <textarea *ngIf="respuestas && edicion == 1" class="form-control rounded-0" 
+            (blur)="enviarRespuestas( categoria.categoria_id, elemento.elemento_id, $event)" 
+            rows="10">{{getTexto(categoria.categoria_id, elemento.elemento_id).respuesta}}</textarea>
+            <div class="respuesta" *ngIf="edicion == 0">{{getTexto(categoria.categoria_id, elemento.elemento_id).respuesta}}</div>
+          </td>
+          <td id="tdConclusiones_{{idRespuesta}}" *ngIf="i == 0 " [attr.rowspan]="categorias.length" style="height: 100px; min-width: 200px; max-width: 250px;">
+            <textarea maxlength="1500" *ngIf="edicion == 1" class="form-control rounded-0" id="textArea_{{idRespuesta}}" (click)="ajustar()" 
+            (blur)="enviarConclusion($event)">{{conclusion}}</textarea>
+            <div class="respuesta" *ngIf="edicion == 0">{{conclusion}}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col pb-3">
+      <button *ngIf="edicion == 0" class="btn btn-primary pull-right" (click)="descargaImagen()"><i class="fa fa-file-image-o"></i> Descargar</button>
+      <button *ngIf="edicion == 1" class="btn btn-danger btn-sm" (click)="eliminarRespuesta()">Eliminar cuadro comparativo</button>
+    </div>
+  </div>
+</div>
+</div>

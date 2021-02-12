@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-12">  
+    <div style="display: block">
+      <div class="border rounded p-2 text-center" *ngIf="show">
+        <h5>Accesos de usuarios en la plataforma</h5>
+        <canvas height="100"  baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors">
+        </canvas>
+      </div>
+    </div>
+    <div *ngIf="Accesos == null && !loading && !show" class="container border rounded py-4 px-5 text-center">
+      <h4>No se encontró información</h4>
+    </div>
+    <div *ngIf="loading" class="container border rounded py-4 px-5 text-center">
+      <h4><i class="fa fa-spin fa-spinner fa-lg"></i> Cargando información</h4>
+    </div>
+  </div>
+</div>
+<div class="row" >
+  <div class="col-12">
+    <form class="row" [formGroup]="dataForm" (ngSubmit)="sendData()" *ngIf="dataForm">
+      <div [ngClass]="item['size']" *ngFor="let item of Data">
+        <div class="form-group">
+          <label class="control-label">{{item['label']}}</label>
+          <select [formControlName]="item['control']" class="form-control">
+            <option value="" selected hidden disabled>Selecciona una opción</option>
+            <option [value]="data['value']" *ngFor="let data of item['iterator']; let i = index;">{{data['text']}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary pull-right mt-2" [disabled]="dataForm.invalid">Buscar estadísticas</button>
+      </div>
+    </form>
+  </div>
+</div>

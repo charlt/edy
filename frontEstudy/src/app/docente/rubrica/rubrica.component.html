@@ -1,0 +1,41 @@
+<div class="container">
+  <table class="table table-bordered" *ngIf="Horizontales && Verticales && completo">
+    <thead>
+      <tr class="bg-light">
+        <th scope="col">Categorías</th>
+        <th scope="col" *ngFor="let horizontal of Horizontales; let i = index">{{horizontal.elemento_desc}}</th>
+        <th scope="col">Total</th>
+      </tr> 
+    </thead>
+    <div *ngFor="let row of Datos; let i = index" style="display: table-row-group;">
+      <div style="display: table-row;">
+        <td class="align-middle">{{Verticales[i].categoria_desc}}</td>
+        <td [ngClass]="[seleccionados[i][j] ? 'alert-info': '', idRol == 3? 'texto-retro': '']"
+          *ngFor="let col of Datos[i]; let j = index" (click)="idRol == 3 && guardarValor(i,j)">{{col.texto}}</td>
+        <td></td>
+      </div>
+      <div style="display: table-row;">
+        <td class="align-middle">Equivalencia</td>
+        <td [ngClass]="seleccionados[i][j] ? 'alert-info': ''" 
+          *ngFor="let col of Datos[i]; let j = index">{{col.equivalencia}}%</td>
+        <td class="text-center align-middle">
+          <div *ngIf="totalHorizontales[i]">
+            {{totalHorizontales[i]}}%
+          </div>
+        </td>
+      </div>
+    </div>
+    <div style="display: table-row;">
+      <td>Total</td>
+      <td *ngFor="let horizontal of Horizontales; let j = index">
+      </td>
+      <td>
+        <div class="container p-0 m-0 text-center" *ngIf="getTotal()">
+          {{getTotal()}}%
+        </div>
+      </td>
+    </div>
+  </table>
+
+  <button *ngIf="idRol == 3" class="btn btn-success pull-right" [disabled]="!bandera" (click)="guardarRubrica()">Calificar actividad</button>
+</div>

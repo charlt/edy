@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-12">
+    <div *ngIf="!EstatusTickets" class="container border rounded text-center p-4">
+      <h5>No se encontraron tickets abiertos</h5>
+    </div>
+    <ngb-tabset #tabset="ngbTabset" (tabChange)="getTab($event.nextId)" *ngIf="EstatusTickets">
+      <ngb-tab [id]="'tab-'+ i" title="{{ item.estatus_ticket | titlecase }} ({{item.total}})" *ngFor="let item of EstatusTickets; let i = index;">
+        <ng-template ngbTabContent>
+          <div class="table-responsive mt-3">
+            <table class="table table-border">
+              <thead class="bg-light">
+                <tr>
+                  <th>Asunto del ticket</th>
+                  <th>Descripción</th>
+                  <th>Nombre alumno</th>
+                  <th>Tipo de ticket</th>
+                  <th>
+                    <span *ngIf="item.estatus_ticket_id != 4">Responder</span>
+                    <span *ngIf="item.estatus_ticket_id == 4">Ver ticket</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ticket of Tickets; let j = index;">
+                  <td>{{ticket.asunto_ticket}}</td>
+                  <td>{{ticket.descripcion_ticket}}</td>
+                  <td>{{ticket.primer_apellido}} {{ticket.segundo_apellido}} {{ticket.nombre}}</td>
+                  <td>{{ticket.tipo_ticket}}</td>
+                  <td>
+                    <button *ngIf="item.estatus_ticket_id != 4" class="btn btn-primary" (click)="open(content, ticket)"><i class="fa fa-ticket"></i></button>
+                    <button *ngIf="item.estatus_ticket_id == 4" class="btn btn-primary" (click)="open(content, ticket)"><i class="fa fa-eye"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-body p-3">
+    <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="row">
+      <div class="col-12">
+        <div class="container p-4 border rounded">
+          <div class="card">
+            <div class="card-body py-1">
+              <h5 class="modal-title mt-2" id="modal-basic-title"> {{selected.asunto_ticket}}</h5>
+              <p>{{selected.descripcion_ticket}}</p>
+            </div>
+          </div>
+          
+          <div class="py-2" *ngIf="Respuestas">
+            <b>Respuestas:</b>
+            <div *ngFor="let respuesta of Respuestas">
+              <div class="alert" [ngClass]="(idRol == 1 && (respuesta.rol_id == 2 || respuesta.rol_id == 4))? 
+                'alert-secondary': (idRol == 1 && respuesta.rol_id == 1)? 'alert-primary' : ''" role="alert">
+                <div class="row">
+                  <div class="col-12 my-0 py-0">
+                    <small class="m-0 p-0 pull-right">{{respuesta.fecha_creacion | date: 'dd/MM/yyyy hh:mm a'}}</small>
+                  </div>
+                  <div class="col-12 my-0 py-0">
+                    <p class="m-0 p-0">{{respuesta.texto}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div [ngClass]="!Respuestas? 'pt-2': ''">
+            <form *ngIf="idEstatus != 4 && ticketsForm" [formGroup]="ticketsForm" (ngSubmit)="guardaRespuesta()">
+                <div class="form-group">
+                  <textarea formControlName="texto" placeholder="Escribe texto" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="button" class="btn btn-warning btn-sm" (click)="cerrarTicket()" [disabled]="ticketsForm.invalid"><i class="fa fa-minus-square "></i> Cerrar ticket</button>
+                <button [hidden]="tipoAdmin == 0" type="submit" [disabled]="ticketsForm.invalid" class="btn btn-success pull-right">Enviar respuesta</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-template>

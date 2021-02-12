@@ -1,0 +1,145 @@
+.round {
+    position: absolute;
+    z-index: 2;
+  }
+  .round label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 28px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 28px;
+  }
+  
+  .round input[type="checkbox"] {
+    visibility: hidden;
+  }
+  
+  .round input[type="checkbox"]:checked + label {
+    background-color: #06e6ee;
+    border-color: #06e6ee;
+  }
+
+  .round_2 {
+    position: relative;
+    z-index: 2;
+  }  
+    
+  .round_2 label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 28px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 28px;
+  }
+  
+  .round_2 input[type="checkbox"] {
+    visibility: hidden;
+  }
+  
+  .round_2 input[type="checkbox"]:checked + label {
+    background-color: #06e6ee;
+    border-color: #06e6ee;
+  }  
+
+  .mydiv{
+    // border:1px solid #000000;
+    // background-color:#fff;
+    position:relative;
+    // border-radius:50%;
+  }
+  .mydiv:after{
+    content:no-close-quote;
+    position:absolute;
+    top:50%;
+    left:50%;
+    // background-color:black;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    margin-left:-2px;
+    margin-top:-1px;
+  }
+  .divDer{
+    width:28px;
+    height:28px;
+  }
+  .divIzq{
+    width:28px;
+    height:28px;
+  }
+  .line{
+    position:absolute;
+    width:3px;
+    background-color: rgb(192, 190, 190);
+  }  
+  .line_back{
+    position:absolute;
+    width:3px;
+    background-color: #ffffff00;    
+  } 
+
+
+
+  // .container-cus {
+  //   position: relative;
+  //   border: 1px solid black;
+  // }
+  .padding-answer-line-mapping{
+      padding-bottom:8px;
+  }
+  
+  .answer-container {
+      width:40px;
+      min-height: 40px;
+      height: auto;
+      background-color:#eef;
+      border:3px solid #eef;
+      margin:2px;
+      float:left;
+      text-align:center;
+      padding-top:5px;
+      cursor:pointer;
+      position:relative;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      flex-direction: column;
+  }
+  
+  .answer-container:hover, .answer-container:focus, .answer-container:active {
+      border: 3px solid;
+  }
+  
+  .round-pointer-right {
+      position: absolute;
+      background-color:#eef;
+      cursor:pointer;
+      width:10px;
+      height:10px;
+      border-radius: 50%;
+      right:0px;
+      top:45%;
+      margin-right:-20px;
+      z-index: 1000;
+  }
+  
+  .round-pointer-left {
+      position: absolute;
+      background-color:#eef;
+      cursor:pointer;
+      width:10px;
+      height:10px;
+      border-radius: 50%;
+      left:0px;
+      top:45%;
+      margin-left:-20px;
+      z-index: 1000;
+  }  

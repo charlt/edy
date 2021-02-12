@@ -1,0 +1,118 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>  
+  </div>
+  <div class="col-md-12 editar-ciclo"> 
+    <form  class="row" [formGroup]="solicitudForm" (ngSubmit)="enviarInformacion()">
+  <div class="col-12">  
+    <div *ngIf="!buscarAlumno" class="form-group">                               
+      <label class="control-label" for="">Alumno:</label>
+      <div class="input-group">
+        <div class="input-group-preppend">
+          <button class="btn btn-outline-secondary" (click) ="buscarAlumno = true;" type="button"><i class="fa fa-search"></i></button>
+        </div>
+        <input class="form-control" [value]="nombreAlumno" placeholder="Da clic en el botón de buscar" disabled>
+      </div>
+      
+    </div>             
+    <app-buscador-persona  *ngIf="buscarAlumno" [idRol]="2" (consultaExitosa)="alumnoSeleccionado($event)"></app-buscador-persona>
+
+    <div class="form-group mb-2">
+
+      <label class="control-label">Tipo de descuento</label><br>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="catalogo1" formControlName="catalogoPago"  name="catalogoPago" class="custom-control-input" value="1" >
+        <label class="custom-control-label" for="catalogo1">Pago libre</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="catalogo2" formControlName="catalogoPago"  name="catalogoPago" class="custom-control-input" value="2">
+        <label class="custom-control-label" for="catalogo2">Pago por catálogo</label>
+      </div>
+    </div>
+    <div class="form-group " rel="1" *ngIf="f.catalogoPago.value == 2 ">
+      
+      <label class="control-label" for="">Pago:</label>
+      <select  formControlName="idPago"  class="form-control" >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="producto.pago_id" *ngFor="let producto of productos">{{producto.nombre_producto}} <span *ngIf="producto.monto">$({{producto.monto}})</span></option>
+      </select>
+      <span class="invalidText" *ngIf="f.idPago.invalid && f.idPago.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+  </div>
+  <div *ngIf="f.catalogoPago.value == 1 " class="col-6">
+    <div class="form-group">                               
+      <label class="control-label" for="beca">Nombre del pago:</label>
+      <input formControlName="nombrePago" class="form-control" id="nombrePago" placeholder="Ingresa el nombre del pago" required>
+      <span class="invalidText" *ngIf="f.nombrePago.invalid && f.nombrePago.touched">
+        {{'fmErrText' | translate}}
+      </span>
+    </div> 
+  </div>
+  <div *ngIf="f.catalogoPago.value == 1 " class="col-6">
+    <div class="form-group">                               
+      <label class="control-label" for="beca">Monto:</label>
+      <input formControlName="monto" class="form-control" id="monto" placeholder="Monto final" type="number" required>
+      <span class="invalidText" *ngIf="f.monto.invalid && f.monto.touched">
+        {{'fmErrNumber' | translate}}
+      </span>
+    </div> 
+  </div>
+  
+  <div class="col-12">
+    <div class="form-group " rel="1">
+      <label class="control-label" for="">Estatus del pago:</label>
+      <select  formControlName="idEstatusSolicitudPago"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="_estatusSolicitudPago.estatus_solicitud_pago_id" *ngFor="let _estatusSolicitudPago of estatusSolicitudPago">{{_estatusSolicitudPago.descripcion}}</option>
+      </select>
+      <span class="invalidText" *ngIf="f.idEstatusSolicitudPago.invalid && f.idEstatusSolicitudPago.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+  </div>  
+  <hr>
+  <div class="col-12">
+  <div class="row" *ngIf="f.idEstatusSolicitudPago.value == 3">
+  <div class="col-12">
+    <div class="form-group " rel="1">
+      <label class="control-label" for="">Forma del pago:</label>
+      <select  formControlName="idFormaPago"  class="form-control"  >
+        <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+        <option  [value]="_formaPago.forma_pago_id" *ngFor="let _formaPago of formaPago">{{_formaPago.descripcion}}</option>
+      </select>
+      <span class="invalidText" *ngIf="f.idFormaPago.invalid && f.idFormaPago.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+  </div>
+  <div class="col-6">
+      <div class="form-group">                               
+        <label class="control-label" for="beca">Fecha del pago:</label>
+        <input formControlName="fechaPago" class="form-control" id="fecha_pago" placeholder="Ingresa la fecha del pago" type="date">
+        <span class="invalidText" *ngIf="f.fechaPago.invalid && f.fechaPago.touched">
+          {{'fmErrDate' | translate}}
+        </span>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">                               
+        <label class="control-label" for="observacion">Observación:</label>
+        <textarea formControlName="observacion" class="form-control" id="observacion" placeholder="Ingresa observación"></textarea>
+        <span class="invalidText" *ngIf="f.observacion.invalid && f.observacion.touched">
+          {{'fmErrText' | translate}}
+        </span>
+      </div>                                                                      
+      
+    </div>
+  </div>
+  </div>
+  <div class="col-12">
+    <button type="submit" class=" mt-3 btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+  </div>
+  </form>
+  </div>
+  
+  </div>

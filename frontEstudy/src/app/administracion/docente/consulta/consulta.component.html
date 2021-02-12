@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-10">
+        <h4>{{title}}</h4><br>
+        <button class=" btn btn-success" (click)="setSelectedRol()" [routerLink]="['/admin/usuario/nuevo']">Agregar docente</button>
+      </div>
+      <div class="col-md-2">
+        <div class="btngroup pull-right" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-outline-primary" (click)="cambiaChat()">
+              <h4><i class="fa fa-comments"></i></h4>
+              <p><small>{{chat}}</small></p>
+            </button>
+        </div>
+      </div>
+    </div>
+    <div class="input-group mt-2 mb-3">
+      <br>
+      <input [formControl]="searchField" type="text" class="form-control" placeholder="{{'SearchInput' | translate}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+     <!-- 1 -->
+     <div class="custom-control custom-radio custom-control-inline">
+      <input [(ngModel)]="tipoForm" [value]="1" type="radio" id="coincidencias" name="tipoForm" class="custom-control-input">
+      <label class="custom-control-label" for="coincidencias">Búsqueda por coincidencias</label>
+    </div>
+    <!-- 2 -->
+    <div class="custom-control custom-radio custom-control-inline">
+      <input [(ngModel)]="tipoForm"  [value]="2" type="radio" id="curp" name="tipoForm" class="custom-control-input">
+      <label class="custom-control-label" for="curp">Búsqueda por CURP</label>
+    </div>
+    <!-- 3 -->
+    <div class="custom-control custom-radio custom-control-inline">
+      <input [(ngModel)]="tipoForm" [value]="3" type="radio" id="correo" name="tipoForm" class="custom-control-input">
+      <label class="custom-control-label" for="correo">Búsqueda por correo</label>
+    </div>
+    <!-- 4 -->
+    <div class="custom-control custom-radio custom-control-inline">
+      <input [(ngModel)]="tipoForm"  [value]="4" type="radio" id="clave" name="tipoForm" class="custom-control-input">
+      <label class="custom-control-label" for="clave">Búsqueda por clave</label>
+    </div>
+    <p><strong style="font-size: small;">Total de registros: {{totalItems}}</strong></p>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>#</th>
+            <th>Clave</th>
+            <th>Nombre</th>
+            <!--th>CURP</th-->
+            <th>Email</th>
+            <th>Carga de contenido</th>
+            <th>Situación</th>
+            <th>Dashboard</th>
+            <th>Plataforma</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!docentes && !loading">
+          <tr>
+            <td colspan="7" class="text-center">No se encontraron docentes</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="loading">
+          <tr>
+            <td colspan="7" class="text-center">
+              <div class="mt-2 mb-2">
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw mb-3"></i>
+                <h5>"Cargando información, por favor espere."</h5>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="docentes">
+          <tr *ngFor="let docente of docentes;let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{docente.clave_profesor}}</td>
+            <td><a [routerLink]="['../dashboard/'+docente.persona_id]"> {{docente.primer_apellido}} {{docente.segundo_apellido}} {{docente.nombre}}</a></td>
+            <!--td>{{docente.curp}}</td-->
+            <td>{{docente.email}}</td>
+            <td>
+              <select class="form-control" [(ngModel)]="docente.carga_contenido" (change)="tipoContenido(docente.carga_contenido, docente.persona_id)">
+                <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+                <option value="0">Desactivado</option>
+                <option value="1">Carga por grupo</option>
+                <option value="2">Carga por materia</option>
+              </select>
+            </td>
+            <td>{{docente.situacion_docente}}</td>
+            <td class="text-center">
+              <a [routerLink]="['../dashboard/'+docente.persona_id]"><i class="fa fa-dashboard  fa-2x"></i></a>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-warning" (click)="verPlataforma(docente)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-center">
+      <ngb-pagination [collectionSize]="totalItems" [pageSize]="itemsPerPage" [(page)]="page" 
+        [maxSize]="4" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+    </div>
+  </div>
+</div>

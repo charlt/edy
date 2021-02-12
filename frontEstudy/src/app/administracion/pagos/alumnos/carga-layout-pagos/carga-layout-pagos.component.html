@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <a href="assets/layout/layout_pagos.xlsx" class="archivo">Descargar layout de carga</a>  
+  </div>
+  <div class="col-md-6">
+    <form [formGroup]="layoutForm">
+      <app-file-upload formControlName="contenido"></app-file-upload><br>
+      <button [disabled]="cargando" type="button" class="btn btn-primary pull-right" (click)="enviar()">
+        <i  *ngIf="cargando" class="fa fa-spin fa-spinner"></i>
+        Enviar información</button>
+    </form>
+  </div>
+  <div class="col-md-6 alert alert-success" role="alert">
+    <p><b>Observaciones</b>:</p>
+    <p><b>1.</b> La fecha deberá ir con un formato de DD/MM/YYYY con ceros incluidos.</p>
+    <p><b>2.</b> El alumno debe tener un plan de pagos en la plataforma para saber si tiene pagos al corriente.</p>
+    <p><b>3.</b> No es necesario cargar los pagos pendientes del alumno, el sistema los reconoce con su plan de pagos</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col col-md-12">
+  <div *ngIf="carga" class="col col-md-6">
+    <div class="alert" [ngClass]="{'alert-success': carga == 1,'alert-warning': carga == 2, 'alert-danger': carga == 3}" role="alert" >
+      <p>{{msjCarga}}</p>
+    </div>
+  </div>
+
+    <table *ngIf="pagos" class="table table-striped table-bordered">
+      <tr>
+        <th colspan="4">
+          No se lograron cargar los pagos de los siguientes alumnos:
+        </th>
+      </tr>
+      <tr>
+        <th>Nombre</th>
+        <th>Clave</th>
+        <th>Nombre de pago</th>
+        <th>Rol</th>
+      </tr>
+      <tr *ngFor="let pago of pagos">
+        <td>{{pago.nombre}}</td>
+        <td>{{pago.clave_alumno}}</td>
+        <td>{{pago.nombre_pago}}</td>
+        <td>{{pago.rol}}</td>
+      </tr>
+    </table>
+  </div>
+
+</div>

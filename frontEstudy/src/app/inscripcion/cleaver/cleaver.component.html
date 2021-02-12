@@ -1,0 +1,65 @@
+<div class="row mt-3 mb-3" *ngIf="bandera && cleaverCompleto == '0'">
+    <div class="col-12">
+        <div>
+            <h4>Prueba de Cleaver</h4>
+            <p>
+                A continuación, te mostraremos un grupo de palabras. Deberás seleccionar una palabra que mejor te describa en tu forma habitual de ser en el día a día.<br><br> En este test no hay respuestas incorrectas o correctas, selecciona la palabra
+                que coincida más contigo. No te presiones y elije lo que más te caracterice.<br><br> Solo podrás seleccionar una palabra que <b>MÁS</b> te describa y una palabra que <b>MENOS</b> te describa del conjunto de palabras.
+            </p>
+        </div>
+        <div class="table-responsive">
+            <form [formGroup]="reactivosForm">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Más</th>
+                            <th>Menos</th>
+                        </tr>
+                    </thead>
+
+                    <div formArrayName="reactivos" style="display: table-row-group;">
+                        <div [formGroupName]="i" *ngFor="let reactivo of reactivosForm.get('reactivos').controls; let i = index" style="display: table-row;">
+                            <td>{{reactivo.controls.nombre_reactivo.value}}</td>
+                            <!-- <td><input formControlName="respuesta" (click)="guardarRespuesta(2, i)" type="radio" value="2"></td> -->
+                            <td>
+                                <div class="custom-control custom-radio">
+                                    <input formControlName="respuesta" (click)="seleccionaRespuesta(2, i)" type="radio" class="custom-control-input" id="rm_{{i}}" value="2">
+                                    <label class="custom-control-label" for="rm_{{i}}"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-radio">
+                                    <input formControlName="respuesta" (click)="seleccionaRespuesta(1, i)" type="radio" class="custom-control-input" id="rl_{{i}}" value="1">
+                                    <label class="custom-control-label" for="rl_{{i}}"></label>
+                                </div>
+                            </td>
+                            <!-- <td><input formControlName="respuesta" (click)="guardarRespuesta(1, i)" type="radio" value="1"></td> -->
+                        </div>
+                    </div>
+
+                </table>
+                <div class="d-flex flex-row bd-highlight mb-3">
+                    <div class="p-2 bd-highlight">
+                        <button [disabled]="idRol == 1" *ngIf="seccion > 0" type="button" class="btn btn-outline-secondary" (click)="changeSeccion(0, 0)">
+              <i *ngIf="cargando" class="fa fa-spin fa-spinner"></i> Reiniciar prueba</button>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <div class="bd-highlight pl-5 pr-5 pt-2">Página {{seccion + 1}} de {{Reactivos.length / 4}}</div>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <button [disabled]="error" type="button" class="btn btn-success pull-right" (click)="changeSeccion(seccion + 1)">
+              <i *ngIf="cargando" class="fa fa-spin fa-spinner"></i> {{botonName}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-3" *ngIf="cleaverCompleto == '1'">
+    <div class="col-12">
+        <div class="alert alert-success"><i class="fa fa-check"></i> Prueba de cleaver contestada correctamente</div>
+    </div>
+</div>

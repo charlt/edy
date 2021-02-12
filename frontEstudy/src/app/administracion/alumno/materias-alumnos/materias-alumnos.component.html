@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-12">
+        <h4>{{title}}</h4>
+    </div>
+    <div class="col-md-8">
+        <app-encabezado-persona [idPersona]="idAlumno" [idRol]="'2'"></app-encabezado-persona>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <!-- <button class="btn btn-success" (click)="agregarMateria(content)">Agregar asignatura</button><br> -->
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success" (click)="agregarMateria(content)">Agregar asignatura</button><br>
+            <button type="button" class="btn btn-secondary" [ngClass]="tipoConsulta == 1 ? 'active':''" (click)="_tipoConsulta(1);">Activas</button>
+            <button type="button" class="btn btn-secondary" [ngClass]="tipoConsulta == 2 ? 'active':''" (click)="_tipoConsulta(2);">Inactivas</button>
+            <button type="button" class="btn btn-secondary" [ngClass]="tipoConsulta == 3 ? 'active':''" (click)="_tipoConsulta(3);">Todas</button>
+        </div>
+        <table class="table table-striped  table-bordered" style="margin-top: 1%;">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Grupo</th>
+                    <th>Tipo</th>
+                    <th>Estatus</th>
+                    <th>Calificación</th>
+                    <th>Reiniciar materia</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="materias">
+                <tr *ngFor="let materia of materias">
+                    <td>{{materia.asignatura}}</td>
+                    <td><a href="javascript:void()"
+                            [routerLink]="['../../../../../../admin/grupo/calificaciones/'+materia.asignatura_grupo_id]">{{materia.nombre_grupo}}</a>
+                    </td>
+                    <td>
+                        <div class="form-group " rel="1">
+                            <select class="form-control" [(ngModel)]="materia.tipo_materia_id" (change)="cambiaTipoMateria(materia.tipo_materia_id, materia.materia_id)">
+                                <option hidden value='' disabled>Selecciona una opción</option>
+                                <option [value]="tipo.tipo_materia_id" *ngFor="let tipo of tiposMaterias">{{tipo.descripcion_tipo_materia}}</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group " rel="1">
+                            <select class="form-control" [(ngModel)]="materia.estatus_materia_id"
+                                (change)="cambiaEstatus(materia.materia_id, materia.estatus_materia_id)">
+                                <option hidden value='so' disabled>Selecciona una opción</option>
+                                <option [value]="estatus.estatus_materia_id" *ngFor="let estatus of _estatus">
+                                    {{estatus.descripcion_estatus_materia}}</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td class="text-center">{{materia.calificacion}}</td>
+                    <td class="text-center"><button class="btn btn-primary"
+                            (click)="reiniciarMateria(materia.materia_id)"><i class="fa fa-refresh"
+                                aria-hidden="true"></i></button></td>
+                    <td class="text-center"><button class="btn btn-danger" (click)="eliminar(materia.materia_id)"><i
+                                class="fa fa-trash" aria-hidden="true"></i></button></td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="!materias">
+                <tr>
+                    <td colspan="20" class="text-center p-3">
+                        <span>No se encontró información</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <app-consulta-asignatura [nivel]="4" [tipo]="'small'" (sucessEvent)="obtieneAsignatura($event)">
+            </app-consulta-asignatura>
+            <div *ngIf="grupos && guarda" class="form-group " rel="1">
+                <label class="control-label" for="">5. Grupo</label>
+                <select class="form-control" [(ngModel)]="asignatura_grupo_id">
+                    <option value="" hidden disabled selected>Selecciona una opción</option>
+                    <option [value]="grupo.asignatura_grupo_id" *ngFor="let grupo of grupos">{{grupo.grupo}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [disabled]="!asignatura_grupo_id || !guarda" type="button" class="btn btn-success"
+                (click)="guardarAsignatura()">Guardar</button>
+            <button type="button" class="btn btn-outline-dark" (click)="close()">Salir</button>
+        </div>
+    </ng-template>
+</div>

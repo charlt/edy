@@ -1,0 +1,4 @@
+
+
+<form-multiple-texto *ngIf="tipo == '1' && bandera" [numRespuestas]="numRespuestas" [reactivos]="reactivos" [idPregunta]="idPregunta" [idActividad]="idActividad" (successEvent)="enviaDatos($event)"></form-multiple-texto>
+<form-multiple-imagen *ngIf="tipo == '2' && bandera" [reactivos]="reactivos"  [idPregunta]="idPregunta" (successEvent)="enviaDatos($event)"></form-multiple-imagen>

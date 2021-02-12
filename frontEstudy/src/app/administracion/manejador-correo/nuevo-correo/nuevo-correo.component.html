@@ -1,0 +1,52 @@
+<div class="row">  
+  <div class="col col-xl-12 col-lg-12">
+    <div class="container">  
+      <h4 class="top-buffer">{{title}}</h4>
+      <div class="col-md-12">
+        <form [formGroup]="correoForm" (ngSubmit)="enviarInformacion()">
+          <div class="form-group">
+            <label class="control-label">{{'asuntoCorreo' | translate}}</label>
+            <input formControlName="asuntoCorreo" class="form-control" type="text">
+            <span class="invalidText" *ngIf="f.asuntoCorreo.invalid && f.asuntoCorreo.touched">
+              {{'fmErrText' | translate}}
+            </span>                 
+          </div>        
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{'copiaCorreo' | translate}}</label>
+                <input formControlName="copiaCorreo" class="form-control" type="text">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">{{'ocultaCorreo' | translate}}</label>
+                <input formControlName="ocultaCorreo" class="form-control" type="text">
+              </div> 
+            </div>                           
+          </div>  
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">{{'adjuntaCorreo' | translate}}</label>
+                <input formControlName="adjuntaCorreo" (change)="cargaAdjunto($event)" class="form-control" type="file">            
+              </div> 
+            </div>
+            <div *ngIf="idCorreo" class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">{{'archivoCorreo' | translate}}</label>
+                <app-archivo [urlBase]="archivos.datos"></app-archivo>          
+              </div> 
+            </div>            
+          </div>
+          <div class="form-group">
+            <label class="control-label">{{'cuerpoCorreo' | translate}}</label>
+            <!-- <ckeditor [editor]="Editor" formControlName="textoCorreo"  (change)="datosEditor($event)" name="ckeditor"></ckeditor><br>  -->
+            <ckeditor [config]="{allowedContent : true }" formControlName="textoCorreo" name="ckeditor" (change)="datosEditor($event)"></ckeditor><br>    
+            <button [hidden]="tipoAdmin == 0" [disabled]="buttonDisabled" type="submit" class="btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+          </div>   
+        </form> 
+      </div>
+    </div>       
+  </div>        
+</div>

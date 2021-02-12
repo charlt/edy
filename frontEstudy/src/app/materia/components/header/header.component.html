@@ -1,0 +1,216 @@
+<nav class="navbar navbar-expand-lg fixed-top" [style.background-color]="universidad.color">
+    <div class="nav-item dropdown row" ngbDropdown>
+        <div class="btn-success regreso back">
+        <a class="btn col" (click)="regresoPag()"><i class="fa fa-reply"></i></a>
+        </div>
+            <a *ngIf="rol.rol_id != '3'" class="nav-link mat" title="{{selectedMateria.asignatura}}" href="javascript:void(0)" ngbDropdownToggle>
+                {{selectedMateria.asignatura}}<br>
+                
+                <small  *ngIf="selectedMateria.activa == 1">
+                    <span *ngIf="selectedMateria.estado == 1" > Cierra el  {{selectedMateria.fecha_fin | date: "dd/MM/yyyy"}} </span>   
+                    <span *ngIf="selectedMateria.estado == 0" > Sin fecha de cierre </span>
+                </small>
+                <small *ngIf="selectedMateria.activa == 0">
+                    <span  *ngIf="selectedMateria.estado == 2"> Abre el  {{selectedMateria.fecha_inicio | date: "dd/MM/yyyy"}} </span>   
+                    <span *ngIf="selectedMateria.estado == 3" > Cerró el  {{selectedMateria.fecha_fin | date: "dd/MM/yyyy"}} </span>
+                </small>
+            </a>
+        
+            <div *ngIf="rol.rol_id == '3'" class="pt-3 nav-link text-white" style="margin-top: 4px">
+                {{selectedMateria.asignatura}} 
+                <small>({{'_vistaProfesor' | translate }}) </small>
+            </div>
+            <ul class="dropdown-menu-right messages" ngbDropdownMenu>
+                <li class="media  dropdown-materia" *ngFor="let materia of materias; let i = index" (click)="cambiaMateria(materia.materia_id)">
+                    <img *ngIf="materia.url_imagen_previa" class="d-flex align-self-center mr-3"
+                        src="{{materia.url_imagen_previa}}" style="width: 20%;" height="20%">
+                        <div class="media-body">
+                        <h5 class="mt-0 mb-1">{{materia.asignatura}}</h5>
+                        <p class="small text-muted" *ngIf="materia.activa == 1">
+                            <span *ngIf="materia.estado == 1" > Cierra el  {{materia.fecha_fin | date: "dd/MM/yyyy"}} </span>   
+                            <span *ngIf="materia.estado == 0" > Sin fecha de cierre </span>
+                        </p>
+                        <p class="small text-muted" *ngIf="materia.activa == 0">
+                            <span  *ngIf="materia.estado == 2"> Abre el  {{materia.fecha_inicio | date: "dd/MM/yyyy"}} </span>   
+                            <span *ngIf="materia.estado == 3" > Cerró el  {{materia.fecha_fin | date: "dd/MM/yyyy"}} </span>
+                        </p>
+                    </div>
+                </li>
+            </ul>  
+    </div>
+    <div class="nav-item dropdown row hide" ngbDropdown>
+    <ul class="hnav">
+        <li class="nav-item">
+        <a placement="bottom" ngbTooltip="Mensajeria" 
+        [routerLink]="['mensajes/'+idMateria]">
+                <i class="fa fa-envelope nav-link mt-1 badge-wrapper">
+                <span *ngIf="numMensajes >= 1" class="badge badge-success">{{numMensajes}}</span>
+                <span *ngIf="!numMensajes" class="badge badge-secondary">0</span>
+            </i>
+        </a>
+      </li>
+      <li li class="nav-item dropdown iz" ngbDropdown >
+        <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle placement="bottom" ngbTooltip="Retroalimentación">
+            <i class="fa fa-exchange"></i> <b class="caret"></b><span class="sr-only">(current)</span>
+            <span *ngIf="numRetros >= 1" class="badge badge-success">{{numRetros}}</span>
+            <span *ngIf="!numRetros" class="badge badge-secondary">0</span> 
+        </a>
+        <div *ngIf="numRetros" class="dropdown-menu-right notification" style="width: 300px;" ngbDropdownMenu>
+           <div *ngFor="let mensajeRetro of mensajesRetros">
+                <a href="javascript:void(0)" class="dropdown-item" [routerLink]="['./actividad/'+ mensajeRetro.actividad_id]">
+                   <b>- {{mensajeRetro.actividad_nombre}}</b>
+                   <p class="contenido">{{mensajeRetro.texto}}</p>
+                </a><li class="dropdown-divider"></li>
+            </div> 
+        </div>
+        <div *ngIf="!numRetros" class="dropdown-menu-right notification" style="width: 323px;" ngbDropdownMenu>
+                 <a href="javascript:void(0)" class="dropdown-item">
+                <b>{{'HederRetroalimentacion' | translate }}</b>
+                 </a>
+         </div>
+    </li>
+        <li class="nav-item">
+           <a placement="bottom" ngbTooltip="Avisos" [routerLink]="['/materia/avisos/2']" >
+               <i class="nav-link  mt-1 fa fa-bell-o badge-wrapper" aria-hidden="true">
+                    <span *ngIf="_numAviso >= 1" class="badge badge-success">{{_numAviso}}</span>
+                    <span *ngIf="_numAviso == 0 " class="badge badge-secondary">{{_numAviso}}</span>
+            </i></a>
+        </li>
+    </ul>
+</div>
+
+        <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
+        <!-- <span class="navbar-toggler-icon"></span> -->
+        <i class="fa fa-bars text-muted" aria-hidden="true"></i>
+        </button>
+    <div class="collapse navbar-collapse">
+        <!--form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="{{ 'Search' | translate }}" >
+        </form-->
+        <ul class="navbar-nav ml-auto avan">
+                <li class="nav-item nav-progress " >
+                        <a href="javascript:void(0)" class="nav-link mt-1" [routerLink]="['./avance']">
+                            <small>Avance: {{porcentaje}}%</small>
+                            <div class="progress" style="height:10px"> 
+                                    <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{'width': porcentaje + '%' , 'height': '10px'}" aria-valuenow="porcentaje" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </a>
+                    </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <!--li class="nav-item d-none d-xl-block">
+                <a
+                    href="https://github.com/start-angular/SB-Admin-BS4-Angular-7/archive/master.zip"
+                    class="nav-link btn mt-1" role="button"
+                    style="padding: .375rem 1rem !important;border-color: #999;"
+                >
+                    {{ 'Download Now' | translate }}
+                </a>
+            </li--> &nbsp;
+
+          <li class="nav-item">
+            <!-- <button type="button" class="btn btn-secondary" (click)="openModalMensaje(contentModal)"><i class="fa fa-envelope"></i> Enviar mensaje</button> -->
+            <a placement="bottom" ngbTooltip="Mensajeria" 
+            [routerLink]="['mensajes/'+idMateria]">
+                    <i [ngClass]="docenteActivo ? 'fa-user-circle-o' : 'fa-envelope'" class="fa  nav-link mt-1 badge-wrapper" >
+                    <span *ngIf="numMensajes >= 1" class="badge badge-success">{{numMensajes}}</span>
+                    <span *ngIf="!numMensajes && docenteActivo"  class="badge badge-success">en linea</span>
+                    <span *ngIf="!numMensajes && !docenteActivo" class="badge badge-secondary">0</span>
+                </i>
+            </a>
+          </li>
+        <li li class="nav-item dropdown " ngbDropdown >
+            <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle placement="bottom" ngbTooltip="Retroalimentación">
+                <i class="fa fa-exchange"></i> <b class="caret"></b><span class="sr-only">(current)</span>
+                <span *ngIf="numRetros >= 1" class="badge badge-success">{{numRetros}}</span>
+                <span *ngIf="!numRetros" class="badge badge-secondary">0</span> 
+            </a>
+            <div *ngIf="numRetros" class="dropdown-menu-right notification" style="width: 300px;" ngbDropdownMenu>
+               <div *ngFor="let mensajeRetro of mensajesRetros">
+                    <a href="javascript:void(0)" class="dropdown-item" (click)="nuevoLink(mensajeRetro.actividad_id)">
+                       <b>- {{mensajeRetro.actividad_nombre}}</b>
+                       <p class="contenido">{{mensajeRetro.texto}}</p>
+                    </a><li class="dropdown-divider"></li>
+                </div>
+                <div style="text-align: center;">
+                    <a href="javascript:void()" [routerLink]="['../learning/bandeja-retro/'+idMateria]">Ir a bandeja de retroalimentaciones</a>
+                </div>
+            </div>
+            <div *ngIf="!numRetros" class="dropdown-menu-right notification" style="width: 323px;" ngbDropdownMenu>
+                     <a href="javascript:void(0)" class="dropdown-item">
+                        <b>{{'HederRetroalimentacion' | translate }}</b>
+                     </a><hr>
+                     <div style="text-align: center;">
+                        <a href="javascript:void()" [routerLink]="['../learning/bandeja-retro/'+idMateria]">Ir a bandeja de retroalimentaciones</a>
+                    </div>
+             </div>
+        </li>
+            <li class="nav-item">
+               <a placement="bottom" id="modalBtn" ngbTooltip="Avisos" [routerLink]="['/materia/avisos/2']">
+                   <i class="nav-link  mt-1 fa fa-bell-o badge-wrapper" aria-hidden="true">
+                        <span *ngIf="_numAviso >= 1" class="badge badge-success">{{_numAviso}}</span>
+                        <span *ngIf="_numAviso == 0 " class="badge badge-secondary">{{_numAviso}}</span>
+                </i></a>
+            </li>
+            <li class="nav-item dropdown user-menu" ngbDropdown>
+                <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle >
+                    <app-logotipo-usuario [iniciales]="nombre" [ancho]="25" [alto]="25"  [tamLetra]="15" [color]="color"></app-logotipo-usuario>
+                    {{identity.nombre + ' ' + identity.primer_apellido }}       
+                                                
+                    <!-- <i class="fa fa-user"></i>  -->
+                   
+                </a>
+                <div class="dropdown-menu  dropdown-menu-left " ngbDropdownMenu  >
+                    <!--a class="dropdown-item" href="javascript:void(0)">
+                        <i class="fa fa-fw fa-envelope"></i> {{ 'Inbox' | translate }}
+                    </a-->
+                    <!--a class="dropdown-item" href="javascript:void(0)">
+                        <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
+                    </a-->
+                    <a [routerLink]="['./perfil']" [routerLinkActive]="['router-link-active']" class="dropdown-item" href="javascript:void(0)">
+                        <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
+                    </a>
+                    <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">
+                        <i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}
+                    </a>
+                </div>
+            </li>
+            
+        </ul>
+    </div>
+    <!--ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title">Avisos</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="_numAviso">
+                <div *ngFor="let aviso of avisos">
+                    <span class="nav-link mt-1 badge badge-success  badge-sm pull-right">{{'_caduca' | translate}} {{aviso.fecha_fin | date: "dd/MM/yyyy"}}</span>
+                    <h5>{{aviso.titulo }}</h5> 
+                    <div class="form-check">
+                        <input (change)="marcarAviso(aviso.avisos_grupo_id)" class="form-check-input" type="checkbox" id="autoSizingCheck2" [value]="aviso.avisos_grupo_id">
+                        <label class="form-check-label" for="autoSizingCheck2">
+                        Marcar como visto
+                        </label>
+                    </div>
+                    <p [innerHTML]="aviso.mensaje"></p>
+                    <app-archivo class="archivo" *ngIf="aviso.adjunto" [urlBase]="aviso.adjunto"></app-archivo><hr class="new1">
+                </div>
+            </div>
+            <div *ngIf="_numAviso == 0">
+                <span>No tienes avisos</span>
+            </div>
+            <a [routerLink]="['/materia/avisos/2']" (click)="c('Close click')">Ver todos los avisos</a>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+        </div>
+</ng-template-->
+    <!--Scroll to top-->
+    <button [ngClass]="{'show-scroll': showScroll}" (click)="scrollToTop()" class="buttons scroll-to-top">
+        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+    </button>
+</nav>  

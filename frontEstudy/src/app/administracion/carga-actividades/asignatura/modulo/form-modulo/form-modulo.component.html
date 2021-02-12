@@ -1,0 +1,46 @@
+	<form   class="col-md-12" [formGroup]="moduloForm" (ngSubmit)="enviarInfoModulo()">
+		<div class="form-group ">
+		 <div class="row">
+			<div class="col-md-12">
+				<div class="form-group container-modulo">
+					<label class="control-label" for="nombre_modulo">{{'NombreModulo' | translate}}</label>
+					<input class="form-control"  formControlName="nombreModulo"  placeholder="{{'NombreSeleccion' | translate}}" type="text" required>
+					<span class="invalidText" *ngIf="f.nombreModulo.invalid && f.nombreModulo.touched">
+						{{'fmErrModuloName' | translate}}
+					</span>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group container-modulo">
+					<label class="control-label" for="numero_modulo">{{'NumeroModulo' | translate}}</label>
+					<input class="form-control"  formControlName="numeroModulo"  placeholder="{{'NumeroSeleccion' | translate}}" type="number">
+					<span class="invalidText" *ngIf="f.numeroModulo.invalid && f.numeroModulo.touched">
+						{{'fmErrField' | translate}}
+					</span>
+				</div>
+			</div>
+			<div class="col-md-6"  [hidden]="idModulo" >
+				<div class="row">
+					<div class="col-6 mt-3">
+							<input formControlName="promedio_modulo" type="checkbox" class="custom-control-input " id="promedio_modulo" name="promedio_modulo">
+							<label class="custom-control-label" for="promedio_modulo">¿Deseas promediar por Bloque?</label>
+					</div>
+					<div *ngIf="f.promedio_modulo.value" class="col-6 mt-3">
+						<div class="form-group">
+							<label class="control-label" for="porcentaje">Ponderación del Bloque</label>
+							<input class="form-control"  formControlName="porcentaje"  placeholder="Ingresa el valor que tiene en la asignatura" type="number">
+							<span class="invalidText" *ngIf="f.porcentaje.invalid && f.porcentaje.touched">
+								{{'fmErrField' | translate}}
+							</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-12">
+				<button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right guardar-modulo">{{'fmSave' | translate}}</button>
+
+			</div>
+		</div>
+		</div>
+	</form>

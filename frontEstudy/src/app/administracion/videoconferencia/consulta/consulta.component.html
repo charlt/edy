@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-info" [ngClass]="tipo == 1 ? 'active':''" (click)="consultaVideoconf(1);"
+        [disabled]="cargaConf">Pasadas</button>
+      <button type="button" class="btn btn-info" [ngClass]="tipo == 2 ? 'active':''" (click)="consultaVideoconf(2);"
+        [disabled]="cargaConf">Encurso</button>
+      <button type="button" class="btn btn-info" [ngClass]="tipo == 3 ? 'active':''" (click)="consultaVideoconf(3);"
+        [disabled]="cargaConf">Pendientes</button>
+    </div>
+    <hr>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" (keyup)="busquedaVideocnf($event.target.value)" placeholder="{{'SearchInput' | translate}}"
+        aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th *ngIf="tipo != 3">Asistencia</th>
+            <th *ngIf="tipo == 2">Ir a conferencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let video of videoconferencias | filter:search;">
+            <td>{{video.nombre}}</td>
+            <td>{{video.descripcion}}</td>
+            <td><span *ngIf="video.fecha_inicio">{{video.fecha_inicio | date: "dd/MM/yyyy"}}
+                {{video.fecha_inicio | date: "shortTime"}}</span></td>
+            <td><span *ngIf="video.fecha_fin">{{video.fecha_fin | date: "dd/MM/yyyy"}}
+                {{video.fecha_fin| date: "shortTime"}}</span></td>
+            <td *ngIf="tipo != 3" class="text-center"><button class="btn btn-primary"
+                [routerLink]="['../asistencia/'+ video.videoconferencia_id]"><i class="fa fa-list"
+                  aria-hidden="true"></i></button></td>
+            <td *ngIf="tipo == 2" [ngClass]="video.estatus == 2 ? 'alert-warning': ''" class="text-center">
+              <button *ngIf="video.estatus == 1" [disabled]="bloqueoBoton == true" class="btn btn-success"
+                (click)="consultaVideoConferencia(video)"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+              <span *ngIf="video.estatus == 2"><i class="fa fa-check"></i><br> Finalizada por el profesor</span>
+            </td>
+          </tr>
+          <tr *ngIf="(videoconferencias | filter: search).length === 0 && !cargaConf">
+            <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+          </tr>
+          <tr *ngIf="cargaConf">
+            <td colspan="12" class="text-center">
+              <i class="fa fa-spin fa-spinner" aria-hidden="true"></i>
+              <h5>Cargando información.</h5>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <ngb-pagination *ngIf="totalItems" [collectionSize]="totalItems" [pageSize]="itemsPerPage"
+          [(page)]="page" [maxSize]="4" [rotate]="true" (pageChange)="consultaVideoconf(tipo)"></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

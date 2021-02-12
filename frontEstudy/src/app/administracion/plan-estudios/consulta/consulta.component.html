@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col col-xl-12 col-lg-12">
+      <h4 class="top-buffer">{{title}}</h4>
+      <br>
+      <a  [routerLink]="['../nuevo']" class="btn btn-success"><i class="fa fa-plus"></i> {{'NewSyllabus' | translate}}</a>
+      <hr>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" [(ngModel)]="search" placeholder="{{'SearchInput' | translate}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+            </div>
+          </div>        
+          <div class=" table-responsive">
+            <table class="table table-striped table-bordered ">
+              <tbody><tr>
+                <th>{{'KeySyllabus' | translate}}</th>
+                <th>{{'NameSyllabus' | translate}} </th>
+                <th>{{'PeriodSyllabus' | translate}}</th>
+                <th>{{'TypePeriod' | translate}}</th>
+                <th>{{'CareerSyllabus' | translate}}</th>  
+                <!--th>{{'NumberRVOE' | translate}}</th-->    
+                <th>{{'RVOE' | translate}}</th>
+                <!--th>{{'MinScore' | translate}}</th>
+                <th>{{'MaxScore' | translate}}</th-->            
+                <th>{{'ResponsibleCURP' | translate}}</th>
+                <th>{{'CheckSyllabus' | translate}}</th>
+                <th [hidden]="tipoAdmin == 0">{{'Edit' | translate}}</th>
+                <th [hidden]="tipoAdmin == 0">{{'Erase' | translate}}</th>                                      
+              </tr>
+              <tr *ngIf="(planEstudios | filter: search).length === 0">
+                <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+              </tr>
+                <tr *ngFor="let planEstudio of planEstudios | filter:search">
+                  <td>{{planEstudio.plan_estudio_clave}}</td>
+                  <td>{{planEstudio.plan_estudio}}</td>
+                  <td>{{planEstudio.total_periodos}}</td>
+                  <td>{{planEstudio.periodo}}</td>
+                  <td>{{planEstudio.carrera}}</td>
+                  <!--td>{{planEstudio.no_rvoe}}</td-->
+                  <td>{{planEstudio.rvoe}}</td>
+                  <!--td>{{planEstudio.calif_min}}</td>
+                  <td>{{planEstudio.calif_max}}</td-->
+                  <td>{{planEstudio.curp_responsable}}</td>
+                  <td>
+                    <a  [routerLink]="['../vistaGeneral/'+planEstudio.plan_estudio_id+'/'+planEstudio.carrera_id]" class="btn btn-warning"><i class="fa fa-eye"></i></a>
+                  </td>
+                  <td [hidden]="tipoAdmin == 0">
+                    <a  [routerLink]="['../editar/'+planEstudio.plan_estudio_id+'/'+planEstudio.carrera_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                  </td>
+                  <td [hidden]="tipoAdmin == 0">
+                    <button (click)="eliminar(planEstudio.plan_estudio_id)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                  </td>
+                </tr>          
+            </tbody></table>
+          </div>
+  </div>
+</div>
+
+
+

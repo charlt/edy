@@ -1,0 +1,35 @@
+    
+<div class="col-md-12">
+  <div class="row">  
+    <div class="container">                 
+      <div class="col-md-12">
+        <form (ngSubmit)="enviarInformacion()">
+          <div class="form-group">
+            <label class="control-label">{{'asuntoCorreo' | translate}}</label>
+            <input class="form-control" type="text">
+          </div>        
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">{{'copiaCorreo' | translate}}</label>
+                <input class="form-control" type="text">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">{{'ocultaCorreo' | translate}}</label>
+                <input class="form-control" type="text">
+              </div> 
+            </div>                           
+          </div>   
+          <div class="form-group">
+            <label class="control-label">{{'cuerpoCorreo' | translate}}</label>
+            <!-- <ckeditor [editor]="Editor" [(ngModel)]="model.editorData" (change)="datosEditor($event)" name="ckeditor"></ckeditor><br>    -->
+            <button [hidden]="tipoAdmin == 0" [disabled]="buttonDisabled" type="submit" class="btn btn-primary pull-right">{{'fmSave' | translate}}</button>
+          </div>   
+        </form> 
+      </div>
+    </div>       
+  </div>        
+</div>
+

@@ -1,0 +1,28 @@
+<div class="row">
+<div class="col-md-6">
+  <h5 *ngIf="alumno">Notas de {{alumno.nombre}} {{alumno.primer_apellido}} {{alumno.segundo_apellido}}  </h5>
+  <h4 *ngIf="actividad" class="text-info">{{actividad.actividad_nombre}}</h4>
+  
+    <div class="form-group" >
+      <ckeditor [config]="{toolbar: simpleEditor, extraPlugins: 'justify'}" [(ngModel)]="texto" name="notas" id="notas"></ckeditor>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-success pull-right" (click)="enviar(texto)">Enviar</button>
+    </div>
+    </div>
+  </div>
+
+    <div class="col-md-6 ">
+      <h4>Mis notas</h4>
+      <div class="alert alert-secondary" role="alert" *ngIf="!nota" >
+        No tienes notas de este alumno
+      </div>
+        <div class="alert alert-secondary" role="alert" *ngFor="let _nota of nota; let i = index " >
+            <button class="btn btn-light btn-accion pull-right btn-sm" (click)="eliminaNotas(_nota.nota_id,i)"><i class="fa fa-times"></i></button>
+            <p [innerHtml]="_nota.texto"></p> 
+        </div>
+      </div>
+</div>
+
+    

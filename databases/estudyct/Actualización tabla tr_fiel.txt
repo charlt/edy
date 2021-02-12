@@ -1,0 +1,17 @@
+ALTER TABLE `tr_fiel`
+	DROP COLUMN `fiel_cer`,
+	DROP COLUMN `fiel_key`,
+	DROP COLUMN `fiel_pass`,
+	DROP COLUMN `fiel_pass_2`;
+
+
+ALTER TABLE `tr_fiel`
+	ADD COLUMN `fiel_cer_mec` VARCHAR(100) NOT NULL AFTER `institucion_id`,
+	ADD COLUMN `fiel_key_mec` VARCHAR(100) NOT NULL AFTER `fiel_cer_mec`,
+	ADD COLUMN `fiel_pass_mec` VARCHAR(100) NOT NULL AFTER `fiel_key_mec`,
+	ADD COLUMN `fiel_cer_met` VARCHAR(100) NOT NULL AFTER `fiel_pass_mec`,
+	ADD COLUMN `fiel_key_met` VARCHAR(100) NOT NULL AFTER `fiel_cer_met`,
+	ADD COLUMN `fiel_pass_met` VARCHAR(100) NOT NULL AFTER `fiel_key_met`,
+	ADD COLUMN `fiel_cer_met_2` VARCHAR(100) NOT NULL AFTER `fiel_pass_met`,
+	ADD COLUMN `fiel_ket_met_2` VARCHAR(100) NOT NULL AFTER `fiel_cer_met_2`,
+	ADD COLUMN `fiel_pass_met_2` VARCHAR(100) NOT NULL AFTER `fiel_ket_met_2`;

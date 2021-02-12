@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let materia of materias">
+      <div class="row card-materia" (click)="seleccionaMateria(materia.id_materia)">
+          <div class="col-md-12 card card-estudy" >
+              <p class="text-materias">{{materia.nom_materia}} </p>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

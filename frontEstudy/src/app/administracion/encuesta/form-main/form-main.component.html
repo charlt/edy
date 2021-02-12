@@ -1,0 +1,4 @@
+<app-form-encuesta *ngIf="paso == 0" (setIdEncuesta)="setPreguntas($event)"></app-form-encuesta>
+<app-form-preguntas *ngIf="paso == 1" [idEncuesta]="idEncuesta" (success)="setReactivos($event)"></app-form-preguntas>
+<app-form-reactivos *ngIf="paso == 2" [idEncuesta]="idEncuesta" [arregloPreguntas]="preguntas" (success)="setNivelEncuesta($event)"></app-form-reactivos>
+<app-form-switch [idAsignaturaGrupo]="idAsignaturaGrupo" *ngIf="paso == 3" [idEncuesta]="idEncuesta" (success)="finalizado($event)"></app-form-switch>

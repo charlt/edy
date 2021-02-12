@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4><br>
+    <div>
+        <a [routerLink]="['../nuevo']" class="btn btn-success"><i class="fa fa-plus"></i> {{'agPrivilegio' | translate}}</a>
+       </div>
+       <hr>
+       <div class="input-group mb-3">
+        <input type="text" class="form-control" [(ngModel)]="search" placeholder="{{'SearchInput' | translate}}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+        </div>
+      </div>
+    <table class="table table-bordered">
+      <thead>
+      <tr class="">
+        <th>{{'tbPrivilegio' | translate}}</th>
+        <th>{{'tbIcono' | translate}}</th>
+        <th>{{'tbUrl' | translate}}</th>
+        <th>Estado</th>
+        <th>{{'Edit' | translate}}</th>
+        <th>{{'Erase' | translate}}</th>
+        <th>{{'fmAsignarPadre' | translate}}</th>
+      </tr>
+    </thead>
+    <tr *ngIf="(privilegio | filter: search).length === 0">
+      <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+    </tr>
+    <tbody *ngFor="let _privilegio of privilegio | filter:search; let i = index ">
+      <tr [ngClass]="{'alert-danger': _privilegio.estatus == 0, 'active': _privilegio.estatus == 1 }" >
+        <td >{{_privilegio.privilegio}}</td>
+        <td ><i class="fa {{_privilegio.icono}}"></i>{{_privilegio.icono}}</td>
+        <td >{{_privilegio.url}}</td>
+        <td>
+          <span *ngIf="_privilegio.estatus == 1">Activo</span>
+          <span *ngIf="_privilegio.estatus == 0">Inactivo</span>
+        </td>
+        <td  class="text-center "> <a [routerLink]="['../editar/'+ _privilegio.privilegio_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a></td>
+        <td  class="text-center "><button class="btn btn-danger" (click)="eliminar(_privilegio.privilegio_id, i)" ><i class="fa fa-trash"></i></button></td>
+        <td  class="text-center "><button class="btn btn-primary" (click)="open(content, _privilegio.privilegio_id, _privilegio.privilegio_padre_id )"><i class="fa fa-pencil"></i></button></td>
+      </tr>
+      <tr *ngFor="let subprivilegio of _privilegio.sub_privilegios" [ngClass]="{'alert-danger': subprivilegio.estatus == 0}">
+        <td>{{subprivilegio.privilegio}}</td>
+        <td><i class="fa {{subprivilegio.icono}}"></i>{{subprivilegio.icono}}</td>
+        <td>{{subprivilegio.url}}</td>
+        <td>
+          <span *ngIf="subprivilegio.estatus == 1">Activo</span>
+          <span *ngIf="subprivilegio.estatus == 0">Inactivo</span>
+        </td>
+        <td  class="text-center "> <a [routerLink]="['../editar/'+ subprivilegio.privilegio_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a></td>
+        <td  class="text-center "><button class="btn btn-danger" (click)="eliminar(subprivilegio.privilegio_id, i)" ><i class="fa fa-trash"></i></button></td>
+        <td  class="text-center "><button class="btn btn-primary" (click)="open(content, subprivilegio.privilegio_id, subprivilegio.privilegio_padre_id)"><i class="fa fa-pencil"></i></button></td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+      <h4 class="modal-title">{{'fmPrivilegios' | translate}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <select class="form-control form-control-md" [(ngModel)]="idPadre" >
+            <option hidden value="" disabled  selected>selecciona</option>
+          <option [value] ="_privilegio.privilegio_id" *ngFor="let _privilegio of privilegio">{{_privilegio.privilegio}}</option> 
+        </select>
+      </div>
+    </div><br>
+    <button class="btn btn-success pull-right" (click)="privilegioPadre(idPadre)" (click)="c('Close click')" (click)="quitarPrivilegio()" >{{'fmSave' | translate}}</button>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="c('Close click')">{{'fmClose' | translate}}</button>
+  </div>
+</ng-template>

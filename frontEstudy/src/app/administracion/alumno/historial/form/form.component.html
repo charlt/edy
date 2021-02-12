@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-12">
+    <form class="row" [formGroup]="historialForm" (ngSubmit)="sendData()" *ngIf="historialForm" [hidden]="!show">
+      <div class="col-12">
+        <div class="form-group">
+          <label class="control-label">Ciclo</label>
+          <select class="form-control" formControlName="id_ciclo">
+            <option value="" hidden disabled selected>Selecciona una opción</option>
+            <option [value]="ciclo.ciclo_id" *ngFor="let ciclo of Ciclos">{{ciclo.ciclo_desc}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <app-consulta-asignatura *ngIf="bandera" (ready)="showForm($event)" [arrayData]="Data" [parentForm]="historialForm" [tipo]="'medium'"></app-consulta-asignatura>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <div class="form-group">
+          <label class="control-label">Elige el estatus del historial</label>
+          <select class="form-control" formControlName="id_estatus_historial">
+            <option value="" hidden disabled selected>Selecciona una opción</option>
+            <option [value]="estatus.estatus_historial_id" *ngFor="let estatus of CicloEstatusHist">{{estatus.estatus_historial_descripcion}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        <div class="form-group">
+          <label class="control-label">Calificación</label>
+          <select formControlName="calificacion" class="form-control">
+            <option value="" disabled selected hidden>Selecciona una opción</option>
+            <option [value]="i" 
+              *ngFor="let calificacion of [].constructor(11); let i = index">{{i}}</option>
+          </select>
+          <!-- <input type="text" class="form-control" formControlName="calificacion"> -->
+        </div>
+      </div>
+      <div class="col-12" *ngIf="hF && hF.situacion_reprobatoria_id">
+        <div class="form-group">
+          <label class="control-label">Situacón de la calificación reprobatoria</label>
+          <select formControlName="situacion_reprobatoria_id" class="form-control">
+            <option value="" disabled selected hidden>Selecciona una opción</option>
+            <option [value]="situacion.situacion_id" 
+              *ngFor="let situacion of catSituacionReprobatoria; let i = index">
+                {{situacion.situacion_descripcion}}
+            </option>
+          </select>
+          <!-- <input type="text" class="form-control" formControlName="calificacion"> -->
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <button [disabled]="historialForm.invalid" type="submit" class="btn btn-primary pull-right">Guardar información</button>
+      </div>
+    </form>
+  </div>
+</div>

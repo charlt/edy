@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-12 mb-3">
+    <h4>{{title}}</h4>
+    <button class="btn btn-success mt-2" (click)="open(content)"><i class="fa fa-plus"></i> Agregar descuento / pago</button>
+  </div>
+  <div class="col-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Tipo</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Día inicio </th>
+          <th scope="col">Día Fin </th>
+          <th>Editar </th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="porcentaje.length == 0">
+          <td colspan="12" class="text-center">{{'trNotFound' | translate}}</td>
+        </tr>
+        <tr *ngFor="let _porcentaje of porcentaje; let i = index">
+          <td [ngClass]="[_porcentaje.tipo_porcentaje == 1 ? 'alert-success':'alert-danger']">
+            <span *ngIf="_porcentaje.tipo_porcentaje == 1">Descuento</span>
+            <span *ngIf="_porcentaje.tipo_porcentaje == 2">Recargo</span>
+          </td>          
+          <td>
+            <span *ngIf="_porcentaje.valor == 1"> $ </span>
+            {{_porcentaje.porcentaje}}
+            <span *ngIf="_porcentaje.valor == 2"> % </span>
+          </td>
+          <td>{{_porcentaje.dia_inicio}}</td>
+          <td>{{_porcentaje.dia_fin}}</td>
+          <td><button class="btn btn-info" (click)="open(content, _porcentaje)"><i class="fa fa-pencil"></i></button></td>
+          <td><button class="btn btn-danger" (click)="eliminar(_porcentaje.porcentaje_pago_id, i)"><i class="fa fa-times"></i></button></td>
+        </tr>
+      </tbody>
+    </table>    
+  </div>
+</div>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <form [formGroup]="porcentajeForm" (ngSubmit)="enviaInformacion()">
+        <div class="form-group mb-2">
+          <label class="control-label">Tipo</label><br>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="descuento" formControlName="tipo" class="custom-control-input" value="1">
+            <label class="custom-control-label" for="descuento">Descuento</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="recargo" formControlName="tipo" class="custom-control-input" value="2">
+            <label class="custom-control-label" for="recargo">Recargo</label>
+          </div>
+        </div>
+        <div class="form-group mb-2">
+          <label class="control-label">Tipo de descuento</label><br>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="monto" formControlName="id_valor" class="custom-control-input" value="1">
+            <label class="custom-control-label" for="monto">Monto</label>
+          </div>        
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="porcentaje" formControlName="id_valor" class="custom-control-input" value="2">
+            <label class="custom-control-label" for="porcentaje">Porcentaje</label>
+          </div>
+        </div>
+        <div class="form-group mb-2">
+          <label class="control-label">Monto del descuento / recargo</label>
+          <input type="number" formControlName="porcentaje" class="form-control">
+        </div>
+        <div class="form-group mb-2">
+          <label class="control-label">Día de inicio</label>
+          <input type="number" formControlName="inicio" class="form-control">
+        </div>
+        <div class="form-group mb-2">
+          <label class="control-label">Día de fin</label>
+          <input type="number" formControlName="fin" class="form-control">
+        </div>
+        <button class="btn btn-success pull-right mt-3" [disabled]="porcentajeForm.invalid">Guardar información</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

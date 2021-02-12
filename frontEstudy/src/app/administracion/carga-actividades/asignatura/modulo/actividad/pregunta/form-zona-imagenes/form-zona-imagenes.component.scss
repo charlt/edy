@@ -1,0 +1,12 @@
+@import "src/app/shared/styles/forms.component.scss";
+
+#canvas{
+    cursor: crosshair;
+}
+.container-cards{
+    margin-bottom: 10px;
+}
+.cambiaCursor:hover{
+    cursor: pointer;
+    color: #dc3545;
+}

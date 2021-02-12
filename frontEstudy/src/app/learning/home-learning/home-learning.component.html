@@ -1,0 +1,152 @@
+<div [@routerTransition]>
+  <div class="container-fluid"> 
+        <div class="row">
+            <div class="col my-2" >
+                <h4>Bienvenido a tu plataforma {{identity.nombre}}</h4>
+            </div>
+        </div>
+        <div *ngIf="privilegios">
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 mt-3" [ngStyle]="{'background-image': 'url('+ urlImg +')', 'background-repeat': 'no-repeat','background-size': '100% ' ,'background-position': 'center'        }">
+                    <!-- <div [ngStyle]="{'background-image': 'url('+ urlImg +')'}"></div> -->
+                    <!-- <img class="img-fluid" src="{{urlImg}}"> -->
+                    <!-- <img class="img-fluid" src="assets/images/richard.jpeg"> -->
+                </div>
+                <div *ngFor="let privilegio of privilegios.principales; let i = index;" [ngClass]="privilegio.size">
+                    <div [routerLink]="[privilegio.url]" class="cursorTarjeta mt-3">
+                        <app-stat [bgClass]="privilegio.color" [icon]="privilegio.icon"  [label]="privilegio.label" [text]="privilegio.text" ></app-stat>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <!--div class="col-xl-4">
+                    <h6 class="text-center">Mi perfil</h6>
+                </div>
+                <div class="col-xl-4">
+                    <h6 class="text-center">Académico</h6>
+                </div>
+                <div class="col-xl-4">
+                    <h6 class="text-center">Servicios escolares</h6>
+                </div-->
+                <div *ngFor="let privilegio of privilegios.secundarios; let i = index;" [ngClass]="privilegio.size">
+                    <div [routerLink]="[privilegio.url]" class="cursorTarjeta rounded mb-2" [ngClass]="privilegio.color"><div class="p-3 text-white text-truncate"><i class="fa" [ngClass]="privilegio.icon"></i> {{privilegio.label}}</div></div>
+                </div>
+            </div>
+        </div>
+        <!--div class="row my-3">
+            <div class="col">
+                <br>
+                <h4 class="text-center">Mis noticias</h4>
+            </div>
+        </div-->
+        
+        <div class="row mt-4" *ngIf="idSituacionAlumno == 1 && idSituacionPago != 2">
+            <div class="col-lg-4 ">
+            <div class="card mb-2" *ngIf="notifPendientes && notifPendientes.length">
+                <div class="card-header">
+                  Notificaciones de las asignaturas
+                </div>
+                <div class="card-body m-0 p-0" >
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item _hover" *ngFor="let notif of notifPendientes" 
+                            (click)="irmateria(notif.materia_id, notif.actividad_id)">
+                            <p class="mb-1"><b>{{notif.notificacion}}</b></p>
+                            <p class="card-text"> Termina el {{notif.fecha_fin | date: "dd/MM/yyyy"}} {{notif.fecha_fin | date: "shortTime"}}</p>
+                        </li>
+                    </ul>
+                </div>
+              </div>
+              <div *ngIf="ultimaActividad">
+                <div class="alert alert-success" >
+                    <p>Continuar con</p>
+                    <h5>{{ultimaActividad.actividad_nombre}}</h5>
+                    <p>{{ultimaActividad.asignatura}} </p>
+                    <a href="javascript:void(0)" (click)="irmateria(ultimaActividad.materia_id,ultimaActividad.actividad_id)" class="pull-right">Ir a mi actividad</a>
+                    <br>
+                </div>
+            </div>
+            </div>
+            <!-- <div *ngIf="videoconferenciasDisponibles && videoconferenciasDisponibles.length" class="col-lg-4"> -->
+                <div class="col-lg-4 mb-2">
+                <div class="card" >
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between py-0 my-0">
+                            <p class="p-0 m-0"><i class="fa fa-group"></i> Clases en línea</p>
+                            <p class="text-success p-0 m-0" (click)="consultaConferenciasActivas()" style="cursor: pointer;">Refrescar <i class="fa fa-refresh" aria-hidden="true" ></i></p>
+                        </div>
+                    </div>
+                    <div *ngIf="cargandoVideoconferencias">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fa fa-spin fa-spinner"></i> Buscando clases</li> 
+                        </ul>
+                    </div>
+                    <div *ngIf="!cargandoVideoconferencias && videoconferenciasDisponibles && videoconferenciasDisponibles.length">
+                        <ul class="list-group list-group-flush" *ngFor="let conf of videoconferenciasDisponibles">
+                            <li class="list-group-item">{{conf.nombre}}
+                                <br>
+                                <a *ngIf="(conf.usuario_zoom_id && (conf.url_meet == null || conf.url_meet == undefined || conf.url_meet == '') && conf.disponible) || 
+                                    ((conf.url_meet != null && conf.url_meet != undefined && conf.url_meet != '') && conf.disponible)" 
+                                    class="btn btn-success pull-right text-white mt-2" (click)="consultaVideoConferencia(conf)">Entrar a clase</a>
+                                <b *ngIf="((!conf.usuario_zoom_id || !conf.disponible) && (conf.url_meet == null || conf.url_meet == undefined || conf.url_meet == '')) ||
+                                ((conf.url_meet != null && conf.url_meet != undefined && conf.url_meet != '') && !conf.disponible)" class="pull-right">Abre el {{conf.fecha_inicio | date:'dd/MM/yyyy hh:mm a'}}</b>
+                            </li> 
+                        </ul>
+                    </div> 
+                    <div *ngIf="!cargandoVideoconferencias && !videoconferenciasDisponibles">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">No tienes clases en línea en este momento</li> 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--div class="col-lg-4">
+                <ngb-carousel>
+                    <ng-template ngbSlide *ngFor="let slider of sliders">
+                        <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%">
+                        <div class="carousel-caption">
+                            <h3>{{slider.label}}</h3>
+                            <p>{{slider.text}}</p>
+                        </div>
+                    </ng-template>
+                </ngb-carousel>
+            </div-->
+        </div>
+
+        <!--button [routerLink]="['/learning/tickets/nuevo']" class="btn btn-success m-2" style="position: fixed; bottom: 0; right: 0;"><i class="fa fa-ticket fa-2x"></i></button-->
+
+  </div>
+</div>
+
+<ng-template #modalVideo let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Videoconferencia</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body m-3">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="text-center">
+              <h5><b>Elige como quieres unirte a la videoconferencia: </b></h5>
+              <p><b>{{conferenciaSelected.nombre}}</b></p>
+              <p class="mb-0">Hora de inicio: {{conferenciaSelected.fecha_inicio | date:'dd/MM/yyyy hh:mm a'}}</p>
+              <p class="mt-0">Hora de finalización: {{conferenciaSelected.fecha_fin | date:'dd/MM/yyyy hh:mm a'}}</p>
+              <hr>
+              <p>Para abrir desde el navegador web da click en el siguiente botón: </p>
+              <button class="btn btn-primary btn-lg" (click)="videoConferencia(tipoConferencia)">
+                  Abrir web
+              </button>
+              <div *ngIf="tipoConferencia == 0">
+                <hr>
+                <p class="mt-3">Para abrir desde la aplicación de zoom da click en el siguiente botón: </p>
+                <a [href]="joinurl" target="_blank" class="btn btn-primary btn-lg" (click)="insertaAcceso(conferenciaSelected.videoconferencia_id)">
+                    Abrir Zoom
+                </a>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close()">Cerrar</button>
+    </div>
+</ng-template>

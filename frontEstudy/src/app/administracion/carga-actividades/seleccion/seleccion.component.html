@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <app-consulta-asignatura [nivel]="4" (sucessEvent)="obtieneAsignatura($event)" ></app-consulta-asignatura>
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-12">    
+      <router-outlet></router-outlet>
+  </div>
+</div>
+  <div *ngIf="asignatura" class="container">
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <h4 *ngIf="asignatura" class="modal-title">Asignatura de {{asignatura.asignatura}}</h4>
+        <p>Selecciona una de las opciones para la materia</p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-2" *ngFor="let opcion of privilegiosContenido" style="cursor:pointer" (click)="selecciona_opcion(opcion.id,opcion.url)">
+        <div class="alert alert-info text-center" >
+          <h2><i class="fa {{opcion.icono}}"></i></h2>
+          <p>{{opcion.opcion}}</p>
+        </div>
+      </div>
+    </div>
+  </div>

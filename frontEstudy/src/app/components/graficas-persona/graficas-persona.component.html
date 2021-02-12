@@ -1,0 +1,44 @@
+<app-encabezado-persona *ngIf="flag" [idPersona]="idPersona" [idRol]="idRol"></app-encabezado-persona>
+<div class="row" >
+  <div class="col-md-12">  
+    <p *ngIf="idRol == 2 && persona" ><b>Teléfono:</b> {{persona.celular}}</p>
+    <p *ngIf="idRol == 2 && persona" ><b>Correo:</b> {{persona.email}}</p>
+    <div style="display: block">
+      <div class="container boder rounded p-2">
+        <canvas height="100" *ngIf="show" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          [legend]="barChartLegend" [chartType]="barChartType" [colors]="chartColors">
+        </canvas>
+      </div>
+      <div *ngIf="Accesos == null && !loading && !show" class="container border rounded py-4 px-5 text-center">
+        <h4>No se encontró información</h4>
+      </div>
+      <div *ngIf="loading" class="container border rounded py-4 px-5 text-center">
+        <h4><i class="fa fa-spin fa-spinner fa-lg"></i> Cargando información</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form class="row" [formGroup]="searchForm" (ngSubmit)="buscarAccesos()" *ngIf="flag">
+  <div class="col-6">
+    <div class="form-group">
+      <label class="control-label">Mes</label>
+      <select formControlName="month" class="form-control">
+        <option value="" selected disabled hidden>Selecciona un mes</option>
+        <option [value]="i+1" *ngFor="let month of months; let i = index;">{{month}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-group">
+      <label class="control-label">Año</label>
+      <select formControlName="year" class="form-control">
+        <option value="" selected disabled hidden>Selecciona un año</option>
+        <option [value]="year" *ngFor="let year of years; let i = index;">{{year}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-12 mt-2">
+    <button class="btn btn-primary pull-right" [disabled]="searchForm.invalid">Buscar</button>
+  </div>
+</form>

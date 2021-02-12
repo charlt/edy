@@ -1,0 +1,50 @@
+
+  <div  class="container-modulo" ><!-- cdkDropList (cdkDropListDropped)="dropModulo($event)" -->
+    <!--  cdkDrag  -->
+    <div class="alert  row   alert-modulo alert-info" role="alert" *ngFor="let modulo of modulos; let i = index ">
+      <div class="col-md-9">
+          <h4 class="text-left" (click)="consulta_actividad(modulo.modulo_id)" style="cursor:pointer">{{modulo.modulo_nombre}}</h4>
+          <p *ngIf="!modulo.grupo_id && modulo.fecha_inicio && modulo.fecha_fin && modulo.fecha_inicio != '0000-00-00 00:00:00' && modulo.fecha_fin != '0000-00-00 00:00:00'">
+              {{ 'Periodo' | translate }}: {{modulo.fecha_inicio | date : "dd/MM/yyyy"}} -
+              {{modulo.fecha_fin | date: "dd/MM/yyyy"}}
+          </p>
+      </div>
+      <div class="col-md-3">
+        <button [hidden]="tipoAdmin == 0"class="btn btn-danger btn-accion" (click)="eliminaModulo(modulo.modulo_id, i)" ><i class="fa fa-trash" ></i></button>
+        <button [hidden]="tipoAdmin == 0" class="btn btn-info btn-accion " (click)="modulo.editar = !modulo.editar"><i class="fa fa-pencil"></i></button>
+        <!--button *ngIf="!modulo.grupo_id"  cdkDragHandle class="btn btn-success btn-accion"><i class="fa fa-arrows-alt" ></i></button-->
+      </div>
+      <div  *ngIf="modulo.editar" class="col-md-12 text-dark" >
+          <form-modulo [idAsignatura]="idAsignatura" [modulo]="modulo" (sucessEvent)="getmodificaModulos($event)" [indexModulo]="modulos.length"></form-modulo>
+      </div>
+      <div  class="col-md-12">
+        <a  class="btn btn-link"  (click)="consulta_actividad(modulo.modulo_id)">
+          <span ><i class="fa fa-plus-square"></i> {{'verActividades' | translate}}</span>  
+        </a>
+      </div>    
+      
+    </div>
+    <div *ngIf="!modulos || !modulos.length" class="alert  row alert-modulo alert-info text-center" role="alert">
+      <div class="col-12">
+        <h4 *ngIf="tipoConsulta == 1 || tipoConsulta == 3">No hay Bloques cargados</h4>
+        <h4 *ngIf="tipoConsulta == 2">No hay Bloques cargados por docentes en grupo</h4>
+        
+      </div>
+    </div>
+    <div *ngIf="tipoConsulta == 1 || tipoConsulta == 3" class="row alert alert-info text-center" >
+      <div *ngIf="!nuevoModulo" class="col-md-12"  >        
+          <h5 style="cursor:pointer" (click)="nuevoModulo = !nuevoModulo" ><i class="fa fa-plus"></i> {{'nuevaSeccion' | translate}}</h5>
+      </div>		
+      <div *ngIf="nuevoModulo"  class="col-md-12"  >
+          <div class="alert alert-info">
+            <button class="btn btn-light btn-accion "  (click)="nuevoModulo = false"><i class="fa fa-times"></i></button>
+            <h4 class="control-label  " >{{'nuevaSeccion' | translate}}</h4>
+            <form-modulo [idAsignatura]="idAsignatura" (sucessEvent)="getmodificaModulo($event)" [porcentaje]="idAsignatura.porcentaje" 
+             [indexModulo]="totalModulosAsignatura + 1"
+             [tipoConsulta]="tipoConsulta"
+             ></form-modulo>
+          </div>    
+      </div>
+    </div>
+  </div>
+  

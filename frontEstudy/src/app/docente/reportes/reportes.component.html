@@ -1,0 +1,97 @@
+<!-- <div class="row"> -->
+<!-- <div class="col-md-12"> -->
+<h4> Lista de Asistencia y Evaluación Continua</h4>
+<div class="row">
+    <div class="col-md-4">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" (click)="generaReporteAsistencia()">
+                        <div class="card cTipo1 text-center">
+                            <div class="card-body">
+                                <h1><i class="fa fa-list"></i></h1>
+                                <p>Lista de Asistencias</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" (click)="generaReporteEvaluacion()">
+                        <div class="card cTipo1 text-center">
+                            <div class="card-body">
+                                <h1><i class="fa fa-file"></i></h1>
+                                <p>Evaluación continua</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" (click)="formulario(0)">
+                        <div class="card cTipo1 text-center">
+                            <div class="card-body">
+                                <h1><i class="fa fa-file-text"></i></h1>
+                                <p>Acta de Calificación</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" (click)="generaReporteCalificaciones()">
+                        <div class="card cTipo1 text-center">
+                            <div class="card-body">
+                                <h1><i class="fa fa-file-o"></i></h1>
+                                <p>Calificación Actividad</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" (click)="formulario(1)">
+                        <div class="card cTipo1 text-center">
+                            <div class="card-body">
+                                <h1><i class="fa fa-file-text"></i></h1>
+                                <p>Acta de Calificación Irregulares</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="row mt-5" *ngIf="muestraForm == true">
+            <div class="col-md-12">
+                <form [formGroup]="reporteForm" (ngSubmit)="enviarInformacion()">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group" rel="1">
+                                <label class="control-label" for="_actividades">Selecciona una actividad</label>
+                                <select formControlName="_actividades" class="form-control">
+                  <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+                  <option [value]="actividad.actividad_id" *ngFor="let actividad of actividades">{{actividad.actividad_nombre}}</option>
+                </select>
+                                <span class="invalidText" *ngIf="f._actividades.invalid && f._actividades.touched">
+                  {{'fmErrSelect' | translate}}
+                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label" for="fecha_inicio"><i class="fa fa-calendar"></i> Fecha inicio</label>
+                                <input formControlName="fecha_inicio" class="form-control" id="fecha_inicio" type="date">
+                                <span class="invalidText" *ngIf="f.fecha_inicio.invalid && f.fecha_inicio.touched">
+                  {{'fmErrDateStart' | translate}}
+                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label" for="fecha_fin"><i class="fa fa-calendar"></i> Fecha fin</label>
+                                <input formControlName="fecha_fin" class="form-control" id="fecha_fin" type="date">
+                                <span class="invalidText" *ngIf="f.fecha_fin.invalid && f.fecha_fin.touched">
+                  {{'fmErrDateFinish' | translate}}
+                </span>
+                            </div>
+                        </div>
+                    </div><br>
+                    <button class="btn btn-success pull-right" type="submit">Enviar información</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

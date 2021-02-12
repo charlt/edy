@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-12 text-center">
+    <h4>Guardar en </h4><img src="assets/dropbox/icono.jpg" width="80px">
+    <p class="mt-2"><b>Videoconferencia: </b><br>{{videoconferencia.nombre}}</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <form *ngIf="videosForm && !urlDropbox" [formGroup]="videosForm" (ngSubmit)="enviaArchivo()">
+      <!-- <div class="form-group">
+        <label>Nombre del archivo</label>
+        <input class="form-control" type="text">
+      </div>
+      <div class="form-group">
+        <label>Fecha</label>
+        <input class="form-control" type="date">
+      </div> -->
+      <!-- <div class="group mt-3">
+        <input class="text_1" formControlName="nombre_archivo" type="text">
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label class="_label">Nombre del archivo</label>
+      </div> -->
+      <div class="group">
+        <input class="text_1" formControlName="fecha" type="date">
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label  class="_label">Fecha</label>
+      </div>
+      
+      <div class="form-group">
+        <label class="_label-file ml-1">Video</label><br>
+        <input type="file" (change)="onFileChange($event)"/>
+      </div>
+      <button type="submit" class="btn btn-success pull-right" [disabled]="videosForm.invalid || cargando">
+        <span *ngIf="!cargando">Guardar video</span>
+        <span *ngIf="cargando"><i class="fa fa-spinner fa-pulse"></i> Guardando video</span>
+      </button>
+    </form>
+    <div class="text-center" *ngIf="urlDropbox">
+      <!-- <p class="text-dark">Liga del video:</p> -->
+      <a [href]="urlDropbox" target="_blank" class="btn btn-primary btn-block">Ver video</a>
+      <button class="btn btn-light btn-block mt-2" (click)="setForm()">Reemplazar video</button>
+    </div>
+  </div>
+</div>
+<!-- 
+<div class="row centrado">
+  <div class="col-md-4">
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+      <div class="group">
+        <input class="text_1" type="text" name="nombre" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Nombre completo</label>
+      </div>
+      <div class="group">
+        <input class="text_1" type="text" name="materia" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Materia</label>
+      </div>
+      <div class="group">
+        <input class="text_1" type="text" name="grupo" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Grupo</label>
+      </div>
+      <div class="group">
+        <input class="text_1" type="date" name="fecha" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Fecha</label>
+      </div>
+
+      <div style="text-align: left; padding: 15px 0px;">
+        <input type="file" name="file" id="file"/>
+      </div>
+      <div style="text-align: left;">
+        <input type="submit" name="btnenviar" id="btnenviar"/>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-4">
+  <a href="https://www.dropbox.com/sh/b39ua0ot4zbg3fy/AABQmEupd3XeUNsqdeNIMjlBa?dl=0" target="_blank">
+    <img src="img/ver.png" width="100px">
+  </a>
+  </div> 
+</div> -->

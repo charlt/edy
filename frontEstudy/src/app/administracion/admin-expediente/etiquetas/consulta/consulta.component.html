@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4><br>
+    <button class=" btn btn-success" (click)="abrirModal(modalEtiquetas)">
+      <i class="fa fa-plus"></i> Agregar etiqueta</button>
+    <div class="table-responsive mt-3">
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>Clave</th>
+            <th>Etiqueta</th>
+            <th>Descripción</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="Etiquetas">
+          <tr *ngFor="let etiqueta of Etiquetas; let i = index">
+            <td>{{etiqueta.clave}}</td>
+            <td>{{etiqueta.nombre}}</td>
+            <td>{{etiqueta.descripcion}}</td>
+            <td class="text-center">
+              <button class="btn btn-info" (click)="abrirModal(modalEtiquetas, etiqueta)">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-danger" (click)="eliminar(etiqueta, i)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!Etiquetas && !loading">
+          <tr>
+            <td colspan="9" class="text-center">No se encontraron etiquetas</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="loading">
+          <tr>
+            <td colspan="9" class="text-center">
+              <div class="mt-2 mb-2">
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw mb-3"></i>
+                <h5>"Cargando información, por favor espere."</h5>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <div class="d-flex justify-content-center">
+        <ngb-pagination [collectionSize]="totalItems" [pageSize]="itemsPerPage" [(page)]="page" 
+          [maxSize]="4" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<ng-template #modalEtiquetas let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{tipo}} etiqueta</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body px-5">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <form *ngIf="etiquetaForm" [formGroup]="etiquetaForm" (ngSubmit)="modificaEtiqueta()">
+        <div class="form-group">
+          <label class="control-label">Clave: </label>
+          <input class="form-control" type="text" formControlName="clave">
+        </div>
+        <div class="form-group">
+          <label class="control-label">Nombre: </label>
+          <input class="form-control" type="text" formControlName="nombre">
+        </div>
+        <div class="form-group">
+          <label class="control-label">Descripción: </label>
+          <textarea class="form-control" formControlName="descripcion"></textarea>
+        </div>
+        <button class="btn btn-success pull-right mt-3" [disabled]="etiquetaForm.invalid">{{boton}} información</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Salir</button>
+  </div>
+</ng-template>

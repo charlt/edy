@@ -1,0 +1,121 @@
+<!-- <div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <form [formGroup]="switchForm" (ngSubmit)="enviarDatos()" class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label class="control-label">Selecciona a quién va dirigida la encuesta</label>
+          <select class="form-control" formControlName="rol">
+            <option value="" selected disabled hidden>Selecciona una opción</option>
+            <option [value]="rol.rol_id" *ngFor="let rol of Roles; let i = index;">{{rol.rol}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mt-2" *ngIf="sF.nivel">
+        <label>Selecciona la ubicación de la encuesta</label>
+        <div class="form-group">
+          <div class="custom-control custom-radio custom-control-inline"
+            *ngFor="let nivel of Radios; let i = index;">
+            <input formControlName="nivel" type="radio" id="radio_{{i}}" class="custom-control-input" [value]="nivel.valor">
+            <label class="custom-control-label" for="radio_{{i}}">{{nivel.texto}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-2" *ngIf="nivel">
+        <app-consulta-asignatura (ready)="getReady($event)" [parentForm]="switchForm" [tipo]="tipo" [nivel]="nivel"></app-consulta-asignatura>
+      </div>
+      <div class="col-12 mt-2" *ngIf="sF.grupo">
+        <div class="form-group">
+          <label class="control-label">Selecciona un grupo</label>
+          <select class="form-control" formControlName="grupo">
+            <option value="" selected disabled hidden>Selecciona una opción</option>
+            <option [value]="grupo.grupo_id" *ngFor="let grupo of Grupos; let i = index;">{{grupo.nombre_grupo}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mt-2" *ngIf="sF.grupo_asignatura">
+        <div class="form-group">
+          <label class="control-label">Selecciona una asignatura en el grupo</label>
+          <select class="form-control" formControlName="grupo_asignatura">
+            <option value="" selected disabled hidden>Selecciona una opción</option>
+            <option [value]="asignatura.asignatura_grupo_id " *ngFor="let asignatura of Asignaturas; let i = index;">{{asignatura.asignatura}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mt-3">
+        <button class="btn btn-success pull-right" type="submit">Guardar información</button>
+      </div>
+    </form>
+  </div>
+</div> -->
+<div class="row">
+  <div class="col-md-6">
+    <!-- <div class="alert alert-success" role="alert" *ngIf="direcciones && !direcciones[0].aviso_id">
+      <span>{{direcciones}}</span>
+    </div> -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-7">
+    <div *ngIf="encuesta" class="col-md-6 alert alert-success" role="alert">
+      <p>{{encuesta}}</p>
+    </div>
+    <form [formGroup]="formSwitch" (ngSubmit)="enviarDatos()">
+      <div class="row">
+        <div [hidden]="tipoForm == 1" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <label class="control-label">Fecha de inicio:</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="AAAA-MM-DD" name="dp" formControlName="fecha_inicio"
+              [footerTemplate]="footerTemplate_1" ngbDatepicker #d_1="ngbDatepicker" [placement]="'bottom'">
+            <div class="input-group-append">
+              <button #buttonEl class="btn btn-outline-primary calendar" (click)="d_1.toggle()" type="button"><i
+                  class="fa fa-calendar"></i></button>
+            </div>
+          </div>
+          <span class="invalidText" *ngIf="fS.fecha_inicio.invalid && fS.fecha_inicio.touched">
+            {{'fmErrDate' | translate}}
+          </span>
+          <ng-template #footerTemplate_1>
+            <hr class="my-0">
+            <button class="btn btn-primary btn-sm m-2 float-left" (click)="setData(1, today); d_1.close()">Hoy</button>
+            <button class="btn btn-secondary btn-sm m-2 float-right" (click)="d_1.close()">Cerrar</button>
+          </ng-template>
+        </div>
+        <div [hidden]="tipoForm == 1" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+          <label class="control-label">Fecha de fin:</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="AAAA-MM-DD" name="dp" formControlName="fecha_fin"
+              [footerTemplate]="footerTemplate_2" ngbDatepicker #d_2="ngbDatepicker" [placement]="'bottom'">
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary calendar" (click)="d_2.toggle()" type="button"><i
+                  class="fa fa-calendar"></i></button>
+            </div>
+          </div>
+          <ng-template #footerTemplate_2>
+            <hr class="my-0">
+            <button class="btn btn-primary btn-sm m-2 float-left" (click)="setData(2, today); d_2.close()">Hoy</button>
+            <button class="btn btn-secondary btn-sm m-2 float-right" (click)="d_2.close()">Cerrar</button>
+          </ng-template>
+        </div>
+      </div>
+      <form-switch (completado)="disableForm($event)" [idAsignaturaGrupo]="idAsignaturaGrupo" [switchForm]="formSwitch" [tipoForm]="tipoForm"></form-switch>
+      <div class="row">
+        <div class="col-12 mt-3">
+          <button  [disabled]="disabled" [hidden]="tipoAdmin == 0" class="btn btn-success pull-right" type="submit">Guardar
+            información</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-5">
+    <h4 *ngIf="direcciones">Destino del aviso:</h4>
+      <div class="card" *ngFor="let direccion of direcciones; let i = index">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <button class="btn btn-danger pull-right" (click)="eliminaSwitch(direccion.switch_aviso_id, i)"><i class="fa fa-times" aria-hidden="true"></i></button>
+            <p>{{direccion.destino}}</p>
+            <p>Fecha de creación: {{direccion.fecha_creacion | date:"dd/MM/yyyy"}}</p>
+          </blockquote>
+        </div>
+      </div>
+  </div>
+</div>

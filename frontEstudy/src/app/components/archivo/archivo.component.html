@@ -1,0 +1,28 @@
+
+<div class="row" >
+  <div class="col archivo">  
+    <a  *ngIf="tipoVista == 1 && !(ext == 'png' || ext == 'jpg' || ext =='jpeg' || ext == 'gif' || ext== 'avi' || ext == 'jfif' || ext== 'mp4'|| ext== 'm4v' || ext== 'mov' || ext== 'mpg' || ext== 'mpeg' || ext== 'swf' ||
+                 ext == 'mp3' || ext == 'm4a' || ext == 'wav' || ext == 'wma')" class="btn btn-link" href="{{urlArchivo}}"  target="_blank" style="white-space: unset;">
+      <i class="fa {{archivo.icono}}"></i>  
+      <span *ngIf=" nombre"> Descargar {{nombre}}</span>
+      <span *ngIf=" !nombre">{{archivo.tipo}} </span>
+    </a>
+    <button *ngIf=" tipoVista == 1 && (ext == 'png' || ext == 'jpg' || ext=='jpeg' || ext== 'gif' || ext == 'jfif')" type="button" class="btn btn-link" (click)="open(content)"><i class="fa {{archivo.icono}}"></i>{{archivo.tipo}}</button>
+    <button *ngIf=" tipoVista == 1 && ( ext == 'avi' || ext == 'mp4' || ext== 'm4v' || ext== 'mov' || ext== 'mpg' || ext== 'mpeg' || ext== 'swf' )" type="button" class="btn btn-link" (click)="open(contentVideo)"><i class="fa {{archivo.icono}}"></i>{{archivo.tipo}}</button>
+    <audio *ngIf="ext == 'mp3' || ext == 'm4a' || ext == 'wav' || ext == 'wma'" width="100%" height="100%" [src]="urlArchivo" preload="auto" controls></audio>
+    <!-- <button *ngIf="ext == 'mp3' || ext == 'm4a' || ext == 'wav' || ext == 'wma'" type="button"><i class="fa {{archivo.icono}}"></i>{{archivo.tipo}}</button> -->
+    <img *ngIf="tipoVista == 2 && (ext == 'png' || ext == 'jpg' || ext=='jpeg' || ext== 'gif' || ext == 'jfif')" width="100%" [src]="urlArchivo" alt="" aria-controls=""><br>
+    <video *ngIf="tipoVista == 2 && ( ext == 'avi' || ext == 'mp4' || ext== 'm4v' || ext== 'mov' || ext== 'mpg' || ext== 'mpeg' || ext== 'swf' )" width="100%" [src]="urlArchivo" alt="" controls></video><br>
+    <iframe *ngIf="tipoVista == 2 && ext == 'pdf'" [src]="urlArchivo" type="application/pdf"></iframe>
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+      <div class="img">
+        <img width="175%" [src]="urlArchivo" alt=""aria-controls="" id="imagenModal">
+        <button class="btn btn-primary pantallaC" style="vertical-align: top;"><i class="fa fa-arrows-alt" aria-hidden="true" (click)="pantallaCompleta()"></i></button>
+      </div>
+  </ng-template>
+  <ng-template #contentVideo let-c="close" let-d="dismiss">
+    <video width="100%" [src]="urlArchivo" alt="" controls autoplay></video>
+  </ng-template>
+</div>

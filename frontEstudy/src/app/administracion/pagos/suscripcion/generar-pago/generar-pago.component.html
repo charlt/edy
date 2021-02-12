@@ -1,0 +1,118 @@
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <p>Selecciona los meses que deseas que el sistema aplique el pago</p>
+  </div>
+  <div class="col-md-12 editar-ciclo"> 
+    <form class="row" [formGroup]="generarPagoForm" (ngSubmit)="enviarInformacion()">
+
+  <div class="col-md-4">              
+    <div class="form-group">                               
+      <label class="control-label" for="beca">Selecciona el mes:</label>
+      <select class="form-control"  formControlName="mes">
+        <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+        <option value="1">Enero</option>
+        <option value="2">Febrero</option>
+        <option value="3">Marzo</option>
+        <option value="4">Abril</option>
+        <option value="5">Mayo</option>
+        <option value="6">Junio</option>
+        <option value="7">Julio</option>        
+        <option value="8">Agosto</option>
+        <option value="9">Septiembre</option>
+        <option value="10">Octubre</option>
+        <option value="11">Noviembre</option>
+        <option value="12">Diciembre</option>
+     </select>
+      <span class="invalidText" *ngIf="f.mes.invalid && f.mes.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+    </div>
+    <div class="col-md-4">
+    <div class="form-group">                               
+      <label class="control-label" for="beca">Selecciona el año:</label>
+      <select class="form-control"  formControlName="anio">
+        <option hidden value="" disabled selected>{{'fmOptSelect' | translate}} </option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>        
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+        <option value="2029">2029</option>
+     </select>
+      <span class="invalidText" *ngIf="f.anio.invalid && f.anio.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group mb-2">
+      <label class="control-label">Pago</label><br>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="colegiatura1" formControlName="tipoPago" class="custom-control-input" value="1">
+        <label class="custom-control-label" for="colegiatura1">Reinscripción</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" id="colegiatura" formControlName="tipoPago" class="custom-control-input" value="2" >
+        <label class="custom-control-label" for="colegiatura">Colegiatura</label>
+      </div>
+      <br>
+      <span class="invalidText" *ngIf="f.tipoPago.invalid && f.tipoPago.touched">
+        {{'fmErrSelect' | translate}}
+      </span>
+    </div>
+                                                                                                                                
+    <button  type="submit" class="btn btn-primary pull-right mt-1">{{'fmSave' | translate}}</button>
+    <div class="resultado-datos-ciclo margin-top" ></div>      
+  </div>  
+  </form>
+  </div>
+  <div class="col-12 mt-4">
+    <div class="table-responsive">
+      <table class="table table-border">
+        <thead class="bg-light">
+          <tr>
+            <th>Tipo</th>
+            <th>Mes</th>
+            <th>Año</th>
+            <th>Monto</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="Pagos">
+          <tr *ngFor="let pago of Pagos; let i = index;">
+            <td>
+              <span *ngIf="pago.tipo == 1" >Reinscripción</span>
+              <span *ngIf="pago.tipo == 2" >Colegiatura</span>
+              <span *ngIf="pago.tipo == 3" >Inscripcion</span>
+
+            </td>
+            <td><span *ngIf="pago.mes">{{pago.mesNombre}}</span></td>
+            <td><span *ngIf="pago.anio && pago.anio != '0' ">{{pago.anio}}</span></td>
+            <td>
+              <span *ngIf="pago.tipo == 1" >{{pago.monto_reinscripcion}}</span>
+              <span *ngIf="pago.tipo == 2" >{{pago.monto_colegiatura}}</span>
+              <span *ngIf="pago.tipo == 3" >{{pago.monto_inscripcion}}</span>
+
+            </td>
+            <td><button class="btn btn-danger" (click)="eliminar(pago.pago_id,index)"><i class="fa fa-trash"></i></button></td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!Pagos">
+          <tr>
+            <td class="text-center" colspan="12">No se encontró información</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  

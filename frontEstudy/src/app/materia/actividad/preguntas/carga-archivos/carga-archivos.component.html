@@ -1,0 +1,96 @@
+<div class="row" [hidden]="edicion == 0">
+  <div class="col">
+    <form class="col" *ngIf="cargaArchivosForm" [formGroup]="cargaArchivosForm">
+        <div class="row">
+          <div class="col-12"  *ngIf="!f.check.value">
+            <label  class="control-label" for="tipo_pregunta">Da clic o arrastra <b>{{tipoArchivo.nombre}}</b> <span *ngIf="cat_formato_id != '100'">({{tipoArchivo.formatos}})</span> :</label>
+            <div [hidden]="contador==num_archivos" class="form-group">
+              <app-file-upload formControlName="contenido" (change)="guardarBorrador()"></app-file-upload>
+              <div class="invalid-feedback" style="display: block">
+                <ng-container *ngIf="hasError( 'required')">{{'fmErrfileRequired' | translate}} {{tipoArchivo.nombre}}
+                  ({{tipoArchivo.formatos}})</ng-container>
+                <ng-container *ngIf="hasError( 'requiredFileType')">{{'fmErrfileRequired' | translate}}
+                  {{tipoArchivo.nombre}}</ng-container>
+              </div>
+            </div>
+            <p *ngIf="cargando"><i class="fa fa-spin fa-spinner"></i> Cargando archivo, por favor espera</p>
+          </div>
+          <div class="col-12"  *ngIf="f.check.value">
+            <div class="form-group">                               
+              <label class="control-label  " for="link">Link del archivo externo</label>
+              <div class="input-group mb-3">
+                <input formControlName="link" class="form-control" id="link" placeholder="Ingresa el link del archivo externo" type="text" required >
+                <div class="input-group-append">
+                  <button class="btn btn-success" type="button" (click)="link()">Agregar link</button>
+                </div>
+              </div>
+              <span class="invalidText" *ngIf="f.link.invalid && f.link.touched" >
+                La url  no es válida 
+              </span>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="custom-control custom-checkbox">
+              <input formControlName="check" type="checkbox" class="custom-control-input" id="defaultUnchecked">
+              <label class="custom-control-label" for="defaultUnchecked">O agregar link de archivo externo</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <label *ngIf="contenidoPregunta && contenidoPregunta.length">Mis archivos:</label>
+          
+          <div class="col-md-12" *ngFor="let _contenidoPregunta of contenidoPregunta; let i = index">
+            <div class="row ">
+              <div class="col-10">
+                <app-archivo *ngIf="_contenidoPregunta.url_archivo && !_contenidoPregunta.urlExt" [urlBase]="_contenidoPregunta.url_archivo"></app-archivo>
+                <div *ngIf="_contenidoPregunta.url_archivo && _contenidoPregunta.urlExt">
+                  <a class="ml-5" [href]="_contenidoPregunta.url_archivo" target="_blank">{{_contenidoPregunta.url_archivo}}</a>
+                </div>
+                <p *ngIf="!_contenidoPregunta.url_archivo"><b><i class="fa fa-exclamation-triangle"></i>No se logró cargar el archivo. Inténtalo nuevamente</b></p>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn btn-danger"
+                (click)="eliminaContenido(_contenidoPregunta.respuesta_id,i,_contenidoPregunta.urlExt)"> <i class="fa fa-trash"
+                  aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+        <!-- <div *ngIf="userlink && f.check.value" class="alert alert-primary" role="alert">
+          <div class="row">
+            <div class="col-md-10">
+              <a href="{{userlink}}" target="_blank">{{userlink}}</a>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-danger" (click)="eliminaLink()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div> -->
+
+    </form>
+    <div class="row mt-3" *ngIf="!bandera && !cargaArchivosForm" >
+      <div class="col">
+        <div class="alert alert-secondary text-center p-4">
+          <b>No se puede responder la pregunta</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="edicion == 0 " class="row">
+  <div *ngIf="!contenidoPregunta.length" class="col-md-12">
+    <div class="alert alert-secondary mt-3">No se puede responder la pregunta.</div>
+  </div>
+  <div class="col-md-12" *ngFor="let _contenidoPregunta of contenidoPregunta; let i = index">
+    <div class="alert alert-info">
+      <p><b>Mi archivo respuesta: </b></p>
+      <app-archivo *ngIf="_contenidoPregunta.url_archivo && !_contenidoPregunta.urlExt" [urlBase]="_contenidoPregunta.url_archivo"></app-archivo>
+
+      <a target="_blank" *ngIf="_contenidoPregunta.url_archivo && _contenidoPregunta.urlExt" [href]="_contenidoPregunta.url_archivo">{{_contenidoPregunta.url_archivo}}</a>
+      <p *ngIf="!_contenidoPregunta.url_archivo "><b><i class="fa fa-exclamation-triangle"></i>No se logró cargar el
+          archivo.</b></p>
+    </div>
+
+  </div>
+</div>

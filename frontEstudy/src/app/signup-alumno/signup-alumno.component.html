@@ -1,0 +1,58 @@
+<div class="contenido" id="particles-js"></div><!-- /.particles div -->
+  <div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="d-flex justify-content-center">
+      <div class="col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
+          <div class="card mt-3">
+            <div class="card-header ml-4 mr-4 bg-white text-center">
+              <div class="text-center">
+                <img [src]="universidad.logo" width="200px">
+              </div>
+              <h4 class="mt-4 mb-4">Registro </h4>
+            </div>
+            <div class="card-body ml-4 mr-4 mt-2 mb-3">
+              <div *ngIf="paso == 1">
+                <form [formGroup]="matriculaForm" (ngSubmit)="enviarMatricula()">
+                  <div class="form-group">
+                    <label for="input_matricula">Matrícula / correo</label>
+                    <input formControlName="matricula" type="text" class="form-control" id="input_matricula" placeholder="Matrícula">
+                  </div>
+                  <button class="btn btn-success btn-block mt-3" type="submit" [disabled]="matriculaForm.invalid">Verificar matrícula</button>
+                  <div *ngIf="showAlert" class="alert alert-danger text-center mt-3">No se encontró la matrícula</div>
+                </form>
+                <form class="mt-3" *ngIf="flag" [formGroup]="signupForm" (ngSubmit)="enviarDatos()">
+                  <div *ngFor="let item of Data; let i = index;" class="mt-2">
+                    <div class="form-group">
+                      <label for="input_{{i}}">{{item['label']}}</label>
+                      <input [formControlName]="item['control']" name="{{item['control']}}"
+                      onKeyUp="if(document.getElementById(this.id).name == 'curp'){document.getElementById(this.id).value=document.getElementById(this.id).value.toUpperCase()}"
+                      [type]="item['type']" class="form-control bg-white" id="input_{{i}}" [placeholder]="item['label']">
+                      <p class="p-0 m-0"><span *ngIf="item['error'] && sF[item['control']].invalid && sF[item['control']].touched" class="invalidText">
+                        {{ item['error'] | translate }}
+                      </span></p>
+                      <span *ngIf="item['label'] == 'CURP'"><a  href="https://www.gob.mx/curp/" target="_blank" style="font-size: small">¿No tienes tu CURP? Da clic aquí</a></span>
+                    </div>
+                  </div>
+                  <button class="btn btn-success btn-block mt-3" type="submit" [disabled]="signupForm.invalid">Guardar información</button>
+                </form>
+              </div>
+              <div *ngIf="paso == 2">
+                <div *ngIf="alumnoValidado ==1" class="alert alert-success text-center">
+                    <h4><i class="fa fa-check"></i></h4>
+                    <p>Tu información ya ha sido actualizada exitosamente</p>
+                </div>
+                <div>
+                  
+                  <p>¡Haz completado tu registro exitosamente! La información para acceder es la siguiente: </p>
+                  <p> <b>Usuario: </b> {{usuario}} </p>
+                  <p> <b>Password: </b> {{password}} </p>
+                  <p>Da clic en el botón para acceder a tu plataforma</p>
+                </div>
+                <button class="btn btn-primary btn-block mt-3" (click)="ingresoPlataforma()">Ingresar</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

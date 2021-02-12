@@ -1,0 +1,42 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+    <div class="list-group">
+        <a routerLink="home" [routerLinkActive]="['router-link-active']" class="list-group-item  text-center">
+            <a class="navbar-brand" href="javascript:void(0)"><img  [src]="universidad.logoDark" width="70%"><br> </a> <!--width="200px"-->
+        </a>
+        <a class="list-group-item">
+            <i class="fa fa-fw fa-user"></i>&nbsp;
+            <span>{{rol.rol}}</span>
+        </a>
+        <a class="list-group-item" *ngIf="Aspirante">
+            <i class="fa fa-fw fa-university"></i>&nbsp;
+            <span>{{Aspirante.carrera}}</span>
+        </a>
+        <div class="header-fields">
+
+            <div class="nested-menu">
+                <a class="list-group-item" (click)="addExpandClass('profile')">
+                    <span><i class="fa fa-user"></i>&nbsp; {{identity.nombre + ' ' + identity.primer_apellido }}</span>
+                </a>
+                <li class="nested" [class.expand]="showMenu === 'profile'">
+                    <ul class="submenu">
+                        <li>
+                            <a [routerLink]="['./perfil']">
+                                <span><i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}</span>
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a [routerLink]="['/login']" (click)="onLoggedout()">
+                                <span><i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </div>
+    <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+        <i class="fa fa-fw fa-angle-double-{{collapsed?'right':'left'}}"></i>&nbsp;
+        <span>{{ 'Collapse Sidebar' | translate }}</span>
+    </div>
+</nav>

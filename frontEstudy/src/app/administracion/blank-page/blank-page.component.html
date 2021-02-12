@@ -1,0 +1,76 @@
+<!-- <app-plan-estudio [title]="titulo" (planEstudioId)="getId($event)"></app-plan-estudio> -->
+<!-- <form-generator></form-generator> -->
+<!-- <ngb-tabset type="pills">
+  <ngb-tab id="CE">
+    <div><ng-template ngbTabTitle>
+      <b>Control escolar</b>
+    </ng-template></div>
+  <ng-template ngbTabContent>
+    <div class="rell">
+      <p>Contenido <br>
+         Control escolar
+      </p>
+    </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="MAT">
+    <ng-template ngbTabTitle><b>Materias</b></ng-template>
+    <ng-template ngbTabContent>
+      <div class="rell">
+       <p>Contenido  <br>
+        Materias
+     </p>
+    </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="GPO">
+    <ng-template ngbTabTitle><b>Grupos</b></ng-template>
+    <ng-template ngbTabContent>
+      <div class="rell">
+      <p>Contenido  <br>
+        Grupos
+     </p>
+    </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="ALU">
+    <ng-template ngbTabTitle><b>Alumnos</b></ng-template>
+    <ng-template ngbTabContent>
+      <div class="rell">
+      <p>Contenido  <br>
+        Alumnos
+     </p>
+    </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset> -->
+<h4>Semaforización de comportamientos no permitidos</h4>
+<div class="row">
+  <div class="col-md-4">
+    <p>
+      10 pts = buena conducta (verde)<br>
+      5 pts = regular (amarillo)<br>
+      0 pts = mala conducta (rojo)
+    </p>
+  </div>
+  <div class="col-md-2">
+    <div class="row semaforo">
+      <div class="col-md-4 text-center">
+        <div class="circulo off"></div>
+        <div class="circulo off"></div>
+        <div class="circulo red"></div>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-4" style="display: flex; align-items: center; justify-content: center;">
+      <button class="btn" type="submit" (click)="decrementar()">
+        <i class="fa fa-minus" aria-hidden="true"></i>
+      </button>&nbsp;
+      <input class="puntos" type="text" value="{{contador}}" placeholder="10" disabled size="5px">
+      &nbsp;puntos&nbsp;
+      <button class="btn" type="submit" (click)="incrementar()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
+  </div>
+</div>

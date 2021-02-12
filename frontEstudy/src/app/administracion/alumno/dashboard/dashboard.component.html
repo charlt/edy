@@ -1,0 +1,67 @@
+<graficas-persona [idPersona]="idAlumno"></graficas-persona><br>
+<div class="row">
+  <div class="col-md-12">
+
+    <a *ngFor="let button of Buttons; let i = index;" [hidden]="isHidden(button.condition)" 
+     [routerLink]="[button.link]" class="btn btn-lg btn-info {{button.class}}">
+      <h1>
+        <i class="fa fa-{{button.icon}}"></i>
+      </h1>
+      <p>{{button.label}}</p>
+    </a>
+
+  <!-- <div class="col-md-2"> -->
+    <!-- <a [hidden]="rol_id == 3 || rol_id == 5 " [routerLink]="['/admin/alumno/materias/'+idAlumno]" class="btn btn-lg btn-info">
+      <h1>
+        <i class="fa fa-book"></i>
+      </h1>
+      <p>Materias</p>
+    </a> -->
+  <!-- </div>
+  <div class="col-md-2"> -->
+    <!-- <a [hidden]="rol_id == 3" [routerLink]="['/admin/alumno/accesos/'+idAlumno]" class="btn btn-lg btn-info ml-2">
+      <h1>
+        <i class="fa fa-sign-in"></i>
+      </h1>
+      <p>Accesos</p>
+    </a>
+    <a [hidden]="rol_id == 3" [routerLink]="['/admin/alumno/expediente/' + idAlumno]" class="btn btn-lg btn-info ml-2">
+      <h1>
+        <i class="fa fa-file-text-o _hover"></i>
+      </h1>
+      <p>Expediente</p>
+    </a>
+    <a [hidden]="rol_id == 3 || rol_id == 5" [routerLink]="['/admin/alumno/historial/' + idAlumno]" class="btn btn-lg btn-info ml-2">
+      <h1>
+        <i class="fa fa-list-alt _hover"></i>
+      </h1>
+      <p>Historial </p>
+    </a>
+    <a [hidden]="rol_id == 3" [routerLink]="['/admin/alumno/notas/' + idAlumno]" class="btn btn-lg btn-info ml-2">
+      <h1>
+        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+      </h1>
+      <p>Notas</p>
+    </a>
+    <a [hidden]="rol_id == 3" [routerLink]="['/admin/alumno/solicitud/' + idAlumno]" class="btn btn-lg btn-info ml-2">
+      <h1>
+        <i class="fa fa-address-book-o" aria-hidden="true"></i>
+      </h1>
+      <p>Solicitud</p>
+    </a>
+    <a [hidden]="rol_id != 3" [routerLink]="['/docente/accesos/'+idAlumno]" class="btn btn-lg btn-info ml-2">
+      <h1>
+        <i class="fa fa-sign-in"></i>
+      </h1>
+      <p>Accesos</p>
+    </a>
+    <a [hidden]="rol_id == 3" [routerLink]="['/admin/alumno/avance/'+idAlumno]" class="btn btn-lg btn-info ml-2">
+      <h1>
+        <i class="fa fa-search"></i>
+      </h1>
+      <p>Avance</p>
+    </a> -->
+  <!-- </div> -->
+  <button [hidden]="rol_id == 3 || rol_id == 5" class="btn btn-light pull-right" (click)="refresh()"><i class="fa fa-undo" aria-hidden="true"></i>Regresar a aspirante</button>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col col-xl-6 col-lg-12">
+      <div class="card mb-3">
+          <div class="card-header">
+            {{'Campus' | translate}}
+          </div>
+          <div class="card-body table-responsive">
+                <a  [routerLink]="['../nuevoCampus']" class="btn btn-success"><i class="fa fa-plus"></i>{{'NewCampus' | translate}}</a>
+              <table class="table">
+                  <thead>
+                  <tr>
+                      <th>{{'TbKey' | translate}}</th>
+                      <th>{{'TbName' | translate}}</th>
+                      <th [hidden]="tipoAdmin == 0">{{'Edit' | translate}}</th>
+                      <th [hidden]="tipoAdmin == 0">{{'Erase' | translate}}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let sCampus of campus; let i = index">
+                        <td>{{sCampus.campus_clave}}</td>
+                        <td>{{sCampus.campus}}</td>
+                        <td [hidden]="tipoAdmin == 0">
+                            <a  [routerLink]="['../editaCampus/'+sCampus.campus_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        <td [hidden]="tipoAdmin == 0">
+                            <button (click)="eliminarCampus(sCampus.campus_id, i )" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+            {{'Careers' | translate}}
+        </div>
+        <div class="card-body table-responsive">
+            <a  [routerLink]="['../nuevaCarrera']" class="btn btn-success"><i class="fa fa-plus"></i>{{'NewCareer' | translate}}</a>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{'TbKey' | translate}}</th>
+                    <th>{{'TbName' | translate}}</th>
+                    <th>{{'TbEducationalLevel' | translate}}</th>
+                    <th [hidden]="tipoAdmin == 0">{{'Edit' | translate}}</th>
+                    <th [hidden]="tipoAdmin == 0">{{'Erase' | translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let carrera of carreras; let i = index">
+                    <td>{{carrera.carrera_clave}}</td>
+                    <td>{{carrera.carrera}}</td>
+                    <td>{{carrera.nivel_estudios}}</td>
+                    <td [hidden]="tipoAdmin == 0">
+                        <a  [routerLink]="['../editaCarrera/'+carrera.carrera_id]" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td [hidden]="tipoAdmin == 0">
+                        <button (click)="eliminarCarrera(carrera.carrera_id, i )" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  <div class="col col-xl-6 col-lg-12">
+        <div class="card mb-3">
+            <div class="card-header">
+                {{'CampusCareers' | translate}}
+            </div>
+            <div class="card-body table-responsive">
+                <a  [routerLink]="['../campusCarrera']" class="btn btn-success"><i class="fa fa-plus"></i>{{'LinkCampusCareerBtn' | translate}}</a>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>{{'Campus' | translate}}</th>
+                        <th>{{'Careers' | translate}}</th>
+                        <th>{{'Erase' | translate}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let _carreraCampus of carreraCampus; let i = index">
+                        <td>{{_carreraCampus.campus}}</td>
+                        <td>{{_carreraCampus.carrera}}</td>
+                        
+                        <td>
+                            <button [hidden]="tipoAdmin == 0" (click)="desvincularCampusCarrera(_carreraCampus.carrera_id,_carreraCampus.campus_id,i)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

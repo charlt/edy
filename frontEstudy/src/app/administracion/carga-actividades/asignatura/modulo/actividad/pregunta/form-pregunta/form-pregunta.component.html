@@ -1,0 +1,127 @@
+<form  [formGroup]="preguntaForm" (ngSubmit)="enviarInformacionPregunta()">
+    <div class="row">
+        <div class="col-md-12">
+        <label class="control-label" for="nombre_ciclo"> {{'instruccion' | translate}}:</label>
+        <!-- <ckeditor   [config]="{allowedContent : true }"  formControlName="instruccion"  name="ckeditor"></ckeditor><br>     -->
+        <ckeditor [config]="{
+            allowedContent : true,
+            extraPlugins: 'uploadimage',
+            filebrowserUploadUrl: 'http://plataforma.estudy.com/apiestudy/extras/archivo/carga_ckeditor.php'
+          }"   
+          formControlName="instruccion" name="ckeditor"
+          (ready)="comienza($event)"></ckeditor>
+        <span class="invalidText" *ngIf="f.instruccion.invalid && f.instruccion.touched">
+          {{'fmErrText' | translate}}
+        </span>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+              <label class="control-label" for="tipo_pregunta">{{'contenidoPedagogico' | translate}}:</label>
+              <app-file-upload formControlName="contenido" ></app-file-upload>
+              <div class="invalid-feedback" style="display: block">
+                <ng-container *ngIf="hasError( 'required')">{{'fmErrfileRequired' | translate}}</ng-container>
+                <ng-container *ngIf="hasError( 'requiredFileType')">{{'fmErrfileDocument' | translate}}</ng-container>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <app-archivo *ngIf="contenidoPregunta.contenido" [urlBase]="contenidoPregunta.contenido"></app-archivo>
+              </div>
+              <div>
+                <button [hidden]="tipoAdmin == 0" *ngIf="contenidoPregunta.contenido" class="btn btn-danger" type="button" (click)="eliminaContenido()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              </div>
+          </div>         
+        </div>
+        <div class="col-md-12" *ngIf="idTipoPregunta == '11'">
+          <div class="form-group">
+            <label class="control-label" for="tipo_pregunta">{{'numArchivos' | translate}}:</label>
+            <select class="form-control"  formControlName="numArchivos">
+              <option value="1"> 1 </option>
+              <option value="2"> 2 </option>
+              <option value="3"> 3 </option>
+              <option value="4"> 4 </option>
+              <option value="5"> 5 </option>
+          </select>
+            <span class="invalidText" *ngIf="f.numArchivos.invalid && f.numArchivos.touched">
+                {{'fmErrText' | translate}}
+            </span>
+          </div>
+          <div class="form-group">
+              <label class="control-label" for="tipo_pregunta">{{'idFormato' | translate}}:</label>
+              <select class="form-control"  formControlName="idFormato">
+                <option  [value]="_formato.cat_formato_id" *ngFor="let _formato of formato">{{_formato.tipo_formato}} ( {{_formato.tipo_extension}} )</option>
+            </select>
+              <span class="invalidText" *ngIf="f.idFormato.invalid && f.idFormato.touched">
+                  {{'fmErrText' | translate}}
+              </span>
+            </div>
+        </div>
+        <!--div class="col-md-12" *ngIf="idTipoPregunta == '2'">
+            <label class="control-label" for="tipo_pregunta">{{'tipo' | translate}}:</label>
+                <div class="form-group">                          
+              <label class="radio-inline">
+                <input  type="radio"  formControlName="tipo" value="1" />{{'texto' | translate}}
+              </label>
+              <label class="radio-inline">
+                <input  type="radio"  formControlName="tipo" value="2"/>{{'imagen' | translate}}
+              </label>
+              <br>
+              <span class="invalidText" *ngIf="f.tipo.invalid && f.tipo.touched">
+                {{'fmErrSelect' | translate}}
+              </span>
+            </div>
+          </div-->
+        <div class="col-md-12" *ngIf="idTipoPregunta == '5'">
+          <label class="control-label" for="tipo_pregunta">{{'orientacion' | translate}}:</label>
+              <div class="form-group">                          
+            <label class="radio-inline">
+              <input checked type="radio"  formControlName="orientacion" value="1"/>{{'Vertical' | translate}}
+            </label>
+            <label class="radio-inline">
+              <input  type="radio"  formControlName="orientacion" value="0"/>{{'Horizontal' | translate}}
+            </label>
+            <br>
+            <span class="invalidText" *ngIf="f.orientacion.invalid && f.orientacion.touched">
+              {{'fmErrSelect' | translate}}
+            </span>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="idTipoPregunta == '6'">
+        <div class="row">
+          <div class="col-md-4">
+            <p><b>{{'_primeraPregunta' | translate}}</b></p>
+            <div class="form-group" >
+              <ckeditor [config]="{toolbar: simpleEditor}" formControlName="pregunta1" name="pregunta1" id="pregunta1"></ckeditor>
+            </div>
+            <!-- <div  *ngIf="edicion" class=" alert alert-info" [innerHTML]="pregunta1" >
+            </div> -->
+          </div>
+          
+          <div class="col-md-4">
+              <p><b>{{'_segundaPregunta' | translate}}</b></p>
+            <div class="form-group">
+              <ckeditor [config]="{toolbar: simpleEditor}" formControlName="pregunta2" name="pregunta2" id="pregunta2"></ckeditor>
+            </div>
+            <!-- <div  *ngIf="edicion" class="alert alert-info" [innerHTML]="pregunta2" >
+            </div> -->
+          </div>
+
+          <div class="col-md-4">
+            <p><b>{{'_terceraPregunta' | translate}}</b></p>
+            <div class="form-group" >
+              <ckeditor [config]="{toolbar: simpleEditor}" formControlName="pregunta3" name="pregunta3" id="pregunta3"></ckeditor>
+            </div>
+            <!-- <div *ngIf="edicion" class="alert alert-info" [innerHTML]="pregunta3" >                
+            </div> -->
+          </div>
+        </div>
+        </div>
+
+
+      </div>
+      <div class="row">
+          <div class="col">
+              <button  [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right mt-2">{{'fmSave' | translate}} <i *ngIf="cargando" class="fa fa-spin fa-spinner" aria-hidden="true"></i></button>
+          </div>
+          </div>
+</form>

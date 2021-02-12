@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+    <button class="btn btn-success" (click)="open(content)">Agregar carrera</button>
+    <hr>
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>Alumno</th>
+        <th>Carrera</th>
+        <th>Grado</th>
+        <th>Campus</th>
+        <th>Elimina</th>
+      </tr>
+      <tr *ngFor="let oferta of ofertas; let i = index">
+        <td>{{oferta.nombre}} {{oferta.primer_apellido}} {{oferta.segundo_apellido}}</td>
+        <td>{{oferta.carrera}}</td>
+        <td>{{oferta.orden_jerarquico_descripcion}}</td>
+        <td>{{oferta.campus}}</td>
+        <td [hidden]="tipoAdmin == 0" class="text-center"><button class="btn btn-danger"
+            (click)="elimina(i, oferta.plan_orden_id, oferta.alumno_id)"><i class="fa fa-trash"
+              aria-hidden="true"></i></button></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Cambiar carrera</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="planOrdenForm">
+      <app-consulta-asignatura [nivel]="3" [parentForm]="planOrdenForm" [tipo]="'small'"></app-consulta-asignatura>
+      <div class="form-group">
+        <label class="control-label" for="nivel_estudios">{{'SelectCampus' | translate}}</label>
+          <select formControlName="campus" class="form-control" >
+              <option  [value]="_campus.campus_id" *ngFor="let _campus of campus">{{_campus.campus}}</option>
+              <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+            </select>
+          <span class="invalidText" *ngIf="f.campus.invalid && f.campus.touched">
+              {{'fmErrSelect' | translate}}
+          </span>
+      </div>
+
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button [hidden]="tipoAdmin == 0" type="button" id="_modal" class="btn btn-outline-dark"
+      (click)="close()">Salir</button>
+    <button [hidden]="tipoAdmin == 0" type="button" class="btn btn-success" (click)="cambiaOferta()">Guardar</button>
+  </div>
+</ng-template>

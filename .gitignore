@@ -1,0 +1,9 @@
+assets/*
+apiEstudy/config/db.php
+apiEstudy/config/conf_debug.php
+frontEstudy/src/app/services/global.ts
+vsEstudy.code-workspace
+.idea/*
+.vscode/*
+apiEstudy/vendor/*
+apiEstudy/vendor/

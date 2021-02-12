@@ -1,0 +1,8 @@
+<div class="row archivo">
+    <div class="col-md-12" *ngFor="let _contenidoActividad of contenidoActividad;">
+        <app-archivo *ngIf="_contenidoActividad.url_contenido && _contenidoActividad.nombre && _contenidoActividad.visto == 1" [urlBase]="_contenidoActividad.url_contenido" [nombre]="_contenidoActividad.nombre" [tipoVista] = '1'></app-archivo>          
+        <app-archivo *ngIf="_contenidoActividad.url_contenido && !_contenidoActividad.nombre && _contenidoActividad.visto == 1" [urlBase]="_contenidoActividad.url_contenido" [tipoVista]='1'></app-archivo>          
+    </div>
+    <div class="col-md-12" [innerHTML]="actividad.instruccion_html" >
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="portada" [@routerTransition]>
+    <div class="row col-md-11 justify-content-md-center" >
+        <div class="col-md-5 jumbotron" style="background: rgba(0,33,68,0.7);"*ngIf="registroExitoso" >
+            <h3 class="form-signin" style=" margin-top: 0px;">¡Registro exitoso!</h3>
+            <p style="color: #eee">Hemos enviado un correo electrónico a la cuenta que registró en el sistema, en él encontrará sus datos para entrar al portal.
+                    Dé clic en el siguiente vínculo para ingresar.
+                
+            </p>
+            <br>
+            <h4 [routerLink]="['/login']" style="color:#5cb85c;text-decoration: underline"> Entrar al portal</h4>
+        </div>
+        <div class="col-md-5 jumbotron" style="background: rgba(0,33,68,0.7);" *ngIf="!registroExitoso">
+            <h3 class="form-signin" style=" margin-top: 0px;">¡Regístrate!</h3>
+            <hr>
+            <form [formGroup]="signupForm" (ngSubmit)="enviarDatos()" >
+                <div class="form-group form-content">
+                    <div class="form-group">
+                        <input type="text"formControlName="nombre" class="form-control input-underline  " placeholder="{{ 'Name' | translate }}">
+                        <span class="invalidText" *ngIf="f.nombre.invalid && f.nombre.touched">
+                            {{'fmErrName' | translate}}
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"formControlName="primer_apellido" class="form-control input-underline  " placeholder="{{ 'segundo apellido' | translate }}">
+                        <span class="invalidText" *ngIf="f.primer_apellido.invalid && f.primer_apellido.touched">
+                            {{'fmErrText' | translate}}
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text"formControlName="segundo_apellido" class="form-control input-underline  " placeholder="{{ 'primer apellido' | translate }}">
+                        <span class="invalidText" *ngIf="f.segundo_apellido.invalid && f.segundo_apellido.touched">
+                            {{'fmErrText' | translate}}
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" formControlName="email" class="form-control input-underline " placeholder="{{ 'Email' | translate }}">
+                        <span class="invalidText" *ngIf="f.email.invalid && f.email.touched">
+                            {{'fmErrEmail' | translate}}
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email2" formControlName="email2" class="form-control input-underline " placeholder="Confirmar correo electrónico">
+                        <span class="invalidText" *ngIf="f.email2.invalid && f.email2.touched">
+                            {{'fmErrEmail' | translate}}
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" formControlName="numero" class="form-control input-underline " placeholder="{{ 'Phone' | translate }}">
+                        <span class="invalidText" *ngIf="f.numero.invalid && f.numero.touched">
+                            {{'fmErrNumber' | translate}}
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" formControlName="curp" class="form-control input-underline "pattern="^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$"
+                         placeholder="{{ 'CURP' | translate }}">
+                         <span class="invalidText" *ngIf="f.curp.invalid && f.curp.touched">
+                            {{'fmErrCURP' | translate}}
+                        </span>
+                        <a style="color: antiquewhite;" href="https://www.gob.mx/curp/" target="_blank" style="font-size: small;color: white">¿No tienes tu CURP? Da clic aquí</a>
+                    </div>
+                    <div class="form-group">
+                        <input formControlName="claveElector" class="form-control input-underline " placeholder="{{ 'ClaveElector' | translate }}">
+                        <span class="invalidText" *ngIf="f.claveElector.invalid && f.claveElector.touched">
+                            {{'fmErrText' | translate}}
+                        </span>
+                    </div>
+                    <div class="text-center">
+                        <a href="https://unisant.edu.mx/privacy-policy/"  style="color:#5cb85c;" target="_blank">AVISO DE PRIVACIDAD</a>
+                    </div>
+                    <div>
+                        <p style="color: antiquewhite;">Si acepta el aviso de privacidad, seleccione la casilla.</p>
+                    </div>
+                    <div  class="form-group custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="c1" (click)="check()" [checked]="aceptar">
+                        <label class="custom-control-label" for="c1"></label>
+                    </div><hr>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" style="color: antiquewhite;">Curso de capacitación de interés</label>
+                        <select formControlName="carrera" class="form-control" id="exampleFormControlSelect1">
+                            <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+                            <option [value]="_carrera.carrera_id" *ngFor="let _carrera of carreras">{{_carrera.carrera}}</option>
+                        </select>
+                        <span class="invalidText" *ngIf="f.carrera.invalid && f.carrera.touched">
+                            {{'fmSelectOption' | translate}}
+                        </span>
+                      </div>
+                </div>
+                <button [disabled]="enviarCorreo" class="btn btn-success btn-lg btn-block btn " type="submit">{{ 'fmSave' | translate }}</button>
+                <br><p style="color: antiquewhite;">¿Ya tienes cuenta? <a [routerLink]="['/login']"  style="color:#5cb85c;">Regresar al inicio</a></p>
+            </form>
+        </div>
+    </div>
+
+</div>

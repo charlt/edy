@@ -1,0 +1,79 @@
+
+  <form  [formGroup]="preguntaForm" (ngSubmit)="enviarInformacionPregunta()">    
+      <div class="row">
+          <div class="col">
+            <div class="form-group">     
+              <label class="control-label" for="tipo_pregunta">{{'tipoPregunta' | translate}}:</label>
+              <select  formControlName="tipoPregunta"  class="form-control"  >
+                <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+                <option  [value]="_tipoPregunta.tipo_pregunta_id" *ngFor="let _tipoPregunta of tipoPregunta">{{_tipoPregunta.tipo_pregunta_nombre}}</option>
+              </select>
+              <span class="invalidText" *ngIf="f.tipoPregunta.invalid && f.tipoPregunta.touched">
+                      {{'fmErrSelect' | translate}}
+              </span>
+          </div>
+          </div>
+        </div>
+      <div class="row">
+          <div class="col" *ngIf="f.dificultad">              
+            <div class="form-group ">         
+                <label class="control-label" for="dificultad">{{'dificultad' | translate}}:</label>
+                <select  formControlName="dificultad"  class="form-control"  >
+                <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+                <option  [value]="_dificultad.dificultad_id" *ngFor="let _dificultad of dificultad">{{_dificultad.dificultad_nombre}}</option>
+                </select>
+                <span class="invalidText" *ngIf="f.dificultad.invalid && f.dificultad.touched">
+                        {{'fmErrSelect' | translate}}
+                </span>
+            </div>     
+            <div class="form-group">                               
+                <input class="form-control" formControlName="orden" placeholder="{{'orden' | translate}}" type="number" hidden>
+            </div>        
+          </div>
+        <div class="col" *ngIf="f.ponderacion" [hidden]="actividad.tipo_calificacion != 1">
+          <div class="form-group">                               
+            <label class="control-label" for="ponderacion">{{'ponderacion' | translate}} (max: {{ponderacionMax}}%):</label>
+            <input class="form-control" formControlName="ponderacion" placeholder="{{'ponderacion' | translate}}" type="number" min="0" max="{{ponderacionMax}}" >
+            <span class="invalidText" *ngIf="f.ponderacion.invalid && f.ponderacion.touched">
+                (El máximo de ponderación no debe exceder el: {{ponderacionMax}}%) 
+            </span>
+          </div>
+        </div>
+        <div class="col" *ngIf="f.aleatorio">
+        <div class="form-group">        
+                  
+            <label class="control-label" for="aleatorio">{{'aleatorio' | translate}}:</label>
+            <br>
+            <label class="radio-inline">
+              <input checked type="radio"  formControlName="aleatorio" value="1"/>{{'si' | translate}}
+            </label>
+            <label class="radio-inline">
+              <input  type="radio"  formControlName="aleatorio" value="0"/>{{'no' | translate}}
+            </label>
+            <br>
+            <span class="invalidText" *ngIf="f.aleatorio.invalid && f.aleatorio.touched">
+              {{'fmErrSelect' | translate}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="f.retroalimentacion">
+          <div class="col">    
+              <label class="control-label" for="aleatorio">{{'retroalimentacion' | translate}}:</label>  
+              <textarea class="form-control" formControlName="retroalimentacion" ></textarea>
+          </div>
+      </div>
+
+  
+    <div class="row">
+      <div class="col">
+          <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right mt-3">
+            <span *ngIf="datosPregunta.tipo_pregunta_id">{{'fmEdit' | translate}}</span>
+            <span *ngIf="!datosPregunta.tipo_pregunta_id">{{'fmSave' | translate}}</span>
+          </button>
+      </div>
+      </div>
+    </form>
+
+
+

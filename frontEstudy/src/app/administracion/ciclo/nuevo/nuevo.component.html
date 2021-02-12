@@ -1,0 +1,54 @@
+<div class="row">
+<div class="col-md-12">
+    <h4>{{title}}</h4>
+</div>
+<div class="col-md-12 editar-ciclo"> 
+  <form [formGroup]="cicloForm" (ngSubmit)="enviarInformacion()">
+
+<!--<div class="col-md-6">              
+  <div class="form-group ">         
+    <label class="control-label" for="">{{'Level' | translate}}:</label>
+    <select  formControlName="nivelCiclo"  class="form-control"  >
+      <option hidden value="" disabled  selected>{{'fmErrSelect' | translate}} </option>
+      <option  [value]="nivelEstudio.nivel_estudios_id" *ngFor="let nivelEstudio of nivelEstudios">{{nivelEstudio.nivel_estudios}}</option>
+    </select>
+  </div>                                           
+</div>-->
+<div class="col-md-6">              
+  <div class="form-group">                               
+    <label class="control-label  " for="nombre_ciclo">{{'_nombreCiclo' | translate}}:</label>
+    <input formControlName="nombreCiclo" class="form-control" id="nombre_ciclo" placeholder="{{'_nombreCiclo' | translate}}" type="text" required>
+    <span class="invalidText" *ngIf="f.nombreCiclo.invalid && f.nombreCiclo.touched">
+      {{'fmErrCycleName' | translate}}
+    </span>
+  </div>                                                                   
+  <div class="form-group">                               
+    <label class="control-label" for="fecha_inicio"><i class="fa fa-calendar"></i>{{'fmFechaInicio' | translate}}:</label>
+    <input formControlName="fechaInicio" class="form-control" id="fecha_inicio" type="date">
+    <span class="invalidText" *ngIf="f.fechaInicio.invalid && f.fechaInicio.touched">
+        {{'fmErrDateStart' | translate}}
+    </span>
+  </div>                                                
+  <div class="form-group">                               
+    <label class="control-label"for="fecha_cierre"><i class="fa fa-calendar"></i>{{'fmFechaFin' | translate}}:</label>
+    <input formControlName="fechaCierre" class="form-control" id="fecha_cierre" type="date">
+    <span class="invalidText" *ngIf="f.fechaCierre.invalid && f.fechaCierre.touched">
+        {{'fmErrDateFinish' | translate}}
+    </span>
+  </div>                                                 
+  <div class="form-group " rel="1">
+    <label class="control-label" for="">{{'Estatus' | translate}}:</label>
+    <select  formControlName="cicloEstatus"  class="form-control"  >
+      <option hidden value="" disabled  selected>{{'fmOptSelect' | translate}} </option>
+      <option  [value]="ciclo.ciclo_estatus_id" *ngFor="let ciclo of cicloEstatus">{{ciclo.ciclo_estatus_desc}}</option>
+    </select>
+    <span class="invalidText" *ngIf="f.cicloEstatus.invalid && f.cicloEstatus.touched">
+      {{'fmErrSelect' | translate}}
+    </span>
+  </div> <br>                                      
+  <button [hidden]="tipoAdmin == 0" type="submit" class="btn btn-primary pull-right guardar-cilclo">{{'fmSave' | translate}}</button>
+  <div class="resultado-datos-ciclo margin-top" ></div>      
+</div>  
+</form>
+</div>
+</div>

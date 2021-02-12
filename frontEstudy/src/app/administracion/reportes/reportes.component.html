@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>{{title}}</h4>
+  </div>
+  <div class="col-md-4">
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6" *ngFor="let objeto of objetos; let i = index">
+            <div class="card cTipo1 text-center" (click)="consultaVista(objeto);">
+              <div class="card-body">
+                <h1><i class="fa {{objeto.icono}}"></i></h1>
+               <p>{{objeto.nombre}}</p>
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="jumbotron jumbotron-fluid">
+      <div *ngIf="tipo == 0" class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Reportes de la plataforma</h4>
+            <p>En este apartado podrás encontrar concentrados de información de alumnos,docentes y grupos.
+              <br>Para comenzar debes selecciona una categoría</p>
+        </div>
+        </div>
+      </div>
+      <div *ngIf="tipo == 1" class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h4><i class="fa {{selectedObjeto.icono}}"></i> Concentrados de {{selectedObjeto.nombre}}</h4>
+          </div>
+          <div *ngIf="!vistas" class="col-md-12">
+            <p>No existen reportes en esta sección</p>
+          </div>
+          <div class="col-md-4" *ngFor="let vista of vistas">
+            <div class="card cTipo1" (click)="seleccionaVista(vista);">
+              <div class="card-body text-center">
+                <h5 class="card-title">{{vista.nombre}}</h5>
+                <p class="texto">{{vista.descripcion}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="tipo == 2" class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h5 >{{selectedVista.nombre}}</h5><br>
+            <p>{{selectedVista.descripcion}}</p>
+            <span *ngIf="nivel != 0 &&  nivel !=5">Selecciona una opción:</span>
+            <span *ngIf="!(nivel != 0 &&  nivel !=5)">Da clic en <b>Generar reporte</b> </span>
+          </div>
+          <div *ngIf="nivel == 5" class="col-md-5">
+            <div class="form-group">
+              <label for="cat_ciclo">1. Selecciona un ciclo</label>
+              <select class="form-control" id="cat_ciclo" [(ngModel)]="ciclo_id" (change)="consultaGrupos(ciclo_id)">
+                <option value="" hidden disabled>Selecciona una opción</option>
+                <option value="{{ciclo.ciclo_id}}" *ngFor="let ciclo of ciclos">{{ciclo.ciclo_desc}}</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="nivel == 5" class="col-md-5">
+            <div class="form-group">
+              <label for="cat_asignatura">2. Selecciona el grupo</label>
+              <select class="form-control" id="cat_asignatura" [(ngModel)]="grupo_id" (change)="obtieneURL(grupo_id)">
+                <option value="" hidden disabled>Selecciona una opción</option>
+                <option value="{{grupo.grupo_id}}" *ngFor="let grupo of grupos">{{grupo.nombre_grupo}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="nivel == 6" class="col-md-5">
+          <div class="form-group">
+            <label for="cat_ciclo">1. Selecciona un ciclo</label>
+            <select class="form-control" id="cat_ciclo" [(ngModel)]="ciclo_id" (change)="obtieneURL(ciclo_id)">
+              <option value="" hidden disabled>Selecciona una opción</option>
+              <option value="{{ciclo.ciclo_id}}" *ngFor="let ciclo of ciclos">{{ciclo.ciclo_desc}}</option>
+            </select>
+          </div>
+        </div>
+        <app-consulta-asignatura  *ngIf="nivel == 1 || nivel == 2 || nivel == 3 || nivel == 4 " [tipo]="'medium'" [nivel]="nivel" (sucessEvent)="obtieneURL($event)"></app-consulta-asignatura><br>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-success pull-right" (click)="obtieneReportes()">Generar reporte</button>
+          </div>
+        </div>
+        
+        <!--div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                  <label class="custom-control-label" for="defaultInline1">Reporte de alumnos en grupo</label>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="checkbox" class="custom-control-input" id="defaultInline2">
+                  <label class="custom-control-label" for="defaultInline2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</label>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="checkbox" class="custom-control-input" id="defaultInline3">
+                  <label class="custom-control-label" for="defaultInline3">Reporte de alumnos en grupo</label>
+                </div>
+              </div>
+            </div><br>
+            <button class="btn btn-primary pull-right">Generar reporte</button>
+          </div>
+        </div>
+      </div-->
+    </div>
+  </div>
+</div>
